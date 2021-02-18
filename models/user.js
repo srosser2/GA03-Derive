@@ -30,7 +30,8 @@ const userSchema = new mongoose.Schema({
     type: String, 
     required: true, 
     minlength: 6 
-  }
+  },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 })
 
 userSchema.pre('save', function(next) {
