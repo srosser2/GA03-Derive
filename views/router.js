@@ -29,6 +29,7 @@ router.route('/countries/:id/comments')
   .post(secureRoute, commentController.postComment)
 
 router.route('/countries/:countryId/comments/:commentId')
+  .put(secureRoute, commentController.updateComment)
   .delete(secureRoute, commentController.deleteComment)
 
 

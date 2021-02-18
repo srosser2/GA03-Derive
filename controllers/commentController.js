@@ -34,6 +34,22 @@ const commentController = {
     } catch (err) {
       next(err)
     }
+  },
+  async updateComment(req, res, next){
+    const currentUser = req.currentUser
+    const commentId = req.params.commentId
+    console.log(currentUser, commentId)
+    try {
+      const comment = await Comment.findById(commentId)
+      if (!comment.user.equals(currentUser._id)) {
+        return res.status(401).send({ message: 'Unauthorized - cant update someone elses comment' })
+      }
+      comment.set(req.body)
+      await comment.save()
+      res.status(200).send({ message: `Comment ${commentId} updated!` })
+    } catch (err) {
+      next(err)
+    }
   }
   
 }
