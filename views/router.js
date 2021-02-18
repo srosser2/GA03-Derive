@@ -28,4 +28,8 @@ router.route('/countries/:id')
 router.route('/countries/:id/comments')
   .post(secureRoute, commentController.postComment)
 
+router.route('/countries/:countryId/comments/:commentId')
+  .delete(secureRoute, commentController.deleteComment)
+
+
 export default router
