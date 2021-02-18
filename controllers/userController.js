@@ -31,6 +31,15 @@ const userController = {
     }
   },
 
+  async getAllUsers(req, res, next) {
+    try {
+      const users = await User.find()
+      res.status(200).send(users)
+    } catch (err) {
+      next(err)
+    }
+  },
+
   async getUserById(req, res, next){
     const id = req.params.id
     try {
