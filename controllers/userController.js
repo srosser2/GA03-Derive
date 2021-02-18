@@ -1,6 +1,11 @@
-// import User from '../models/user.js'
+import User from '../models/user.js'
 
-const userController = {}
+const userController = {
+  async postUser (req, res, next) {
+    console.log(req.body)
+    res.send(req.body)
+  }
+}
 
 
 export default userController
