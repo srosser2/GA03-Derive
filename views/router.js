@@ -3,7 +3,10 @@ import userController from '../controllers/userController.js'
 
 const router = express.Router()
 
-router.route('/users')
-  .post(userController.postUser)
+router.route('/register')
+  .post(userController.register)
+
+router.route('/login')
+  .post(userController.login)
 
 export default router

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    alidate: {
+    validate: {
       validator: function(val){
         return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val)
       },
@@ -40,6 +40,7 @@ userSchema.pre('save', function(next) {
 })
 
 userSchema.methods.validatePassword = function(password) {
+  console.log('work please', password)
   return bcrypt.compareSync(password, this.password)
 }
 
@@ -60,6 +61,6 @@ userSchema.plugin(uniqueValidator)
 userSchema.plugin(mongooseHidden({ defaultHidden: {
   password: true,
   email: true
-}}))
+} }))
 
 export default mongoose.model('User', userSchema)
