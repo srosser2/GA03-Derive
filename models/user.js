@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: function(val){
+        // eslint-disable-next-line no-useless-escape
         return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val)
       },
       message: props => `${props.value} is not a valid email address.`
@@ -40,7 +41,6 @@ userSchema.pre('save', function(next) {
 })
 
 userSchema.methods.validatePassword = function(password) {
-  console.log('work please', password)
   return bcrypt.compareSync(password, this.password)
 }
 

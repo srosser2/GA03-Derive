@@ -17,22 +17,51 @@ const userController = {
     const password = req.body.password
     try {
       const user = await User.findOne({ email: req.body.email })
-      console.log(user)
       if (!user || !user.validatePassword(password)) {
         return res.status(401).send({ message: 'Unauthorized' })
       }
       const token = jwt.sign(
-        { userUd: user._id },
+        { userId: user._id },
         secret,
         { expiresIn: '12h' }
       )
-      console.log(token)
       res.status(202).send(({ token, message: 'Login successful' }))
-
     } catch (err) {
       next(err)
     }
+  },
+
+  async getUserById(req, res, next){
+    const id = req.params.id
+    try {
+      const user = await User.findById(id)
+      //.populate('comments.user')
+      res.status(202).send(user)
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  async editUser(req, res, next){
+    const id = req.params.id
+    const currentUser = req.currentUser
+    const body = req.body
+    try {
+      const userToUpdate = await User.findById(id)
+      if (!userToUpdate) {
+        return res.send({ message: 'No user found' })
+      }
+      if (!userToUpdate._id.equals(currentUser._id)) {
+        return res.status(401).send({ message: 'Unauthorized' })
+      }
+      userToUpdate.set(body)
+      userToUpdate.save()
+      res.send(userToUpdate)
+    } catch (err) {
+      next()
+    }
   }
+    
 
 }
 
