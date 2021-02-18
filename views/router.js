@@ -12,10 +12,10 @@ router.route('/register')
 router.route('/login')
   .post(userController.login)
 
-router.route('/user')
+router.route('/users')
   .get(userController.getAllUsers)
 
-router.route('/user/:id')
+router.route('/users/:id')
   .get(userController.getUserById)
   .put(secureRoute, userController.editUser)
 

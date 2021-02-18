@@ -31,7 +31,15 @@ const userSchema = new mongoose.Schema({
     required: true, 
     minlength: 6 
   },
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  bio: { type: String },
+  nationality: { type: String },
+  countriesVisited: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Country' }],
+  countriesWishList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  isTravelling: { type: Boolean },
+  isPublic: { type: Boolean },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  languages: [String]
 })
 
 userSchema.pre('save', function(next) {
