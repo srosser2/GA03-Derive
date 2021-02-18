@@ -1,5 +1,4 @@
 import express from 'express'
-import { get } from 'mongoose'
 import userController from '../controllers/userController.js'
 import secureRoute from '../middleware/secureRoute.js'
 import countryController from '../controllers/countryController.js'
@@ -17,7 +16,7 @@ router.route('/user/:id')
   .put(secureRoute, userController.editUser)
 
 router.route('/countries')
-  get(countryController.getAllCountries)
+  .get(countryController.getAllCountries)
 
 
 export default router

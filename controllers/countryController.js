@@ -1,4 +1,4 @@
-import { Error } from 'mongoose'
+
 import Country from '../models/country.js'
 
 const countryController = {
@@ -9,9 +9,7 @@ const countryController = {
     } catch (err) {
       next(err)
     }
-  },
-
-
+  }
 
 
 }
