@@ -9,6 +9,15 @@ const countryController = {
     } catch (err) {
       next(err)
     }
+  },
+  async getCountryById(req, res, next) {
+    const id = req.params.id
+    try {
+      const country = await Country.findById(id).populate('comments')
+      res.status(200).send(country)
+    } catch (err) {
+      next(err)
+    }
   }
 
 
