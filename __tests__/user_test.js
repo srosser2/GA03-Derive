@@ -24,8 +24,5 @@ describe('User endpoints tests', () => {
         done()
       })
   })
-
-  
-
   
 })
