@@ -39,6 +39,8 @@ const userSchema = new mongoose.Schema({
   isTravelling: { type: Boolean },
   isPublic: { type: Boolean },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   languages: [String]
 })
 

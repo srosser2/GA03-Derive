@@ -32,5 +32,11 @@ router.route('/countries/:countryId/comments/:commentId')
   .put(secureRoute, commentController.updateComment)
   .delete(secureRoute, commentController.deleteComment)
 
+router.route('/users/:id/add')
+  .post(secureRoute, userController.sendFriendRequest)
+
+router.route('/users/:id/acceptFriend')
+  .post(secureRoute, userController.confirmRequest)
 
 export default router
+

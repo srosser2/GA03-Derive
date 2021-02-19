@@ -40,7 +40,7 @@ const userController = {
     }
   },
 
-  async getUserById(req, res, next){
+  async getUserById(req, res, next) {
     const id = req.params.id
     try {
       const user = await User.findById(id).populate('comments')
@@ -51,7 +51,7 @@ const userController = {
     }
   },
 
-  async editUser(req, res, next){
+  async editUser(req, res, next) {
     const id = req.params.id
     const currentUser = req.currentUser
     const body = req.body
@@ -67,14 +67,65 @@ const userController = {
       userToUpdate.save()
       res.send(userToUpdate)
     } catch (err) {
-      next()
+      next(err)
+    }
+  },
+
+  async sendFriendRequest(req, res, next) {
+    const targetFriendId = req.params.id
+    const currentUser = req.currentUser._id
+    try {
+      const targetFriend = await User.findById(targetFriendId)
+      const friendSendingRequest = await User.findById(currentUser)
+      if (!targetFriend) {
+        return res.send({ message: 'This user does not exist' })
+      }
+
+      if (targetFriend.friends.indexOf(friendSendingRequest._id) >= 0) {
+        return res.send({ message: 'Calm down, they\'re already your friend' })
+      }
+
+      if (targetFriend.receivedRequests.indexOf(friendSendingRequest._id) !== -1) {
+        return res.send({ message: 'You\'ve already sent a request!' })
+      }
+      // ! this line is updating the target friend
+      await User.findByIdAndUpdate({ _id: targetFriend._id }, { $push: { receivedRequests: friendSendingRequest._id } })
+      // ! this is updating the current user 
+      await User.findByIdAndUpdate({ _id: friendSendingRequest._id }, { $push: { sentRequests: targetFriend._id } })
+      res.send({ message: 'Friend request sent' })
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  async confirmRequest(req, res, next) {
+    const targetFriendId = req.params.id
+    const currentUser = req.currentUser._id
+    try {
+      const friendAwaitingRequest = await User.findById(targetFriendId)
+      const friendConfirmingRequest = await User.findById(currentUser)
+      if (!friendAwaitingRequest) {
+        return res.send({ message: 'This user does not exist so you can\'t add them' })
+      }
+
+      if (friendAwaitingRequest.friends.indexOf(friendConfirmingRequest._id) >= 0) {
+        return res.send({ message: 'Calm down, they\'re already your friend' })
+      }
+
+      // ? removing IDs from the pending arrays
+      await User.findByIdAndUpdate({ _id: friendAwaitingRequest._id }, { $pull: { sentRequests: friendConfirmingRequest._id } })
+      await User.findByIdAndUpdate({ _id: friendConfirmingRequest._id }, { $pull: { receivedRequests: friendAwaitingRequest._id } })
+      // ? adding ID of friend sending and friend receiving request to the friends array
+      if (req.body.isAccepted) {
+        await User.findByIdAndUpdate({ _id: friendAwaitingRequest._id }, { $push: { friends: friendConfirmingRequest._id } })
+        await User.findByIdAndUpdate({ _id: friendConfirmingRequest._id }, { $push: { friends: friendAwaitingRequest._id } })
+        return res.send({ message: 'They like you - congrats, friend request accepted' })
+      }
+      res.send({ message: 'Sorry, they don\'t like you' })
+    } catch (err) {
+      next(err)
     }
   }
-    
-
 }
-
-
-
 
 export default userController

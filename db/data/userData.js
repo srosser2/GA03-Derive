@@ -12,7 +12,11 @@ export default [
     isTravelling: false,
     isPublic: false,
     friends: [],
-    languages: []
+    sentRequests: [],
+    receivedRequests: [],
+    languages: [],
+    _id: '123f9be5b2113853ac6fd89c'
+
   },
   {
     fullName: 'Hannah Akhtar',
@@ -27,7 +31,10 @@ export default [
     isTravelling: false,
     isPublic: false,
     friends: [],
-    languages: []
+    sentRequests: [],
+    receivedRequests: [],
+    languages: [],
+    _id: '456f9be5b2113853ac6fd89b'
   },
   {
     fullName: 'Stefan Sokolowski',
@@ -42,6 +49,9 @@ export default [
     isTravelling: false,
     isPublic: false,
     friends: [],
-    languages: []
+    sentRequests: [],
+    receivedRequests: [],
+    languages: [],
+    _id: '789f9be5b2113853ac6fd89a'
   }
 ]
