@@ -4,7 +4,7 @@ import Country from '../models/country.js'
 
 const commentController = {
   async postComment(req, res, next) {
-    const body = req.bodynpm install react-bootstrap bootstrap
+    const body = req.body
     try {
       const userId = req.currentUser._id
       const user = await User.findById(userId)

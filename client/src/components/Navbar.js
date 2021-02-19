@@ -6,8 +6,8 @@ import { getLoggedInUserId } from '../lib/auth.js'
 
 const NavBar = ({ history }) => {
 
-  const token = localStorage.getItem('token')
-  const userId = JSON.parse(atob(token.split('.')[1])).userId
+  // const token = localStorage.getItem('token')
+  // const userId = JSON.parse(atob(token.split('.')[1])).userId
 
   function handleLogout() {
     localStorage.removeItem('token')
@@ -23,12 +23,14 @@ const NavBar = ({ history }) => {
         {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}
         {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
         {/* needs testing */}
-        {loggedIn && <Button onClick={handleLogout}>Logout</Button>}
-        {loggedIn && <Nav.Link href="/search-countries">Explore Countries</Nav.Link>}
-        {loggedIn && <Nav.Link href="/user">Profile</Nav.Link>}
-        {loggedIn && <Nav.Link href="">Nofications</Nav.Link>}
-        {loggedIn && <Nav.Link href="/search-profiles">Search for friends</Nav.Link>}
-        {loggedIn && <Navbar.Text>Signed in as: <a href="/user">User Id</a></Navbar.Text>}
+        {loggedIn && <>
+          <Button onClick={handleLogout}>Logout</Button>
+          <Nav.Link href="/search-countries">Explore Countries</Nav.Link>
+          <Nav.Link href="/user">Profile</Nav.Link>
+          <Nav.Link href="">Nofications</Nav.Link>
+          <Nav.Link href="/search-profiles">Search for friends</Nav.Link>
+          <Navbar.Text>Signed in as: <a href="/user">User Id</a></Navbar.Text>
+        </>}
       </Navbar.Collapse>
     </Navbar>
   </>
