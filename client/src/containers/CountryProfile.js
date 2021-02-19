@@ -1,5 +1,7 @@
+import React from 'react'
+
 const CountryProfile = () => {
-  return (  );
+  return <h1>Country Profile</h1>
 }
  
-export default CountryProfile;
+export default CountryProfile

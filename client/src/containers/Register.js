@@ -1,5 +1,7 @@
+import React from 'react'
+
 const Register = () => {
-  return (  );
+  return <h1>Register</h1>
 }
  
-export default Register;
+export default Register
