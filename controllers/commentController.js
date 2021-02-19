@@ -50,6 +50,23 @@ const commentController = {
     } catch (err) {
       next(err)
     }
+  },
+  async toggleLikeComment(req, res, next) {
+    const currentUser = req.currentUser
+    const commentId = req.params.commentId
+    try {
+      const comment = await Comment.findById(commentId)
+      if (comment.likes.indexOf(currentUser._id) === -1){
+        const updatedComment = await Comment.findByIdAndUpdate({ _id: commentId }, { $push: { likes: currentUser._id } }, { new: true } )
+        return res.send({ message: 'Count increased', updatedComment })
+      } else {
+        const updatedComment = await Comment.findByIdAndUpdate({ _id: commentId }, { $pull: { likes: currentUser._id } }, { new: true } )
+        return res.send({ message: 'Count decreased', updatedComment })
+      }
+      
+    } catch (err) {
+      next(err)
+    }
   }
   
 }

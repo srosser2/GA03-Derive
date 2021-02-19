@@ -19,6 +19,12 @@ router.route('/users/:id')
   .get(userController.getUserById)
   .put(secureRoute, userController.editUser)
 
+router.route('/users/:id/add')
+  .post(secureRoute, userController.sendFriendRequest)
+
+router.route('/users/:id/acceptFriend')
+  .post(secureRoute, userController.confirmRequest)
+
 router.route('/countries')
   .get(countryController.getAllCountries)
 
@@ -32,11 +38,8 @@ router.route('/countries/:countryId/comments/:commentId')
   .put(secureRoute, commentController.updateComment)
   .delete(secureRoute, commentController.deleteComment)
 
-router.route('/users/:id/add')
-  .post(secureRoute, userController.sendFriendRequest)
-
-router.route('/users/:id/acceptFriend')
-  .post(secureRoute, userController.confirmRequest)
+router.route('/comments/:commentId')
+  .post(secureRoute, commentController.toggleLikeComment)
 
 export default router
 
