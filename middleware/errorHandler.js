@@ -5,9 +5,11 @@ export const castError = 'CastError'
 // ! Updated the code in here to be a bit slicker. Now it will return a simplified error object to the f/e,
 // ! which I can display right away.
 export default function errorHandler(err, _req, res, next) {
-  console.log('🤖 An Error Happened', err.name, err.message)
-  console.log(err)
-
+  if (!process.env.NODE_ENV === 'test') {
+    console.log('🤖 An Error Happened', err.name, err.message)
+    console.log(err)
+  }
+  
   // ! This will shorten the object I send back to the frontend, to be less nested and stuff.
   if (err.name === validationError) {
     const customErrors = {}
