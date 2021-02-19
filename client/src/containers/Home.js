@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Button from 'react-bootstrap/Button'
 
 const Home = () => {
   return <>
@@ -10,11 +11,11 @@ const Home = () => {
         to={{
           pathname: '/register'
         }}>
-        <button>Register</button></Link>
+        <Button variant="primary">Register</Button></Link>
       <Link
         to={{
           pathname: '/login'
-        }}><button>Login</button></Link>
+        }}><Button variant="warning">Login</Button></Link>
     </div>
   </>
 }
