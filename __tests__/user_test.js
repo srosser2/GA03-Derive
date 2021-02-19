@@ -38,7 +38,6 @@ describe('User endpoints tests', () => {
         done()
       })
   })
-
   it('Should fail to register a user where password doesn\'t match', done => {
     api.post('/api/register')
       .send({
@@ -72,6 +71,17 @@ describe('User endpoints tests', () => {
       })
       .end((err, res) => {
         expect(res.body).to.have.property('token')
+        done()
+      })
+  })
+  it('Should fail to login if a user uses unknown email', done => {
+    api.post('/api/login')
+      .send({
+        email: 'samrrrrrrrrrr@samr.com',
+        password: 'samr1234'
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(401)
         done()
       })
   })
