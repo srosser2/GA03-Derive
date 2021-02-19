@@ -40,7 +40,7 @@ const Login = ({ history }) => {
       }
       const { data } = await axios.post('/api/login', formData).catch(err => console.log(err))
       localStorage.setItem('token', data.token)
-      history.push('/')
+      history.push('/user')
     } catch (err) {
       console.log(err)
     }
