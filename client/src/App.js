@@ -9,6 +9,7 @@ import Register from './containers/Register'
 import UserProfile from './containers/UserProfile'
 import SearchCountries from './containers/SearchCountries'
 import SearchProfiles from './containers/SearchProfiles'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App(){
   return <>
