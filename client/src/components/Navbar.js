@@ -36,18 +36,21 @@ const NavBar = ({ history }) => {
   return <>
     <Navbar>
       <Nav.Link href="/">Logo</Nav.Link>
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
-        {/* <Button href="#home">About</Button> - this can be added in, if we decide to have an about page. Route also needs to be defined*/}
-        {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}
-        {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
-        {loggedIn && <>
-          <Button onClick={handleLogout}>Logout</Button>
-          <Nav.Link href="/search-countries">Explore...</Nav.Link>
-          <Nav.Link href="/user">Profile</Nav.Link>
-          <Nav.Link href="">New Nofications</Nav.Link>
-          <Nav.Link href="/search-profiles">Search for friends</Nav.Link>
-          <Navbar.Text>Signed in as: <a href="/user">{user.fullName}</a></Navbar.Text>
-        </>}
+        <Nav>
+          {/* <Button href="#home">About</Button> - this can be added in, if we decide to have an about page. Route also needs to be defined*/}
+          {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}
+          {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
+          {loggedIn && <>
+            <Button onClick={handleLogout}>Logout</Button>
+            <Nav.Link href="/search-countries">Explore...</Nav.Link>
+            <Nav.Link href="/user">Profile</Nav.Link>
+            <Nav.Link href="">New Nofications</Nav.Link>
+            <Nav.Link href="/search-profiles">Search for friends</Nav.Link>
+            <Navbar.Text>Signed in as: <a href="/user">{user.fullName}</a></Navbar.Text>
+          </>}
+        </Nav>
       </Navbar.Collapse>
     </Navbar>
   </>
