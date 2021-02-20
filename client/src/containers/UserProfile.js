@@ -18,8 +18,19 @@ const UserProfile = () => {
     return data
   }
 
-  function toggleEditMode(){
-    updatEditMode(!editMode)
+  async function putUserData(input){
+    console.log(input, 'the data to put')
+    const formData = {}
+    try {
+      // hard coded a token for now
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3ODlmOWJlNWIyMTEzODUzYWM2ZmQ4OWEiLCJpYXQiOjE2MTM4MTI5NDcsImV4cCI6MTYxMzg1NjE0N30.t4vYfv0zxJg2ydvocENqJJnXh5r09BAg_feSvKuWDgI'
+      // hard coded in a user for now
+      const { data } = await axios.post('/api/users/789f9be5b2113853ac6fd89a', formData, { headers: {"Authorization" : `Bearer ${token}`} })
+      console.log(data)
+      updateUser(data)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   useEffect(() => {
@@ -30,26 +41,31 @@ const UserProfile = () => {
     getUserData()
   }, [])
 
-  return <div>
-    <h1>User Profile</h1>
-    {!editMode && <Button variant="primary" onClick={() => toggleEditMode()}>Edit Profile</Button>}
-    {editMode && <Button variant="primary" onClick={() => toggleEditMode()}>Save Changes</Button>}
+  // FOR MORE PROGRAMMATIC FORM:
+  // const body = config for the form
+  // body={userd} 
 
-    <UserProfileModal editMode={editMode} info={[user.fullName, user.userName]}></UserProfileModal>
+  return <>
+    <h1>User Profile</h1>
+    {!editMode && <Button variant="primary" onClick={() => updatEditMode(!editMode)}>Edit Profile</Button>}
+    {editMode && <Button variant="primary" onClick={() => updatEditMode(!editMode)}>Save Changes</Button>}
+
+    <UserProfileModal editMode={editMode} user={user} info={['fullName', 'username']} putUserData={putUserData} />
 
     <div>{user.fullName}</div>
     <div>{user.username}</div>
 
     {user.isPublic && <>
+
       <div>
-        <UserProfileModal editMode={editMode} info={[user.bio]}></UserProfileModal>
+        <UserProfileModal editMode={editMode} user={user} info={['bio']} putUserData={putUserData} />
         Bio:
         <br />
-        <div>"{user.bio}"</div> 
+        <div>&quot;{user.bio}&quot;</div> 
       </div>
 
       <div>
-        <UserProfileModal editMode={editMode} info={[user.nationality, user.isTravelling, user.languages]}></UserProfileModal>
+        <UserProfileModal editMode={editMode} user={user} info={['nationality', 'isTravelling', 'languages']} putUserData={putUserData} />
         <div>{user.nationality}</div>
         {user.isTravelling && <div>Currently Travelling: Yes</div>}
         {!user.isTravelling && <div>Currently Travelling: No</div>}
@@ -61,7 +77,7 @@ const UserProfile = () => {
       </div>
 
       <div>
-        <UserProfileModal editMode={editMode} info={[null]}></UserProfileModal>
+        <UserProfileModal editMode={editMode} user={user} info={['countries']} putUserData={putUserData} />
         Countries Visited: 
         <br />
         <div style={{ width: '45%' }}>
@@ -78,7 +94,7 @@ const UserProfile = () => {
       </div>
       
       <div>
-        <UserProfileModal editMode={editMode} info={[null]}></UserProfileModal>
+        <UserProfileModal editMode={editMode} user={user} info={['friends']} putUserData={putUserData} />
         Friends: 
         <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', height: '200px' }}>
           {['ThisWillBe: user.friends','random','friends','in','this','array','bla','blablabla'].map((e, i) => {
@@ -89,8 +105,9 @@ const UserProfile = () => {
         </div>
       </div>
       <br />
+
     </>}
-  </div>
+  </>
 }
  
 export default UserProfile
