@@ -8,7 +8,7 @@ import { getLoggedInUserId } from '../lib/auth.js'
 // ! Outstanding to do:
 // ! 1. new notfications - define route and what are we displaying?
 
-const NavBar = () => {
+const NavBar = ({ history }) => {
 
   const [user, updateUser] = useState({})
 
@@ -23,9 +23,8 @@ const NavBar = () => {
 
   async function fetchData(userId) {
     const { data } = await axios.get(`/api/users/${userId}`)
-    updateUser(data.fullName)
+    updateUser(data)
   }
-
 
   function handleLogout() {
     localStorage.removeItem('token')
@@ -38,7 +37,7 @@ const NavBar = () => {
     <Navbar>
       <Nav.Link href="/">Logo</Nav.Link>
       <Navbar.Collapse className="justify-content-end">
-        {/* <Button href="#home">About</Button> */}
+        {/* <Button href="#home">About</Button> - this can be added in, if we decide to have an about page. Route also needs to be defined*/}
         {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}
         {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
         {loggedIn && <>
@@ -47,7 +46,7 @@ const NavBar = () => {
           <Nav.Link href="/user">Profile</Nav.Link>
           <Nav.Link href="">New Nofications</Nav.Link>
           <Nav.Link href="/search-profiles">Search for friends</Nav.Link>
-          <Navbar.Text>Signed in as: <a href="/user">{user}</a></Navbar.Text>
+          <Navbar.Text>Signed in as: <a href="/user">{user.fullName}</a></Navbar.Text>
         </>}
       </Navbar.Collapse>
     </Navbar>

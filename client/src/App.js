@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // Pages
-// import CountryProfile from './containers/CountryProfile'
+import CountryProfile from './containers/CountryProfile'
 import Home from './containers/Home'
 import Login from './containers/Login'
 import Register from './containers/Register'
@@ -24,8 +24,8 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/user" component={UserProfile} />
         <Route exact path="/search-countries" component={SearchCountries} />
+        <Route exact path="/country-profile" component={CountryProfile} />
         <Route exact path="/search-profiles" component={SearchProfiles} />
-        {/* <Route exact path="/about" component={userProfile}/> */}
       </Switch>
     </BrowserRouter>
   </>
