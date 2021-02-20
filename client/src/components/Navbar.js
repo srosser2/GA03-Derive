@@ -1,34 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Button, Navbar, Nav } from 'react-bootstrap'
-// import axios from 'axios'
+import axios from 'axios'
 
-// NavItem, NavDropdown, MenuItem
 import { getLoggedInUserId } from '../lib/auth.js'
 
 // ! Outstanding to do:
-// ! 1. new notfications - route and what are we displaying?
-// ! 2. Need to update username on navbar text to actual username - Stefan to investigate using useContext 
+// ! 1. new notfications - define route and what are we displaying?
 
-const NavBar = ({ history }) => {
+const NavBar = () => {
 
-  // const [user, updateUser] = useState({})
+  const [user, updateUser] = useState({})
 
-  // const token = localStorage.getItem('token')
-  // let userId
-  // if (token) {
-  //   userId = JSON.parse(atob(token.split('.')[1])).userId
-  // }
+  const token = localStorage.getItem('token')
+  if (token) {
+    const userId = JSON.parse(atob(token.split('.')[1])).userId
+    if (!userId) {
+      return
+    }
+    fetchData(userId)
+  }
 
-  // if (!userId) {
-  //   return
-  // }
+  async function fetchData(userId) {
+    const { data } = await axios.get(`/api/users/${userId}`)
+    updateUser(data.fullName)
+  }
 
-  // axios.get(`/api/users/${userId}`)
-  //   .then(({ data }) => {
-  //     console.log(data)
-  //     updateUser(data)
-  //   })
 
   function handleLogout() {
     localStorage.removeItem('token')
@@ -50,7 +47,7 @@ const NavBar = ({ history }) => {
           <Nav.Link href="/user">Profile</Nav.Link>
           <Nav.Link href="">New Nofications</Nav.Link>
           <Nav.Link href="/search-profiles">Search for friends</Nav.Link>
-          <Navbar.Text>Signed in as: <a href="/user">Username</a></Navbar.Text>
+          <Navbar.Text>Signed in as: <a href="/user">{user}</a></Navbar.Text>
         </>}
       </Navbar.Collapse>
     </Navbar>

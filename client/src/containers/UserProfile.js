@@ -13,7 +13,7 @@ const UserProfile = () => {
   async function getUserData(){
     // hard coded in a user for now
     const { data } = await axios.get('/api/users/789f9be5b2113853ac6fd89a')
-    console.log(data)
+    // console.log(data)
     updateUser(data)
     return data
   }
