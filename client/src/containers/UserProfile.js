@@ -10,10 +10,10 @@ const UserProfile = () => {
   const [user, updateUser] = useState([])
   const [editMode, updatEditMode] = useState(false)
 
-  async function getUserData(){
+  async function getUserData() {
     // hard coded in a user for now
     const { data } = await axios.get('/api/users/789f9be5b2113853ac6fd89a')
-    console.log(data)
+    // console.log(data)
     updateUser(data)
     return data
   }
@@ -35,9 +35,9 @@ const UserProfile = () => {
 
   useEffect(() => {
     // get the token from localStorage
-      // const token = localStorage.getItem('token')
+    // const token = localStorage.getItem('token')
     // get the id out of the token
-      // const userId = JSON.parse(atob(token.split('.')[1])).userId
+    // const userId = JSON.parse(atob(token.split('.')[1])).userId
     getUserData()
   }, [])
 
@@ -82,7 +82,7 @@ const UserProfile = () => {
         <br />
         <div style={{ width: '45%' }}>
           <Carousel show={3}>
-            {['ThisWillBe: user.countriesVisited','random','countries','in','this','array','bla','blablabla'].map((e, i) => {
+            {['ThisWillBe: user.countriesVisited', 'random', 'countries', 'in', 'this', 'array', 'bla', 'blablabla'].map((e, i) => {
               return <div key={i}>
                 <div style={{ padding: 5 }}>
                   <img src="https://picsum.photos/40/25/" alt="placeholder" style={{ width: '100%' }} />
@@ -92,12 +92,12 @@ const UserProfile = () => {
           </Carousel>
         </div>
       </div>
-      
+
       <div>
         <UserProfileModal editMode={editMode} user={user} info={['friends']} putUserData={putUserData} />
         Friends: 
         <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', height: '200px' }}>
-          {['ThisWillBe: user.friends','random','friends','in','this','array','bla','blablabla'].map((e, i) => {
+          {['ThisWillBe: user.friends', 'random', 'friends', 'in', 'this', 'array', 'bla', 'blablabla'].map((e, i) => {
             return <div key={i}>
               <img src="https://i.pravatar.cc/100" alt="placeholder" style={{ borderRadius: '100%', padding: 5 }} />
             </div>
@@ -109,5 +109,5 @@ const UserProfile = () => {
     </>}
   </>
 }
- 
+
 export default UserProfile
