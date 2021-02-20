@@ -24,7 +24,7 @@ function App() {
         <Route exact path="/login" component={Login} />
         <Route exact path="/user" component={UserProfile} />
         <Route exact path="/search-countries" component={SearchCountries} />
-        <Route exact path="/country-profile" component={CountryProfile} />
+        <Route exact path="/country/:id" component={CountryProfile} />
         <Route exact path="/search-profiles" component={SearchProfiles} />
       </Switch>
     </BrowserRouter>
