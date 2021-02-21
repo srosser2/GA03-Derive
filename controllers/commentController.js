@@ -22,6 +22,8 @@ const commentController = {
       const comment = await Comment.create(body)
       await Country.findByIdAndUpdate({ _id: country._id }, { $push: { comments: comment._id } })
       await User.findByIdAndUpdate({ _id: user._id }, { $push: { comments: comment._id } })
+      await comment.populate('user')
+      console.log(comment)
       res.send(comment)
     } catch (err) {
       next(err)

@@ -22,8 +22,8 @@ const NavBar = ({ history }) => {
   }
 
   async function fetchData(userId) {
-    const { data } = await axios.get(`/api/users/${userId}`)
-    updateUser(data)
+    // const { data } = await axios.get(`/api/users/${userId}`)
+    // return updateUser(data)
   }
 
   function handleLogout() {
@@ -32,6 +32,8 @@ const NavBar = ({ history }) => {
   }
 
   const loggedIn = getLoggedInUserId()
+
+  console.log(loggedIn)
 
   return <>
     <Navbar>
@@ -48,7 +50,7 @@ const NavBar = ({ history }) => {
             <Nav.Link href="/user">Profile</Nav.Link>
             <Nav.Link href="">New Nofications</Nav.Link>
             <Nav.Link href="/search-profiles">Search for friends</Nav.Link>
-            <Navbar.Text>Signed in as: <a href="/user">{user.fullName}</a></Navbar.Text>
+            <Navbar.Text>Signed in as: <a href="/user">{loggedIn.fullName}</a></Navbar.Text>
           </>}
         </Nav>
       </Navbar.Collapse>

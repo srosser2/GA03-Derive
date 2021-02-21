@@ -21,7 +21,10 @@ const userController = {
         return res.status(401).send({ message: 'Unauthorized' })
       }
       const token = jwt.sign(
-        { userId: user._id },
+        { 
+          userId: user._id,
+          fullName: user.fullName
+        },
         secret,
         { expiresIn: '12h' }
       )
