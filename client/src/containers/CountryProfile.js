@@ -59,10 +59,17 @@ const CountryProfile = ({ match }) => {
   const handleSubmit = () => {
     const comment = {
       text: commentForm.text.value,
-      user: getLoggedInUserId()
     }
-    console.log(comment)
-    axios.post(`api/countries/${match.params.id}/comments`, comment).then(( {data }) => console.log(data))
+    axios.post(`/api/countries/${match.params.id}/comments`, comment, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then(({ data }) => {
+      console.log(data)
+      const updatedCountryData = ({ ...countryData })
+      updatedCountryData.comments.push(data)
+      updateCountryData(updatedCountryData)
+    }).catch(err => console.log(err))
   }
 
   const commentFormElement = <Form config={commentForm} onChange={handleChange} onSubmit={handleSubmit} />

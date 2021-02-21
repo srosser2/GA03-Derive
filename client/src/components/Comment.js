@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { Media } from 'react-bootstrap'
+import { Container, Row, Col, Media } from 'react-bootstrap'
 
 const Comment = ({ data }) => {
   console.log(data)
-  return <Media id={data._id}>
+  return <Container>
+    <Media id={data._id}>
   {/* <img
     width={64}
     height={64}
@@ -11,6 +12,7 @@ const Comment = ({ data }) => {
     src="holder.js/64x64"
     alt="Generic placeholder"
   /> */}
+  
   <div 
     className={'mr-3'}
     style={{ 
@@ -24,10 +26,18 @@ const Comment = ({ data }) => {
     &nbsp;
   </div>
   <Media.Body>
-    <h5>{data.user.fullName}</h5>
-    <p>{data.text}</p>
+    <div className={'comment-header'}>
+      <h5>{data.user.fullName}</h5>
+      <div>
+        Delete | Edit
+      </div>
+    </div>
+    <p>{data.text}</p> 
+    <p>Like</p>
   </Media.Body>
+  
 </Media>
+</Container>
 }
 
 export default Comment
