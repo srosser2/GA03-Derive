@@ -7,7 +7,6 @@ import Form from '../components/Form.js'
 const SearchCountries = () => {
 
   const [countries, updateCountries] = useState([])
-  const regions = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
   const [displayCountries, updateDisplayCountries] = useState([])
   const [searchText, updateSearchText] = useState({
     title: {
@@ -20,6 +19,8 @@ const SearchCountries = () => {
       }
     }
   })
+  const regions = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
+
 
   useEffect(() => {
     async function fetchData() {
@@ -31,11 +32,14 @@ const SearchCountries = () => {
   }, [])
 
   function handleClick(region) {
-    const filteredCountries = countries.filter(country => {
-      return (region === 'All' || region === country.region)
-      // && country.name.toLowerCase().includes(search.toLowerCase()
-    })
-    updateDisplayCountries(filteredCountries)
+    try {
+      const filteredCountries = countries.filter(country => {
+        return (region === 'All' || region === country.region)
+      })
+      updateDisplayCountries(filteredCountries)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   const handleChange = (e) => {
@@ -46,11 +50,15 @@ const SearchCountries = () => {
   }
 
   const handleSubmit = () => {
-    const countryRequested = searchText.title.value
-    const singleCountry = countries.filter(country => {
-      return country.name.toLowerCase().includes(countryRequested.toLowerCase())
-    })
-    updateDisplayCountries(singleCountry)
+    try {
+      const countryRequested = searchText.title.value
+      const singleCountry = countries.filter(country => {
+        return country.name.toLowerCase().includes(countryRequested.toLowerCase())
+      })
+      updateDisplayCountries(singleCountry)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return <>
