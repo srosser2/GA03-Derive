@@ -34,7 +34,7 @@ const NavBar = ({ history }) => {
   const loggedIn = getLoggedInUserId()
 
   return <>
-    <Navbar>
+    <Navbar bg="dark">
       <Nav.Link href="/">Logo</Nav.Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
