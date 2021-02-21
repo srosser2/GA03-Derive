@@ -51,13 +51,7 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
               name={field}
               onChange={e => onChange(e)}
               value={config[field].value}
-<<<<<<< HEAD
-              rows={10}
-              cols={50}
-            ></textarea>
-=======
             />
->>>>>>> 4fc7c9bbcf0eafe3f9f3a2eb6a6e3037b936a7b9
           )}
         />
        
@@ -75,8 +69,7 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
               options={config[field].options}
               onChange={(e) => onSelectChange(e, field)}
               isMulti={config[field].isMulti}
-              
-              />
+            />
           )}
         />
         break
