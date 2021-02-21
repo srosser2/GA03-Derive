@@ -73,7 +73,6 @@ const Login = ({ history }) => {
   })
 
   const handleChange = (e) => {
-    console.log(e.target.name)
     const { name, value } = e.target
     const updatedForm = { ...loginForm }
     updatedForm[name].value = value
