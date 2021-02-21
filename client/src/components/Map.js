@@ -7,7 +7,6 @@ const Map = ({ latitude, longitude, zoom, width, height}) => {
     longitude,
     zoom
   })
-  console.log(process.env.MAPBOX_TOKEN)
   return <ReactMapGL
     {...viewport} 
     width={width}

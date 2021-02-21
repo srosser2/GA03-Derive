@@ -38,6 +38,9 @@ router.route('/countries/:countryId/comments/:commentId')
   .put(secureRoute, commentController.updateComment)
   .delete(secureRoute, commentController.deleteComment)
 
+router.route('/comments')
+  .get(commentController.getAllComments)
+
 router.route('/comments/:commentId')
   .post(secureRoute, commentController.toggleLikeComment)
 

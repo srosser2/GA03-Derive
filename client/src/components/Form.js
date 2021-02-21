@@ -1,7 +1,10 @@
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
 
-const Form = ({ config, onSubmit, onChange, classes }) => {
+import { Form } from 'react-bootstrap'
+import Select from 'react-select'
+
+const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) => {
 
   const formFields = Object.keys(config)
 
@@ -26,11 +29,12 @@ const Form = ({ config, onSubmit, onChange, classes }) => {
           name={field}
           // rules={config[field].validation}
           render={() => (
-            <input
+            <Form.Control
               onChange={e => onChange(e)}
               value={config[field].value}
               type={config[field].type}
               name={field}
+              placeholder={config[field].placeholder}
             />
           )}
         />
@@ -40,15 +44,20 @@ const Form = ({ config, onSubmit, onChange, classes }) => {
         fieldBody = <Controller
           control={control}
           name={field}
+          placeholder={config[field].type}
           // rules={config[field].validation}
           render={() => (
-            <textarea
+            <Form.Control as='textarea'
               name={field}
               onChange={e => onChange(e)}
               value={config[field].value}
+<<<<<<< HEAD
               rows={10}
               cols={50}
             ></textarea>
+=======
+            />
+>>>>>>> 4fc7c9bbcf0eafe3f9f3a2eb6a6e3037b936a7b9
           )}
         />
        
@@ -60,12 +69,14 @@ const Form = ({ config, onSubmit, onChange, classes }) => {
           name={field}  
           // rules={config[field].validation}    
           render={() => (
-            <select
-              name={field}
-              onChange={e => onChange(e)}
-              value={config[field].value}
-            >{config[field].options.map(option => <option key={option.value}value={option.value}>{option.label}</option>)}
-            </select>
+
+            <Select
+              defaultValue={config[field].value}
+              options={config[field].options}
+              onChange={(e) => onSelectChange(e, field)}
+              isMulti={config[field].isMulti}
+              
+              />
           )}
         />
         break
@@ -93,4 +104,4 @@ const Form = ({ config, onSubmit, onChange, classes }) => {
 
 }
 
-export default Form
+export default FormGenerator
