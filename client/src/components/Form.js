@@ -46,6 +46,8 @@ const Form = ({ config, onSubmit, onChange, classes }) => {
               name={field}
               onChange={e => onChange(e)}
               value={config[field].value}
+              rows={10}
+              cols={50}
             ></textarea>
           )}
         />
