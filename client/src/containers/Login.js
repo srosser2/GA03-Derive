@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
+import { Container, Row, Col } from 'react-bootstrap'
 import Form from '../components/Form.js'
 
 const Login = ({ history }) => {
@@ -10,6 +11,7 @@ const Login = ({ history }) => {
       label: 'Email',
       element: 'input',
       type: 'text',
+      placeholder: 'Enter your email',
       value: '',
       validation: {
         required: true
@@ -19,17 +21,70 @@ const Login = ({ history }) => {
       label: 'Password',
       element: 'input',
       type: 'password',
+      placeholder: 'Enter your password',
       value: '',
       validation: {
         required: true
       }
+    },
+    exampleSingleSelect: {
+      label: 'Test Select',
+      element: 'select',
+      value: true,
+      isMulti: false,
+      options: [
+        {
+          value: true,
+          label: 'Yes'
+        },
+        {
+          value: false,
+          label: 'No'
+        }
+      ]
+    },
+    exampleMultiSelect: {
+      label: 'Test Select',
+      element: 'select',
+      isMulti: true,
+      value: [{
+          value: 'english',
+          label: 'English'
+        },
+        {
+          value: 'polish',
+          label: 'Polish'
+        }],
+      options: [
+        {
+          value: 'english',
+          label: 'English'
+        },
+        {
+          value: 'polish',
+          label: 'Polish'
+        },
+        {
+          value: 'spanish',
+          label: 'Spanish'
+        }
+      ]
     }
   })
+
   const handleChange = (e) => {
+    console.log(e.target.name)
     const { name, value } = e.target
     const updatedForm = { ...loginForm }
     updatedForm[name].value = value
     updateLoginForm(updatedForm)
+  }
+
+  const handleSelectChange = (e, name) => {
+    const updatedForm = { ...loginForm }
+    updatedForm[name].value = e.value
+    updateLoginForm(updatedForm)
+    console.log(updatedForm[name])
   }
 
   const handleSubmit = async () => {
@@ -46,10 +101,25 @@ const Login = ({ history }) => {
     }
   }
 
-  return <div>
-    <h1>Login</h1>
-    <Form config={loginForm} onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)} />
-  </div>
+  return <Container>
+    <Row>
+      <Col><h1>Login</h1></Col>
+    </Row>
+
+    <Row>
+      <Col className={'mb-16'}>
+        <Form 
+          config={loginForm} 
+          onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
+          onSelectChange={handleSelectChange} />
+        <button>ABC</button>
+      </Col>
+      <Col>
+      </Col>
+    </Row>
+    
+    
+  </Container>
 
 
 }

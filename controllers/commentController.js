@@ -3,6 +3,14 @@ import User from '../models/user.js'
 import Country from '../models/country.js'
 
 const commentController = {
+  async getAllComments(req, res, next) {
+    try {
+      const comments = await Comment.find().populate('user')
+      res.status(200).send(comments)
+    } catch (err) {
+      next(err)
+    }
+  },
   async postComment(req, res, next) {
     const body = req.body
     try {

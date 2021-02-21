@@ -13,7 +13,7 @@ const countryController = {
   async getCountryById(req, res, next) {
     const id = req.params.id
     try {
-      const country = await Country.findById(id).populate('comments')
+      const country = await Country.findById(id).populate({ path: 'comments', populate: { path: 'user' }})
       res.status(200).send(country)
     } catch (err) {
       next(err)
