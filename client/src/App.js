@@ -24,6 +24,7 @@ function App() {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/user" component={UserProfile} />
+        <Route exact path="/user/:id" component={UserProfile} />
         <Route exact path="/search-countries" component={SearchCountries} />
         <Route exact path="/country/:id" component={CountryProfile} />
         <Route exact path="/search-profiles" component={SearchProfiles} />
