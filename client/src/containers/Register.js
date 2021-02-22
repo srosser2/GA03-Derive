@@ -6,7 +6,28 @@ import Form from '../components/Form.js'
 
 const Register = ({ history }) => {
 
-  const [registerForm, updateRegisterForm] = useState()
+  const [registerForm, updateRegisterForm] = useState({
+    email: {
+      label: 'Email',
+      element: 'input',
+      type: 'text',
+      placeholder: 'Enter your email',
+      value: '',
+      validation: {
+        required: true
+      }
+    },
+    password: {
+      label: 'Password',
+      element: 'input',
+      type: 'password',
+      placeholder: 'Enter your password',
+      value: '',
+      validation: {
+        required: true
+      }
+    }
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -40,13 +61,13 @@ const Register = ({ history }) => {
     <Row>
       <Col><h1>Register</h1></Col>
     </Row>
+
     <Row>
       <Col className={'mb-16'}>
         <Form
           config={registerForm}
           onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange} />
-        <button>ABC</button>
       </Col>
       <Col>
       </Col>
