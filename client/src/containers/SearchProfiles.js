@@ -9,9 +9,11 @@ const SearchProfiles = () => {
 
   const [allUsers, updateAllUsers] = useState([])
   const [displayUsers, updateDisplayUsers] = useState([])
+  const [button, updateButton] = useState(false)
   const [searchText, updateSearchText] = useState({
     title: {
-      label: 'Search by name or username: ',
+      input: '',
+      placeholder: 'Search by name or username: ',
       element: 'input',
       type: 'text',
       value: '',
@@ -20,6 +22,10 @@ const SearchProfiles = () => {
       }
     }
   })
+
+  const currentUserId = getLoggedInUserId()
+  const token = localStorage.getItem('token')
+
 
   useEffect(() => {
     async function fetchData() {
@@ -48,17 +54,25 @@ const SearchProfiles = () => {
     }
   }
 
-  const currentUserId = getLoggedInUserId()
+  const addFriend = async (user) => {
+    console.log(token)
+    await axios.post(`/api/users/${user._id}/add`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(({ data }) =>
+        console.log(data))
+    updateButton(true)
+  }
 
   const searchResults = displayUsers.map((user, index) => {
-    
+
     let friendStatus
-    if (user.friends.includes(currentUserId)) {
+    if (!user.friends.includes(currentUserId) || user.sentRequests.includes(currentUserId) || user.receivedRequests.includes(currentUserId)) {
+      friendStatus = <Button onClick={() => addFriend(user)}>Add Friend</Button>
+    } else if (user.friends.includes(currentUserId)) {
       friendStatus = <p>Friends ✅</p>
-    } else if (user.sentRequests.includes(currentUserId) || user.receivedRequests.includes(currentUserId)) {
+    } else if (user.sentRequests.includes(currentUserId) || user.receivedRequests.includes(currentUserId) || button === true) {
       friendStatus = <p>Friend request sent</p>
-    } else {
-      friendStatus = <Button>Add Friend</Button>
     }
 
     return <div key={index}>

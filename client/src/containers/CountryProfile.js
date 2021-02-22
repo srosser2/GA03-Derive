@@ -31,17 +31,17 @@ const CountryProfile = ({ match }) => {
     })
   }, [])
 
-  const map = countryData.latlng ? 
-    <Map 
-      latitude={countryData.latlng[0]} 
-      longitude={countryData.latlng[1]} 
+  const map = countryData.latlng ?
+    <Map
+      latitude={countryData.latlng[0]}
+      longitude={countryData.latlng[1]}
       zoom={5}
       width={'100%'}
       height={'400px'}
-      /> 
+    />
     : null
 
-  const comments = countryData.comments ? 
+  const comments = countryData.comments ?
     countryData.comments.map(comment => <Comment key={comment._id} data={comment} />)
     : null
 
@@ -58,7 +58,7 @@ const CountryProfile = ({ match }) => {
 
   const handleSubmit = () => {
     const comment = {
-      text: commentForm.text.value,
+      text: commentForm.text.value
     }
     axios.post(`/api/countries/${match.params.id}/comments`, comment, {
       headers: {
@@ -90,12 +90,12 @@ const CountryProfile = ({ match }) => {
     <Row>
       <Col>
         <h4>Comments ({countryData.comments ? comments.length : null})</h4>
-        <Button onClick={toggleCommentForm}  variant="light">Add Comment</Button>
+        <Button onClick={toggleCommentForm} variant="light">Add Comment</Button>
         {showCommentForm ? commentFormElement : null}
         {comments}
       </Col>
     </Row>
   </Container>
 }
- 
+
 export default CountryProfile
