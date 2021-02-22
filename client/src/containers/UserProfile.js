@@ -6,14 +6,46 @@ import Modal from '../components/Modal.js'
 import Form from '../components/Form.js'
 import 'react-hook-form'
 
-const UserProfile = () => {
+const AddFriendButton = ({ user, match }) => {
+
+  const token = localStorage.getItem('token')
+
+  const currentFriendState = () => {
+    if (user.receivedRequests.map(e => e.sentRequests.includes(user._id))[0]){
+      return <Button>Pending...</Button>
+    } else {
+      return <Button onClick={() => addFriend()}>Add friend</Button>
+    }
+  }
+
+  const addFriend = async () => {
+    const { data } = await axios.post(`/api/users/${match.params.id}/add`, {}, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).catch(err => console.log(err))
+    console.log(data, 'added friend')
+  }
+
+  return <>{user.receivedRequests && <>{currentFriendState()}</>}</>
+}
+
+const UserProfile = ({ match }) => {
 
   // initial data
   const [user, updateUser] = useState([])
   const [editMode, updatEditMode] = useState(false)
   const [userDisplay, updateUserDisplay] = useState([])
-
-  // check if the user we're lookign for is the current user?
+  
+  // check if the user we're looking for is the current user?
+  const [isUser, updateIsUser] = useState(isUserLoggedInUser())
+  
+  function isUserLoggedInUser(){
+    const token = localStorage.getItem('token')
+    if (!token) return false
+    const userId = JSON.parse(atob(token.split('.')[1])).userId
+    if (!match.params.id) return true
+    if (match.params.id !== userId) return false
+    if (match.params.id === userId) return true 
+  }
 
   async function getUserData(userId) {
     const { data } = await axios.get(`/api/users/${userId}`)
@@ -31,9 +63,21 @@ const UserProfile = () => {
   }
 
   useEffect(() => {
-    const userId = getUserIdFromLocalStorage()
+    let userId
+    isUserLoggedInUser() ? userId = getUserIdFromLocalStorage() : userId = match.params.id
     getUserData(userId)
+    getLanguages()
   }, [])
+
+  async function getLanguages(){
+    const { data } = await axios.get('/api/languages')
+    const langs = data.map(e => {
+      return { label: e.name, value: e.name }
+    })
+    const copy = userForm
+    copy.languages.options = langs
+    updateUserForm(copy)
+  }
 
   const [userForm, updateUserForm] = useState({
     fullName: {
@@ -81,10 +125,6 @@ const UserProfile = () => {
         {
           label: 'English',
           value: 'English'
-        },
-        {
-          label: 'Polish',
-          value: 'Polish'
         }
       ],
       validation: {
@@ -200,16 +240,22 @@ const UserProfile = () => {
     updateUser(user)
     updateUserDisplay(user)
   }
+
   
   return <>
+
     <h1>User Profile</h1>
     <img src="https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg" alt="profile picture" width="10%"/>
-    {!editMode && <Button variant="primary" onClick={() => updatEditMode(!editMode)}>Edit Profile</Button>}
-    {editMode && <Button variant="warning" onClick={() => updatEditMode(!editMode)}>Finish Editing</Button>}
+    {isUser && <>
+      {!editMode && <Button variant="primary" onClick={() => updatEditMode(!editMode)}>Edit Profile</Button>}
+      {editMode && <Button variant="warning" onClick={() => updatEditMode(!editMode)}>Finish Editing</Button>}
+      </>}
 
     <Modal body={modalBody} newModal={newModal} toggleNewModal={() => toggleNewModal()}/>
   
-    <EditButton toggleNewModal={toggleNewModal} toggle={'nameUser'} editMode={editMode}/>
+    {isUser && <EditButton toggleNewModal={toggleNewModal} toggle={'nameUser'} editMode={editMode}/>}
+
+    {!isUser && <AddFriendButton user={user} updateUser={updateUser} match={match}/>}
     <div>Name: {userDisplay.fullName && userDisplay.fullName}</div>
     <div>Username: {userDisplay.username && userDisplay.username}</div>
 
@@ -285,6 +331,8 @@ const UserProfile = () => {
         <br />
         <Button size="sm" variant="primary" onClick={() => alert('going to all friends page...')}>See all friends</Button>
       </div>
+
+      {isUser && <>
       <div>
         <h3>Recent posts:</h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
@@ -306,6 +354,7 @@ const UserProfile = () => {
           })}
         </div>
       </div>
+      </>}
     </>}
   </>
 

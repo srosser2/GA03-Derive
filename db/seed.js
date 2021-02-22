@@ -9,6 +9,7 @@ import dummyUserData from './data/dummyUserData.js'
 import Country from '../models/country.js'
 import User from '../models/user.js'
 import Comment from '../models/comment.js'
+import Language from '../models/language.js'
 
 async function seedDatabase() {
 
@@ -21,6 +22,15 @@ async function seedDatabase() {
     const countriesData = await getCountriesData()
     const countries = await Country.create(countriesData)
     console.log(`${countries.length} countries added`)
+
+    const languages = []
+    countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
+    const uniqueLangs = [...new Set(languages)].map(e => {
+      return { name: e }
+    })
+    const languagesAdded = await Language.create(uniqueLangs)
+    console.log(`${languagesAdded.length} languages added`)
+
     const combinedUserArray = userData.concat(dummyUserData(60, countries))
     const users = await User.create(combinedUserArray)
     console.log(`${users.length} users added`)

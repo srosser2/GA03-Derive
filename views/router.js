@@ -3,6 +3,7 @@ import userController from '../controllers/userController.js'
 import secureRoute from '../middleware/secureRoute.js'
 import countryController from '../controllers/countryController.js'
 import commentController from '../controllers/commentController.js'
+import languageController from '../controllers/languageController.js'
 
 const router = express.Router()
 
@@ -43,6 +44,9 @@ router.route('/comments')
 
 router.route('/comments/:commentId')
   .post(secureRoute, commentController.toggleLikeComment)
+
+router.route('/languages')
+  .get(languageController.getAllLanguages)
 
 export default router
 
