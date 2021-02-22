@@ -15,7 +15,6 @@ const Register = ({ history }) => {
     updateRegisterForm(updatedForm)
   }
 
-
   const handleSelectChange = (e, name) => {
     const updatedForm = { ...registerForm }
     updatedForm[name].value = e.value

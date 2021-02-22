@@ -38,7 +38,6 @@ const CountryProfile = ({ match }) => {
       width={'100%'}
       height={'400px'}
     />
-    /> 
     : null
 
   const comments = countryData.comments ?

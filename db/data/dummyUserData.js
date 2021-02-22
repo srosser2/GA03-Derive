@@ -21,7 +21,7 @@ export default function generateManyUsers(count, countries) {
     const lastName = faker.name.lastName()
     const dob = faker.date.between(1950, 2001)
     const birthYear2Digits = dob.toLocaleString().slice(7, 9)
-    const email = `${firstName.toLowerCase()}${birthYear2Digits}@example.com`
+    const email = `${firstName.toLowerCase()}${lastName.toLowerCase()}@example.com`
 
     const user = {
       fullName: `${firstName} ${lastName}`,
