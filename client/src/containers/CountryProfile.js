@@ -46,14 +46,14 @@ const CountryProfile = ({ match }) => {
     })
   }, [])
 
-  const map = countryData.latlng ? 
-    <Map 
-      latitude={countryData.latlng[0]} 
-      longitude={countryData.latlng[1]} 
+  const map = countryData.latlng ?
+    <Map
+      latitude={countryData.latlng[0]}
+      longitude={countryData.latlng[1]}
       zoom={5}
       width={'100%'}
       height={'400px'}
-    /> 
+    />
     : null
 
 
@@ -82,7 +82,7 @@ const CountryProfile = ({ match }) => {
     const commentId = commentContainer.getAttribute('id')
     const findComment = commentData.find(comment => comment._id === commentId)
     // console.log(findComment)
-    const updatedEditCommentForm = {...editCommentForm}
+    const updatedEditCommentForm = { ...editCommentForm }
     updatedEditCommentForm.text.value = findComment.text
     console.log(updatedEditCommentForm)
     updateEditCommentForm(updatedEditCommentForm)
@@ -163,12 +163,12 @@ const CountryProfile = ({ match }) => {
     <Row>
       <Col md={{ span: 8, offset: 2 }}>
         <h4>Comments ({countryData.comments ? comments.length : null})</h4>
-        <Button onClick={toggleCommentForm}  variant="light">Add Comment</Button>
+        <Button onClick={toggleCommentForm} variant="light">Add Comment</Button>
         {showCommentForm ? commentFormElement : null}
         {comments}
       </Col>
     </Row>
   </Container>
 }
- 
+
 export default CountryProfile

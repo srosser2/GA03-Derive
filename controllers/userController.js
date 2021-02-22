@@ -95,7 +95,7 @@ const userController = {
       await User.findByIdAndUpdate({ _id: targetFriend._id }, { $push: { receivedRequests: friendSendingRequest._id } })
       // ! this is updating the current user 
       await User.findByIdAndUpdate({ _id: friendSendingRequest._id }, { $push: { sentRequests: targetFriend._id } })
-      res.send({ message: 'Friend request sent' })
+      res.send({ message: 'Friend request sent', Id: targetFriend._id })
     } catch (err) {
       next(err)
     }

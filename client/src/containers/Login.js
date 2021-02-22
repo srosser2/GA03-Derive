@@ -30,7 +30,7 @@ const Login = ({ history }) => {
         minLength: 6
       },
       dirty: false
-    },
+    }
     // exampleSingleSelect: {
     //   label: 'Test Select',
     //   element: 'select',
@@ -112,8 +112,8 @@ const Login = ({ history }) => {
 
     <Row>
       <Col className={'mb-16'}>
-        <Form 
-          config={loginForm} 
+        <Form
+          config={loginForm}
           onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange} />
         <button>ABC</button>
@@ -121,11 +121,11 @@ const Login = ({ history }) => {
       <Col>
       </Col>
     </Row>
-    
-    
+
+
   </Container>
 
 
 }
- 
+
 export default Login
