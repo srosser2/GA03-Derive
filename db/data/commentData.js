@@ -1,5 +1,4 @@
 import faker from 'faker'
-import Country from '../../models/country.js'
 
 const createDummyComment = (userId, countryId) => {
 

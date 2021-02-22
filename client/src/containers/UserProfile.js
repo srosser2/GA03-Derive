@@ -17,6 +17,7 @@ const UserProfile = () => {
 
   async function getUserData(userId) {
     const { data } = await axios.get(`/api/users/${userId}`)
+    console.log(data)
     updateUser(data)
     updateUserDisplay(data)
     // for each part of the axios get data, we want to put it in the userForm config

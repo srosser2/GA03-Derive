@@ -1,21 +1,17 @@
-import React, { useState } from 'react'
-import { Container, Row, Col, Media } from 'react-bootstrap'
+import React from 'react'
+import { Container, Media } from 'react-bootstrap'
 
 const Comment = ({ data }) => {
-  console.log(data)
-  return <Container>
-    <Media id={data._id}>
-  {/* <img
+
+  const profilePicture = data.user.profilePicture ? <img
     width={64}
     height={64}
-    className="mr-3"
-    src="holder.js/64x64"
-    alt="Generic placeholder"
-  /> */}
-  
-  <div 
+    className='mr-3'
+    src={data.user.profilePicture}
+    alt='Generic placeholder'
+  /> : <div
     className={'mr-3'}
-    style={{ 
+    style={{
       backgroundColor: '#a8a8a8',
       height: '64px',
       width: '64px'
@@ -25,19 +21,24 @@ const Comment = ({ data }) => {
   >
     &nbsp;
   </div>
-  <Media.Body>
-    <div className={'comment-header'}>
-      <h5>{data.user.fullName}</h5>
-      <div>
-        Delete | Edit
-      </div>
-    </div>
-    <p>{data.text}</p> 
-    <p>Like</p>
-  </Media.Body>
-  
-</Media>
-</Container>
+
+
+  return <Container>
+    <Media id={data._id}>
+      {profilePicture}
+      <Media.Body>
+        <div className={'comment-header'}>
+          <h5>{data.user.fullName}</h5>
+          <div>
+            Delete | Edit
+          </div>
+        </div>
+        <p>{data.text}</p>
+        <p>Like</p>
+      </Media.Body>
+
+    </Media>
+  </Container>
 }
 
 export default Comment

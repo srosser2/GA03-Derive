@@ -41,7 +41,8 @@ const userSchema = new mongoose.Schema({
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  languages: []
+  languages: [],
+  profilePicture: { type: String }
 })
 
 userSchema.pre('save', function(next) {
