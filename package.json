@@ -23,7 +23,8 @@
     "mongoose-unique-validator": "^2.0.3",
     "react-bootstrap": "^1.5.0",
     "react-hook-form": "^6.15.2",
-    "react-select": "^4.1.0"
+    "react-select": "^4.1.0",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",

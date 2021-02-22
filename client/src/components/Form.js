@@ -1,5 +1,6 @@
 import React from 'react'
 import { useForm, Controller } from 'react-hook-form'
+import validateField from '../lib/validateField'
 
 import { Form } from 'react-bootstrap'
 import Select from 'react-select'
@@ -79,10 +80,14 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
       }
     }
 
+
+    const validationErrorMessages = validateField(config[field].value, config[field].validation)
+
     return <div key={field} className={'form-element-group'}>
       <label>{config[field].label}</label>
       {fieldBody}
-      {/* {errors[field] && <p className={'form-element-error'}>Error</p>} */}
+      {/* {!config[field].dirty ? null : <div>{validationErrorMessages.map((err, i) => <p key={i}>{err}</p>)}</div>} */}
+      {!config[field].dirty ? null : <Form.Text id="passwordHelpBlock" muted>{validationErrorMessages.join(' ')}</Form.Text>}
     </div>
   })
 

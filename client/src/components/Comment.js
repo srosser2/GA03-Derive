@@ -1,7 +1,11 @@
 import React from 'react'
 import { Container, Media } from 'react-bootstrap'
 
-const Comment = ({ data }) => {
+import { getLoggedInUserId } from '../lib/auth.js'
+
+const Comment = ({ data, deleteHandler, editHandler, likeHandler }) => {
+
+  const user = getLoggedInUserId()
 
   const profilePicture = data.user.profilePicture ? <img
     width={64}
@@ -22,21 +26,25 @@ const Comment = ({ data }) => {
     &nbsp;
   </div>
 
+  const editDeleteControls = data.user._id === user.userId ?
+    <div>
+      <span className={'comment-control'} onClick={deleteHandler}>Delete</span> | <span className={'comment-control'} onClick={editHandler}>Edit</span>
+    </div> 
+    : null
 
-  return <Container>
-    <Media id={data._id}>
+
+  return <Container id={data._id}>
+    <Media>
       {profilePicture}
       <Media.Body>
         <div className={'comment-header'}>
-          <h5>{data.user.fullName}</h5>
-          <div>
-            Delete | Edit
-          </div>
+          <h5>{data.user.fullName} - {data.createdAt}</h5>
+          {editDeleteControls}
+          
         </div>
         <p>{data.text}</p>
-        <p>Like</p>
+        <p className={'comment-control'} onClick={likeHandler}>Like</p>
       </Media.Body>
-
     </Media>
   </Container>
 }

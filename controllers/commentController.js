@@ -22,9 +22,8 @@ const commentController = {
       const comment = await Comment.create(body)
       await Country.findByIdAndUpdate({ _id: country._id }, { $push: { comments: comment._id } })
       await User.findByIdAndUpdate({ _id: user._id }, { $push: { comments: comment._id } })
-      await comment.populate('user')
-      console.log(comment)
-      res.send(comment)
+      const populatedComment = await Comment.findById(comment._id).populate('user')
+      res.send(populatedComment)
     } catch (err) {
       next(err)
     }
@@ -40,7 +39,7 @@ const commentController = {
       await Comment.findByIdAndDelete(commentId)
       await Country.findByIdAndUpdate({ _id: countryId }, { $pull: { comments: commentId } } )
       await User.findByIdAndUpdate({ _id: currentUser._id }, { $pull: { comments: commentId } } )
-      res.status(200).send({ message: `Comment ${commentId} deleted!` })
+      res.status(200).send({ message: `Comment ${commentId} deleted!`, id: commentId })
     } catch (err) {
       next(err)
     }
@@ -48,7 +47,6 @@ const commentController = {
   async updateComment(req, res, next){
     const currentUser = req.currentUser
     const commentId = req.params.commentId
-    console.log(currentUser, commentId)
     try {
       const comment = await Comment.findById(commentId)
       if (!comment.user.equals(currentUser._id)) {
@@ -56,7 +54,7 @@ const commentController = {
       }
       comment.set(req.body)
       await comment.save()
-      res.status(200).send({ message: `Comment ${commentId} updated!` })
+      res.status(200).send(comment)
     } catch (err) {
       next(err)
     }

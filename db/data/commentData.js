@@ -8,7 +8,8 @@ const createDummyComment = (userId, countryId) => {
     text: faker.random.words(wordCount),
     user: userId,
     country: countryId,
-    likes: []
+    likes: [],
+    createdAt: faker.date.between(2018, 2020)
   }
 }
 

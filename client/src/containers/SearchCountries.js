@@ -20,6 +20,7 @@ const SearchCountries = () => {
     }
   })
   const regions = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
+  const [search, updateSearch] = useState('')
 
 
   useEffect(() => {
@@ -53,43 +54,59 @@ const SearchCountries = () => {
     try {
       const countryRequested = searchText.title.value
       const singleCountry = countries.filter(country => {
-        return country.name.toLowerCase().includes(countryRequested.toLowerCase())
+        return country.name.toLowerCase().startsWith(countryRequested.toLowerCase())
       })
       updateDisplayCountries(singleCountry)
+      updateSearch(countryRequested)
     } catch (err) {
       console.log(err)
     }
   }
 
+  let searchResults
+  if (displayCountries.length > 0) {
+    searchResults = <CardDeck>
+      {displayCountries.map((country, index) => {
+        return <Col key={index} xs={3}>
+          <Card>
+            <Card.Img variant="top" src={country.flag} alt={country.name} width={180} height={180} />
+            <Card.Body>
+              <Card.Title>{country.name}</Card.Title>
+              <Card.Text>{country.nativeName}</Card.Text>
+              <Card.Link href={`/country/${country._id}`}>View</Card.Link>
+            </Card.Body>
+          </Card>
+        </Col>
+      })}
+    </CardDeck>
+  }
+
+  if (search.length > 0 && displayCountries.length === 0) {
+    searchResults = <div>
+      <p>No results - please refine your search</p>
+    </div>
+  }
+
   return <>
-    <h1>Explore Countries</h1>
-    <Container>
-      <Dropdown>
-        <Dropdown.Toggle variant="success" id="country-search-dropdown">Filter by region</Dropdown.Toggle>
-        <Dropdown.Menu>
-          {regions.map((region, index) => {
-            return <Dropdown.Item key={index} onClick={() => handleClick(region)}>{region}</Dropdown.Item>
-          })}
-        </Dropdown.Menu>
-      </Dropdown>
-      <Form config={searchText} onChange={handleChange} onSubmit={handleSubmit} />
-    </Container>
     <Container>
       <Row>
-        <CardDeck>
-          {displayCountries.map((country, index) => {
-            return <Col key={index} xs={3}>
-              <Card>
-                <Card.Img variant="top" src={country.flag} alt={country.name} width={180} height={180} />
-                <Card.Body>
-                  <Card.Title>{country.name}</Card.Title>
-                  <Card.Text>{country.nativeName}</Card.Text>
-                  <Card.Link href={`/country/${country._id}`}>View</Card.Link>
-                </Card.Body>
-              </Card>
-            </Col>
-          })}
-        </CardDeck>
+        <h1>Explore Countries</h1>
+      </Row>
+      <Row>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="country-search-dropdown">Filter by region</Dropdown.Toggle>
+          <Dropdown.Menu>
+            {regions.map((region, index) => {
+              return <Dropdown.Item key={index} onClick={() => handleClick(region)}>{region}</Dropdown.Item>
+            })}
+          </Dropdown.Menu>
+        </Dropdown>
+      </Row>
+      <Row>
+        <Form config={searchText} onChange={handleChange} onSubmit={handleSubmit} />
+      </Row>
+      <Row>
+        {searchResults}
       </Row>
     </Container>
   </>

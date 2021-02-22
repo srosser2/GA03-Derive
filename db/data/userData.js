@@ -10,12 +10,13 @@ export default [
     countriesVisited: [],
     countriesWishList: [],
     isTravelling: false,
-    isPublic: false,
+    isPublic: true,
     friends: [],
     sentRequests: [],
     receivedRequests: [],
     languages: [],
-    _id: '123f9be5b2113853ac6fd89c'
+    _id: '123f9be5b2113853ac6fd89c',
+    profilePicture: 'https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Light'
 
   },
   {
@@ -29,7 +30,7 @@ export default [
     countriesVisited: [],
     countriesWishList: [],
     isTravelling: false,
-    isPublic: false,
+    isPublic: true,
     friends: [],
     sentRequests: [],
     receivedRequests: [],
@@ -47,7 +48,7 @@ export default [
     countriesVisited: [],
     countriesWishList: [],
     isTravelling: false,
-    isPublic: false,
+    isPublic: true,
     friends: [],
     sentRequests: [],
     receivedRequests: [],

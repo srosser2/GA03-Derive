@@ -14,8 +14,10 @@ const Login = ({ history }) => {
       placeholder: 'Enter your email',
       value: '',
       validation: {
-        required: true
-      }
+        required: true,
+        isEmail: true
+      },
+      dirty: false
     },
     password: {
       label: 'Password',
@@ -24,52 +26,54 @@ const Login = ({ history }) => {
       placeholder: 'Enter your password',
       value: '',
       validation: {
-        required: true
-      }
-    },
-    exampleSingleSelect: {
-      label: 'Test Select',
-      element: 'select',
-      value: true,
-      isMulti: false,
-      options: [
-        {
-          value: true,
-          label: 'Yes'
-        },
-        {
-          value: false,
-          label: 'No'
-        }
-      ]
-    },
-    exampleMultiSelect: {
-      label: 'Test Select',
-      element: 'select',
-      isMulti: true,
-      value: [{
-          value: 'english',
-          label: 'English'
-        },
-        {
-          value: 'polish',
-          label: 'Polish'
-        }],
-      options: [
-        {
-          value: 'english',
-          label: 'English'
-        },
-        {
-          value: 'polish',
-          label: 'Polish'
-        },
-        {
-          value: 'spanish',
-          label: 'Spanish'
-        }
-      ]
+        required: true,
+        minLength: 6
+      },
+      dirty: false
     }
+    // exampleSingleSelect: {
+    //   label: 'Test Select',
+    //   element: 'select',
+    //   value: true,
+    //   isMulti: false,
+    //   options: [
+    //     {
+    //       value: true,
+    //       label: 'Yes'
+    //     },
+    //     {
+    //       value: false,
+    //       label: 'No'
+    //     }
+    //   ]
+    // },
+    // exampleMultiSelect: {
+    //   label: 'Test Select',
+    //   element: 'select',
+    //   isMulti: true,
+    //   value: [{
+    //       value: 'english',
+    //       label: 'English'
+    //     },
+    //     {
+    //       value: 'polish',
+    //       label: 'Polish'
+    //     }],
+    //   options: [
+    //     {
+    //       value: 'english',
+    //       label: 'English'
+    //     },
+    //     {
+    //       value: 'polish',
+    //       label: 'Polish'
+    //     },
+    //     {
+    //       value: 'spanish',
+    //       label: 'Spanish'
+    //     }
+    //   ]
+    // }
   })
 
   const handleChange = (e) => {
@@ -91,6 +95,7 @@ const Login = ({ history }) => {
       const formData = {}
       for (const field in loginForm) {
         formData[field] = loginForm[field].value
+        loginForm[field].dirty = true
       }
       const { data } = await axios.post('/api/login', formData).catch(err => console.log(err))
       localStorage.setItem('token', data.token)
@@ -107,8 +112,8 @@ const Login = ({ history }) => {
 
     <Row>
       <Col className={'mb-16'}>
-        <Form 
-          config={loginForm} 
+        <Form
+          config={loginForm}
           onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange} />
         <button>ABC</button>
@@ -116,11 +121,11 @@ const Login = ({ history }) => {
       <Col>
       </Col>
     </Row>
-    
-    
+
+
   </Container>
 
 
 }
- 
+
 export default Login

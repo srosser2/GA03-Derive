@@ -11,7 +11,8 @@ const SearchProfiles = () => {
   const [displayUsers, updateDisplayUsers] = useState([])
   const [searchText, updateSearchText] = useState({
     title: {
-      label: 'Search by name or username: ',
+      input: '',
+      placeholder: 'Search by name or username: ',
       element: 'input',
       type: 'text',
       value: '',
@@ -20,12 +21,22 @@ const SearchProfiles = () => {
       }
     }
   })
+  const [search, updateSearch] = useState('')
+
+
+  const currentUserToken = getLoggedInUserId()
+  const token = localStorage.getItem('token')
+
+  async function fetchData() {
+    const { data } = await axios.get('/api/users')
+    const sortArray = data
+    sortArray.sort(function (a, b) {
+      return b.friends.includes(currentUserToken.userId) ? 1 : -1
+    })
+    updateAllUsers(sortArray)
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const { data } = await axios.get('/api/users')
-      updateAllUsers(data)
-    }
     fetchData()
   }, [])
 
@@ -39,40 +50,66 @@ const SearchProfiles = () => {
   const handleSubmit = () => {
     try {
       const nameSearched = searchText.title.value
-      const matchingNames = allUsers.filter(user => {
+      const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
+      const matchingNames = removeLoggedInUser.filter(user => {
         return user.fullName.toLowerCase().includes(nameSearched.toLowerCase()) || user.username.toLowerCase().includes(nameSearched.toLowerCase())
       })
       updateDisplayUsers(matchingNames)
+      updateSearch(nameSearched)
     } catch (err) {
       console.log(err)
     }
   }
 
-  const currentUserId = getLoggedInUserId()
-
-  const searchResults = displayUsers.map((user, index) => {
-    
-    let friendStatus
-    if (user.friends.includes(currentUserId)) {
-      friendStatus = <p>Friends ✅</p>
-    } else if (user.sentRequests.includes(currentUserId) || user.receivedRequests.includes(currentUserId)) {
-      friendStatus = <p>Friend request sent</p>
-    } else {
-      friendStatus = <Button>Add Friend</Button>
+  const addFriend = async (user) => {
+    try {
+      await axios.post(`/api/users/${user._id}/add`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(({ data }) => {
+          const updatedDisplayUsers = [...displayUsers]
+          const findUser = updatedDisplayUsers.find(user => user._id === data.Id)
+          findUser.receivedRequests.push(currentUserToken.userId)
+          updateDisplayUsers(updatedDisplayUsers)
+        })
+      fetchData()
+    } catch (err) {
+      console.log(err)
     }
+  }
 
-    return <div key={index}>
-      <Media>
-        <img width={64} height={64} src="" alt="user image" />
-        <Media.Body>
-          <Link to={`/users/${user._id}`}>
-            <h4>{user.fullName}</h4>
-          </Link>
-          {friendStatus}
-        </Media.Body>
-      </Media>
+  let searchResults
+
+  if (displayUsers.length > 0) {
+    searchResults = displayUsers.map((user, index) => {
+      let friendStatus
+      if (user.friends.includes(currentUserToken.userId)) {
+        friendStatus = <p>Friends ✅</p>
+      } else if (user.receivedRequests.includes(currentUserToken.userId) || user.sentRequests.includes(currentUserToken.userId)) {
+        friendStatus = <p>Friend request sent</p>
+      } else {
+        friendStatus = <Button onClick={() => addFriend(user)}>Add Friend</Button>
+      }
+
+      return <div key={index}>
+        <Media>
+          <img width={64} height={64} src={user.profilePicture} alt="user image" />
+          <Media.Body>
+            <Link to={`/users/${user._id}`}>
+              <h4>{user.fullName}</h4>
+            </Link>
+            {friendStatus}
+          </Media.Body>
+        </Media>
+      </div>
+    })
+  }
+
+  if (search.length > 0 && displayUsers.length === 0) {
+    searchResults = <div>
+      <p>No results - please refine your search</p>
     </div>
-  })
+  }
 
   return <>
     <Container>
