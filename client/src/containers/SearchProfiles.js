@@ -63,7 +63,7 @@ const SearchProfiles = () => {
 
     return <div key={index}>
       <Media>
-        <img width={64} height={64} src="" alt="user image" />
+        <img width={64} height={64} src={`${user.profilePicture}`} alt="user image" />
         <Media.Body>
           <Link to={`/users/${user._id}`}>
             <h4>{user.fullName}</h4>
