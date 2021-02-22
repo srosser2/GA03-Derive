@@ -46,7 +46,8 @@ const userController = {
   async getUserById(req, res, next) {
     const id = req.params.id
     try {
-      const user = await User.findById(id).populate('friends')
+      const user = await User.findById(id).populate('comments').populate('friends').populate('countriesVisited')
+      //.populate('comments.user')
       res.status(202).send(user)
     } catch (err) {
       next(err)

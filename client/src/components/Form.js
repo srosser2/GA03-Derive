@@ -69,8 +69,7 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
               options={config[field].options}
               onChange={(e) => onSelectChange(e, field)}
               isMulti={config[field].isMulti}
-              
-              />
+            />
           )}
         />
         break

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { getLoggedInUserId } from '../lib/auth'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import Map from '../components/Map'
@@ -39,6 +38,7 @@ const CountryProfile = ({ match }) => {
       width={'100%'}
       height={'400px'}
     />
+    /> 
     : null
 
   const comments = countryData.comments ?
@@ -65,10 +65,12 @@ const CountryProfile = ({ match }) => {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then(({ data }) => {
-      console.log(data)
       const updatedCountryData = ({ ...countryData })
       updatedCountryData.comments.push(data)
       updateCountryData(updatedCountryData)
+      const updatedCommentForm = { ...commentForm }
+      commentForm.text.value = ''
+      updateCommentForm(updatedCommentForm)
     }).catch(err => console.log(err))
   }
 
@@ -88,7 +90,7 @@ const CountryProfile = ({ match }) => {
       </Col>
     </Row>
     <Row>
-      <Col>
+      <Col md={{ span: 8, offset: 2 }}>
         <h4>Comments ({countryData.comments ? comments.length : null})</h4>
         <Button onClick={toggleCommentForm} variant="light">Add Comment</Button>
         {showCommentForm ? commentFormElement : null}

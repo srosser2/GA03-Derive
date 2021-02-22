@@ -36,12 +36,13 @@ const userSchema = new mongoose.Schema({
   nationality: { type: String },
   countriesVisited: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Country' }],
   countriesWishList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  isTravelling: { type: Boolean },
+  isTravelling: {},
   isPublic: { type: Boolean },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  languages: [String]
+  languages: [],
+  profilePicture: { type: String }
 })
 
 userSchema.pre('save', function(next) {
