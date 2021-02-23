@@ -50,18 +50,32 @@ const Countries = () => {
     updateSearchText(updatedForm)
   }
 
-  const handleSubmit = () => {
-    try {
-      const countryRequested = searchText.title.value
-      const singleCountry = countries.filter(country => {
-        return country.name.toLowerCase().startsWith(countryRequested.toLowerCase())
-      })
-      updateDisplayCountries(singleCountry)
-      updateSearch(countryRequested)
-    } catch (err) {
-      console.log(err)
+  const formControls = {
+    submit: {
+      handler: (e) => {
+        const countryRequested = searchText.title.value
+        const singleCountry = countries.filter(country => {
+          return country.name.toLowerCase().startsWith(countryRequested.toLowerCase())
+        })
+        updateDisplayCountries(singleCountry)
+        updateSearch(countryRequested)
+      },
+      label: 'Search',
+      classes: ['hide']
     }
   }
+  // const handleSubmit = () => {
+  //   try {
+  //     const countryRequested = searchText.title.value
+  //     const singleCountry = countries.filter(country => {
+  //       return country.name.toLowerCase().startsWith(countryRequested.toLowerCase())
+  //     })
+  //     updateDisplayCountries(singleCountry)
+  //     updateSearch(countryRequested)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   let searchResults
   if (displayCountries.length > 0) {
@@ -103,7 +117,11 @@ const Countries = () => {
         </Dropdown>
       </Row>
       <Row>
-        <Form config={searchText} onChange={handleChange} onSubmit={handleSubmit} />
+        <Form 
+          config={searchText} 
+          onChange={handleChange} 
+          // onSubmit={handleSubmit}
+          controls={formControls} />
       </Row>
       <Row>
         {searchResults}

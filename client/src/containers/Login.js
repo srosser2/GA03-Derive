@@ -76,6 +76,40 @@ const Login = ({ history }) => {
     // }
   })
 
+  const formControls = {
+    submit: {
+      label: 'Sign In',
+      handler: async () => {
+        try {
+          const formData = {}
+          for (const field in loginForm) {
+            formData[field] = loginForm[field].value
+            loginForm[field].dirty = true
+          }
+          const { data } = await axios.post('/api/login', formData).catch(err => console.log(err))
+          localStorage.setItem('token', data.token)
+          history.push('/user')
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      classes: [
+        'btn',
+        'btn-primary'
+      ]
+    },
+    cancel: {
+      label: 'Cancel',
+      handler: () => {
+        history.push('/')
+      },
+      classes: [
+        'btn',
+        'btn-light'
+      ]
+    }
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target
     const updatedForm = { ...loginForm }
@@ -87,7 +121,6 @@ const Login = ({ history }) => {
     const updatedForm = { ...loginForm }
     updatedForm[name].value = e.value
     updateLoginForm(updatedForm)
-    console.log(updatedForm[name])
   }
 
   const handleSubmit = async () => {
@@ -114,9 +147,9 @@ const Login = ({ history }) => {
       <Col className={'mb-16'}>
         <Form
           config={loginForm}
+          controls={formControls}
           onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange} />
-        <button>ABC</button>
       </Col>
       <Col>
       </Col>

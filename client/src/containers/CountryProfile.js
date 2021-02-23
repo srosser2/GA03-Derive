@@ -125,23 +125,71 @@ const CountryProfile = ({ match }) => {
     updateFormCb(updatedForm)
   }
 
-  const handleCommentSubmit = () => {
-    const comment = {
-      text: commentForm.text.value
+  const postCommmentControls = {
+    submit: {
+      handler: () => {
+        const comment = {
+          text: commentForm.text.value
+        }
+        axios.post(`/api/countries/${match.params.id}/comments`, comment, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(({ data }) => {
+          const updatedCommentData = ([ ...commentData ])
+          updatedCommentData.push(data)
+          updateCommentData(updatedCommentData)
+          const updatedCommentForm = { ...commentForm }
+          commentForm.text.value = ''
+          updateCommentForm(updatedCommentForm)
+        }).catch(err => console.log(err))
+      },
+      label: 'Post Comment',
+      classes: ['btn', 'btn-primary']
     }
-    axios.post(`/api/countries/${match.params.id}/comments`, comment, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then(({ data }) => {
-      const updatedCommentData = ([ ...commentData ])
-      updatedCommentData.push(data)
-      updateCommentData(updatedCommentData)
-      const updatedCommentForm = { ...commentForm }
-      commentForm.text.value = ''
-      updateCommentForm(updatedCommentForm)
-    }).catch(err => console.log(err))
   }
+
+  const modalCommentFormControls = {
+    submit: {
+      handler: () => {
+        const comment = {
+          text: editCommentForm.text.value
+        }
+        axios.put(`/api/countries/${countryId}/comments/${editCommentId}`, comment, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(({ data }) => {
+          const updatedCommentData = [...commentData]
+          const commentToUpdate = updatedCommentData.find(comment => comment._id === data._id)
+          commentToUpdate.text = data.text
+          console.log(updatedCommentData)
+          updateCommentData(updatedCommentData)
+          updateShowModal(false)
+        })
+      },
+      label: 'Post Comment',
+      classes: ['btn', 'btn-primary']
+    }
+  }
+
+  // const handleCommentSubmit = () => {
+  //   const comment = {
+  //     text: commentForm.text.value
+  //   }
+  //   axios.post(`/api/countries/${match.params.id}/comments`, comment, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   }).then(({ data }) => {
+  //     const updatedCommentData = ([ ...commentData ])
+  //     updatedCommentData.push(data)
+  //     updateCommentData(updatedCommentData)
+  //     const updatedCommentForm = { ...commentForm }
+  //     commentForm.text.value = ''
+  //     updateCommentForm(updatedCommentForm)
+  //   }).catch(err => console.log(err))
+  // }
 
   const likeCommentHandler = e => {
     const commentId = getCommentId(e)
@@ -158,9 +206,19 @@ const CountryProfile = ({ match }) => {
 
   const comments = commentData.sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1).map(comment => <Comment key={comment._id} data={comment} deleteHandler={handleCommentDelete} editHandler={handleEditCommentModal} likeHandler={likeCommentHandler}/>)
 
-  const commentFormElement = <Form config={commentForm} onChange={e => handleChange(e, commentForm, updateCommentForm)} onSubmit={handleCommentSubmit} />
+  const commentFormElement = <Form 
+    config={commentForm}
+    controls={postCommmentControls}
+    onChange={e => handleChange(e, commentForm, updateCommentForm)} 
+    // onSubmit={handleCommentSubmit} 
+    />
 
-  const modalFormBody = <Form config={editCommentForm} onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)} onSubmit={handleEditCommentSubmit}/>
+  const modalFormBody = <Form 
+    config={editCommentForm} 
+    onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)} 
+    // onSubmit={handleEditCommentSubmit}
+    controls={modalCommentFormControls}
+    />
 
   return <Container>
     {/* <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} /> */}
