@@ -11,7 +11,7 @@ const AddFriendButton = ({ user, match }) => {
   const token = localStorage.getItem('token')
 
   const currentFriendState = () => {
-    if (user.receivedRequests.map(e => e.sentRequests.includes(user._id))[0]){
+    if (user.receivedRequests.map(e => e.sentRequests.includes(user._id))[0]) {
       return <Button>Pending...</Button>
     } else {
       return <Button onClick={() => addFriend()}>Add friend</Button>
@@ -34,17 +34,17 @@ const UserProfile = ({ match }) => {
   const [user, updateUser] = useState([])
   const [editMode, updatEditMode] = useState(false)
   const [userDisplay, updateUserDisplay] = useState([])
-  
+
   // check if the user we're looking for is the current user?
   const [isUser, updateIsUser] = useState(isUserLoggedInUser())
-  
-  function isUserLoggedInUser(){
+
+  function isUserLoggedInUser() {
     const token = localStorage.getItem('token')
     if (!token) return false
     const userId = JSON.parse(atob(token.split('.')[1])).userId
     if (!match.params.id) return true
     if (match.params.id !== userId) return false
-    if (match.params.id === userId) return true 
+    if (match.params.id === userId) return true
   }
 
   async function getUserData(userId) {
@@ -57,7 +57,7 @@ const UserProfile = ({ match }) => {
     formKeys.forEach(key => userForm[key].value = data[key])
   }
 
-  function getUserIdFromLocalStorage(){
+  function getUserIdFromLocalStorage() {
     const token = localStorage.getItem('token')
     return JSON.parse(atob(token.split('.')[1])).userId
   }
@@ -69,7 +69,7 @@ const UserProfile = ({ match }) => {
     getLanguages()
   }, [])
 
-  async function getLanguages(){
+  async function getLanguages() {
     const { data } = await axios.get('/api/languages')
     const langs = data.map(e => {
       return { label: e.name, value: e.name }
@@ -175,7 +175,7 @@ const UserProfile = ({ match }) => {
       }
       const token = localStorage.getItem('token')
       const userId = JSON.parse(atob(token.split('.')[1])).userId
-      const { data } = await axios.put(`/api/users/${userId}`, formData, { headers: { "Authorization" : `Bearer ${token}` } }).catch(err => console.log(err))
+      const { data } = await axios.put(`/api/users/${userId}`, formData, { headers: { "Authorization": `Bearer ${token}` } }).catch(err => console.log(err))
       setNewModal(!newModal)
       console.log(formData, "the form data")
       updateUserDisplay(formData)
@@ -186,8 +186,8 @@ const UserProfile = ({ match }) => {
 
   const [newModal, setNewModal] = useState(false)
   const [modalContent, setModalContent] = useState('')
-  function toggleNewModal(input){
-    switch (input){
+  function toggleNewModal(input) {
+    switch (input) {
       case 'nameUser':
         setModalContent('nameUser')
         break
@@ -203,24 +203,24 @@ const UserProfile = ({ match }) => {
 
   const EditButton = ({ toggleNewModal, toggle, editMode }) => {
     return <>
-      {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => toggleNewModal(toggle)}/>}
+      {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => toggleNewModal(toggle)} />}
     </>
   }
 
-  let modalBody 
-  switch (modalContent){
+  let modalBody
+  switch (modalContent) {
     case 'nameUser':
-      modalBody = <Form onSelectChange={handleSelectChange} config={{ fullName: userForm.fullName, username: userForm.username }} onSubmit={handleSubmit} onChange={handleChange}/>
+      modalBody = <Form onSelectChange={handleSelectChange} config={{ fullName: userForm.fullName, username: userForm.username }} onSubmit={handleSubmit} onChange={handleChange} />
       break
     case 'bio':
-      modalBody = <Form onSelectChange={handleSelectChange} config={{ bio: userForm.bio }} onSubmit={handleSubmit} onChange={handleChange}/>
+      modalBody = <Form onSelectChange={handleSelectChange} config={{ bio: userForm.bio }} onSubmit={handleSubmit} onChange={handleChange} />
       break
     case 'formGeneral':
-      modalBody = <Form onSelectChange={handleSelectChange} config={{ nationality: userForm.nationality, isTravelling: userForm.isTravelling, languages: userForm.languages }} onSubmit={handleSubmit} onChange={handleChange}/>
+      modalBody = <Form onSelectChange={handleSelectChange} config={{ nationality: userForm.nationality, isTravelling: userForm.isTravelling, languages: userForm.languages }} onSubmit={handleSubmit} onChange={handleChange} />
       break
   }
 
-  function printLanguages(){
+  function printLanguages() {
     const data = userDisplay.languages.map(e => e.label)
     if (data.length < 1) return '-'
     if (data.length === 1) return data[0]
@@ -228,58 +228,58 @@ const UserProfile = ({ match }) => {
     return (data.join(', ') + ' and ' + lastLanguage)
   }
 
-  function printDate(input){
+  function printDate(input) {
     const date = new Date(input)
     return date.toDateString()
   }
 
-  async function deleteComment(id, country){
+  async function deleteComment(id, country) {
     const token = localStorage.getItem('token')
-    const { data } = await axios.delete(`/api/countries/${country}/comments/${id}`, { headers: { "Authorization" : `Bearer ${token}` } }).catch(err => console.log(err))
+    const { data } = await axios.delete(`/api/countries/${country}/comments/${id}`, { headers: { "Authorization": `Bearer ${token}` } }).catch(err => console.log(err))
     console.log(data, "comment deleted")
     updateUser(user)
     updateUserDisplay(user)
   }
 
-  
+
   return <>
 
     <h1>User Profile</h1>
-    <img src="https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg" alt="profile picture" width="10%"/>
+    <img src="https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg" alt="profile picture" width="10%" />
     {isUser && <>
       {!editMode && <Button variant="primary" onClick={() => updatEditMode(!editMode)}>Edit Profile</Button>}
       {editMode && <Button variant="warning" onClick={() => updatEditMode(!editMode)}>Finish Editing</Button>}
-      </>}
+    </>}
 
-    <Modal body={modalBody} newModal={newModal} toggleNewModal={() => toggleNewModal()}/>
-  
-    {isUser && <EditButton toggleNewModal={toggleNewModal} toggle={'nameUser'} editMode={editMode}/>}
+    <Modal body={modalBody} newModal={newModal} toggleNewModal={() => toggleNewModal()} />
 
-    {!isUser && <AddFriendButton user={user} updateUser={updateUser} match={match}/>}
+    {isUser && <EditButton toggleNewModal={toggleNewModal} toggle={'nameUser'} editMode={editMode} />}
+
+    {!isUser && <AddFriendButton user={user} updateUser={updateUser} match={match} />}
     <div>Name: {userDisplay.fullName && userDisplay.fullName}</div>
     <div>Username: {userDisplay.username && userDisplay.username}</div>
 
     {user.isPublic && <>
 
       <div>
-        <EditButton toggleNewModal={toggleNewModal} toggle={'bio'} editMode={editMode}/>
+        <EditButton toggleNewModal={toggleNewModal} toggle={'bio'} editMode={editMode} />
         Bio:
         <br />
-        <div>&quot;{userDisplay.bio && userDisplay.bio}&quot;</div> 
+        <div>&quot;{userDisplay.bio && userDisplay.bio}&quot;</div>
       </div>
 
       {userDisplay.languages && console.log(userDisplay.languages)}
 
       <div>
-        <EditButton toggleNewModal={toggleNewModal} toggle={'formGeneral'} editMode={editMode}/>
+        <EditButton toggleNewModal={toggleNewModal} toggle={'formGeneral'} editMode={editMode} />
         <div>Nationality: {userDisplay.nationality && userDisplay.nationality}</div>
         Currently Travelling: {userDisplay.isTravelling && userDisplay.isTravelling.value === true ? 'Yes' : 'No'}
         <div>Lanuages Spoken: {userDisplay.languages && printLanguages()}</div>
       </div>
 
       <div>
-        {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => alert('going to countries page...')}/>}
-        Countries Visited: 
+        {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => alert('going to countries page...')} />}
+        Countries Visited:
         <br />
         <Card style={{ width: '45%' }}>
           <Card.Body>
@@ -298,8 +298,8 @@ const UserProfile = ({ match }) => {
       </div>
 
       <div>
-        {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => alert('going to countries page...')}/>}
-        Countries Wishlist: 
+        {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => alert('going to countries page...')} />}
+        Countries Wishlist:
         <br />
         <Card style={{ width: '45%' }}>
           <Card.Body>
@@ -318,8 +318,8 @@ const UserProfile = ({ match }) => {
       </div>
 
       <div>
-        {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => alert('going to friends page...')}/>}
-        Friends: 
+        {editMode && <img src='https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg' width='30px' onClick={() => alert('going to friends page...')} />}
+        Friends:
         <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', maxHeight: '200px' }}>
           {user.friends.map((e, i) => {
             return <div key={i}>
@@ -333,27 +333,27 @@ const UserProfile = ({ match }) => {
       </div>
 
       {isUser && <>
-      <div>
-        <h3>Recent posts:</h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
-          {user.comments.map((e, i) => {
-            return <>
-            <Card style={{ width: '18rem' }}>
-              <Card.Body>
-                <Card.Title>{e.country.name}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
-                <Card.Text>
-                  {e.text}
-                </Card.Text>
-                <div><small>Likes: {e.likes.length}</small></div>
-                
-                {editMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
-              </Card.Body>
-            </Card>
-            </>
-          })}
+        <div>
+          <h3>Recent posts:</h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
+            {user.comments.map((e, i) => {
+              return <>
+                <Card style={{ width: '18rem' }}>
+                  <Card.Body>
+                    <Card.Title>{e.country.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
+                    <Card.Text>
+                      {e.text}
+                    </Card.Text>
+                    <div><small>Likes: {e.likes.length}</small></div>
+
+                    {editMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
+                  </Card.Body>
+                </Card>
+              </>
+            })}
+          </div>
         </div>
-      </div>
       </>}
     </>}
   </>

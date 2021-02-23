@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
   nationality: { type: String },
   countriesVisited: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Country' }],
   countriesWishList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  isTravelling: {},
+  isTravelling: { type: Boolean },
   isPublic: { type: Boolean },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
