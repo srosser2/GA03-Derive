@@ -171,7 +171,7 @@ const Register = ({ history }) => {
         newModalForm.languages.options = languages
         updateRegisterForm(newModalForm)
       })
-    axios.get('api/countries')
+    axios.get('/api/countries')
       .then(({ data }) => {
         const countries = data.map(country => {
           return { label: country.name, value: country._id }
