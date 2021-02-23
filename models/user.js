@@ -35,13 +35,13 @@ const userSchema = new mongoose.Schema({
   bio: { type: String },
   nationality: { type: String },
   countriesVisited: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Country' }],
-  countriesWishList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  isTravelling: {},
+  countriesWishList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Country' }],
+  isTravelling: { type: Boolean },
   isPublic: { type: Boolean },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  languages: [],
+  languages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Language' }],
   profilePicture: { type: String }
 })
 

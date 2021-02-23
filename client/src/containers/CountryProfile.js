@@ -147,7 +147,8 @@ const CountryProfile = ({ match }) => {
   const modalFormBody = <Form config={editCommentForm} onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)} onSubmit={handleEditCommentSubmit}/>
 
   return <Container>
-    <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} />
+    {/* <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} /> */}
+    <Modal show={showModal} hideModalHandler={closeModal} body={modalFormBody} />
     <Row>
       <Col>
         <h1>{countryData.name}</h1>
