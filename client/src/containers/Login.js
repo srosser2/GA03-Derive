@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { getLoggedInUserId } from '../lib/auth'
 
 import { Container, Row, Col } from 'react-bootstrap'
 import Form from '../components/Form.js'
@@ -87,8 +88,9 @@ const Login = ({ history }) => {
             loginForm[field].dirty = true
           }
           const { data } = await axios.post('/api/login', formData).catch(err => console.log(err))
+          console.log(data)
           localStorage.setItem('token', data.token)
-          history.push('/user')
+          history.push(`/users/${getLoggedInUserId().userId}`)
         } catch (err) {
           console.log(err)
         }
@@ -123,20 +125,21 @@ const Login = ({ history }) => {
     updateLoginForm(updatedForm)
   }
 
-  const handleSubmit = async () => {
-    try {
-      const formData = {}
-      for (const field in loginForm) {
-        formData[field] = loginForm[field].value
-        loginForm[field].dirty = true
-      }
-      const { data } = await axios.post('/api/login', formData).catch(err => console.log(err))
-      localStorage.setItem('token', data.token)
-      history.push('/user')
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // LEGACY
+  // const handleSubmit = async () => {
+  //   try {
+  //     const formData = {}
+  //     for (const field in loginForm) {
+  //       formData[field] = loginForm[field].value
+  //       loginForm[field].dirty = true
+  //     }
+  //     const { data } = await axios.post('/api/login', formData).catch(err => console.log(err))
+  //     localStorage.setItem('token', data.token)
+  //     history.push(`/users/${data._id}`)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   return <Container>
     <Row>

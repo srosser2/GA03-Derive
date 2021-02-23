@@ -196,20 +196,72 @@ const Register = ({ history }) => {
     updateRegisterForm(updatedForm)
   }
 
-  const handleSubmit = () => {
-    try {
-      const formData = {}
-      for (const field in registerForm) {
-        formData[field] = registerForm[field].value
-        registerForm[field].dirty = true
-      }
-      updateDisplayModal(true)
-      updateShowModal(true)
+  const formControls = {
+    submit: {
+      handler: () => {
+        try {
+          const formData = {}
+          for (const field in registerForm) {
+            formData[field] = registerForm[field].value
+            registerForm[field].dirty = true
+          }
+          updateDisplayModal(true)
+          updateShowModal(true)
 
-    } catch (err) {
-      console.log(err)
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      label: 'Continue',
+      classes: ['btn', 'btn-primary']
     }
   }
+
+  const modalFormControls = {
+    submit: {
+      handler: async () => {
+        try {
+          const formData = {}
+          for (const field in registerForm) {
+            formData[field] = registerForm[field].value
+          }
+          formData.languages = registerForm.languages.value.map(language => language.value)
+          formData.isTravelling = registerForm.isTravelling.value.value
+          formData.isPublic = registerForm.isPublic.value.value
+
+          formData.countriesVisited = registerForm.countriesVisited.value.map(country => country.value)
+          formData.countriesWishList = registerForm.countriesWishList.value.map(country => country.value)
+          await axios.post('/api/register', formData)
+            .then(({ data }) => {
+              console.log('I have registered', data)
+            })
+          updateDisplayModal(false)
+          updateShowModal(false)
+          history.push('/login')
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      label: 'Sign Me Up!',
+      classes: ['btn', 'btn-primary']
+    }
+  }
+
+  // LEGACY - to be removed
+  // const handleSubmit = () => {
+  //   try {
+  //     const formData = {}
+  //     for (const field in registerForm) {
+  //       formData[field] = registerForm[field].value
+  //       registerForm[field].dirty = true
+  //     }
+  //     updateDisplayModal(true)
+  //     updateShowModal(true)
+
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   const handleModalChange = (e) => {
     const { name, value } = e.target
@@ -224,29 +276,30 @@ const Register = ({ history }) => {
     updateRegisterForm(updatedForm)
   }
 
-  const handleModalSubmit = async () => {
-    try {
-      const formData = {}
-      for (const field in registerForm) {
-        formData[field] = registerForm[field].value
-      }
-      formData.languages = registerForm.languages.value.map(language => language.value)
-      formData.isTravelling = registerForm.isTravelling.value.value
-      formData.isPublic = registerForm.isPublic.value.value
+  // LEGACY - to be removed
+  // const handleModalSubmit = async () => {
+  //   try {
+  //     const formData = {}
+  //     for (const field in registerForm) {
+  //       formData[field] = registerForm[field].value
+  //     }
+  //     formData.languages = registerForm.languages.value.map(language => language.value)
+  //     formData.isTravelling = registerForm.isTravelling.value.value
+  //     formData.isPublic = registerForm.isPublic.value.value
 
-      formData.countriesVisited = registerForm.countriesVisited.value.map(country => country.value)
-      formData.countriesWishList = registerForm.countriesWishList.value.map(country => country.value)
-      await axios.post('/api/register', formData)
-        .then(({ data }) => {
-          console.log('I have registered', data)
-        })
-      updateDisplayModal(false)
-      updateShowModal(false)
-      history.push('/login')
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  //     formData.countriesVisited = registerForm.countriesVisited.value.map(country => country.value)
+  //     formData.countriesWishList = registerForm.countriesWishList.value.map(country => country.value)
+  //     await axios.post('/api/register', formData)
+  //       .then(({ data }) => {
+  //         console.log('I have registered', data)
+  //       })
+  //     updateDisplayModal(false)
+  //     updateShowModal(false)
+  //     history.push('/login')
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   let modalTitle = null
   modalTitle = <h2>Finish creating your profile</h2>
@@ -254,8 +307,11 @@ const Register = ({ history }) => {
   modalBody = <> 
     <Form
       config={{ bio: registerForm.bio, nationality: registerForm.nationality, languages: registerForm.languages, isPublic: registerForm.isPublic, isTravelling: registerForm.isTravelling, countriesVisited: registerForm.countriesVisited, countriesWishList: registerForm.countriesWishList }}
-      onSubmit={e => handleModalSubmit(e)} onChange={e => handleModalChange(e)}
-      onSelectChange={handleModalSelectChange} />
+      controls={modalFormControls}
+      onChange={e => handleModalChange(e)}
+      onSelectChange={handleModalSelectChange} 
+      // onSubmit={e => handleModalSubmit(e)} LEGACY
+      />
   </>
 
   return <Container>
@@ -269,8 +325,11 @@ const Register = ({ history }) => {
       <Col className={'mb-16'}>
         <Form
           config={{ fullName: registerForm.fullName, username: registerForm.username, email: registerForm.email, password: registerForm.password, passwordConfirmation: registerForm.passwordConfirmation }}
-          onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
-          onSelectChange={handleSelectChange} />
+          controls={formControls}
+          onChange={e => handleChange(e)}
+          onSelectChange={handleSelectChange}
+          // onSubmit={e => handleSubmit(e)} LEGACY
+          />
       </Col>
       <Col>
         <Modal body={modalBody} title={modalTitle} show={showModal} hideModalHandler={() => updateShowModal(false)} />

@@ -47,19 +47,20 @@ const SearchProfiles = () => {
     updateSearchText(updatedForm)
   }
 
-  const handleSubmit = () => {
-    try {
-      const nameSearched = searchText.title.value
-      const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
-      const matchingNames = removeLoggedInUser.filter(user => {
-        return user.fullName.toLowerCase().includes(nameSearched.toLowerCase()) || user.username.toLowerCase().includes(nameSearched.toLowerCase())
-      })
-      updateDisplayUsers(matchingNames)
-      updateSearch(nameSearched)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // LEGACY - REMOVE
+  // const handleSubmit = () => {
+  //   try {
+  //     const nameSearched = searchText.title.value
+  //     const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
+  //     const matchingNames = removeLoggedInUser.filter(user => {
+  //       return user.fullName.toLowerCase().includes(nameSearched.toLowerCase()) || user.username.toLowerCase().includes(nameSearched.toLowerCase())
+  //     })
+  //     updateDisplayUsers(matchingNames)
+  //     updateSearch(nameSearched)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   const formControls = {
     submit: {
@@ -77,7 +78,7 @@ const SearchProfiles = () => {
     }
   },
     label: 'Search',
-    classes: ['aj']
+    classes: []
   }
 }
 
