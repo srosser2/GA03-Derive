@@ -9,7 +9,7 @@ import Home from './containers/Home'
 import Login from './containers/Login'
 import Register from './containers/Register'
 import UserProfile from './containers/UserProfile'
-import SearchCountries from './containers/SearchCountries'
+import Countries from './containers/Countries'
 import SearchProfiles from './containers/SearchProfiles'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -23,10 +23,9 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/user" component={UserProfile} />
-        <Route exact path="/user/:id" component={UserProfile} />
-        <Route exact path="/search-countries" component={SearchCountries} />
-        <Route exact path="/country/:id" component={CountryProfile} />
+        <Route exact path="/users/:id" component={UserProfile} />
+        <Route exact path="/countries" component={Countries} />
+        <Route exact path="/countries/:id" component={CountryProfile} />
         <Route exact path="/search-profiles" component={SearchProfiles} />
       </Switch>
     </BrowserRouter>

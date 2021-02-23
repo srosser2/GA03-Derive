@@ -51,6 +51,7 @@ const userController = {
         .populate('friends')
         .populate('countriesVisited')
         .populate('receivedRequests')
+        .populate('languages')
       //.populate('comments.user')
       res.status(202).send(user)
     } catch (err) {

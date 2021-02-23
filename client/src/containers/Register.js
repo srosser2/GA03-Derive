@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Container, Row, Col } from 'react-bootstrap'
+<<<<<<< HEAD
 import 'react-hook-form'
 
 import Form from '../components/Form.js'
@@ -10,13 +11,22 @@ const Register = ({ history }) => {
 
   const [displayModal, updateDisplayModal] = useState(false)
   const [showModal, updateShowModal] = useState(false)
+=======
+import Form from '../components/Form.js'
+import 'react-hook-form'
+const Register = ({ history }) => {
+>>>>>>> development
   const [registerForm, updateRegisterForm] = useState({
     username: {
       label: 'Username',
       element: 'input',
       type: 'text',
       placeholder: 'Enter your username',
+<<<<<<< HEAD
       value: '',
+=======
+      value: 'samtest2',
+>>>>>>> development
       validation: {
         required: true
       }
@@ -26,7 +36,11 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'text',
       placeholder: 'Enter your full name',
+<<<<<<< HEAD
       value: '',
+=======
+      value: 'Sam Test2',
+>>>>>>> development
       validation: {
         required: true
       }
@@ -36,7 +50,7 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'text',
       placeholder: 'Enter your email',
-      value: '',
+      value: 'samtest2@samtest.com',
       validation: {
         required: true,
         isEmail: true
@@ -47,7 +61,7 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'password',
       placeholder: 'Enter your password',
-      value: '',
+      value: 'sam1234',
       validation: {
         required: true
       }
@@ -57,9 +71,109 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'password',
       placeholder: 'Please retype your password',
+      value: 'sam1234',
+      validation: {
+        required: true
+      }
+    },
+<<<<<<< HEAD
+    passwordConfirmation: {
+      label: 'Password Confirmation',
+      element: 'input',
+      type: 'password',
+      placeholder: 'Please retype your password',
       value: '',
       validation: {
         required: true
+=======
+    bio: {
+      label: 'Bio',
+      element: 'input',
+      type: 'text',
+      placeholder: 'Tell us a bit about yourself',
+      value: '',
+      validation: {
+        required: false
+      }
+    },
+    nationality: {
+      label: 'Nationality',
+      element: 'input',
+      type: 'text',
+      placeholder: 'Your nationality',
+      value: '',
+      validation: {
+        required: false
+      }
+    },
+    languages: {
+      label: 'Languages spoken',
+      element: 'select',
+      type: 'select',
+      isMulti: true,
+      value: [],
+      options: [],
+      validation: {
+        required: false
+      }
+    },
+    isPublic: {
+      label: 'Profile visibility',
+      element: 'select',
+      value: false,
+      options: [
+        {
+          label: 'Public',
+          value: true
+        },
+        {
+          label: 'Private',
+          value: false
+        }
+      ],
+      validation: {
+        required: false
+      }
+    },
+    isTravelling: {
+      label: 'Currently travelling?',
+      element: 'select',
+      value: false,
+      options: [
+        {
+          label: 'Yes',
+          value: true
+        },
+        {
+          label: 'No',
+          value: false
+        }
+      ],
+      validation: {
+        required: false
+      }
+    },
+    countriesVisited: {
+      label: 'Countries you\'ve visited',
+      element: 'select',
+      type: 'select',
+      isMulti: true,
+      value: [],
+      options: [],
+      validation: {
+        required: false
+      }
+    },
+    countriesWishList: {
+      label: 'Which countries would you like to visit?',
+      element: 'select',
+      type: 'select',
+      isMulti: true,
+      value: [],
+      options: [],
+      validation: {
+        required: false
+>>>>>>> development
       }
     }
   })
@@ -180,7 +294,6 @@ const Register = ({ history }) => {
     updatedForm[name].value = value
     updateRegisterForm(updatedForm)
   }
-
   const handleSelectChange = (e, name) => {
     const updatedForm = { ...modalForm }
     updatedForm[name].value = e.value
@@ -194,16 +307,25 @@ const Register = ({ history }) => {
       for (const field in registerForm) {
         formData[field] = registerForm[field].value
       }
+<<<<<<< HEAD
+=======
+      // console.log(formData)
+>>>>>>> development
       await axios.post('/api/register', formData)
         .then(({ data }) => {
           console.log(data)
         })
+<<<<<<< HEAD
       updateDisplayModal(true)
       updateShowModal(true)
+=======
+      history.push('/login')
+>>>>>>> development
     } catch (err) {
       console.log(err)
     }
   }
+<<<<<<< HEAD
 
   const handleModalChange = (e) => {
     const { name, value } = e.target
@@ -241,13 +363,18 @@ const Register = ({ history }) => {
   </>
 
 
+=======
+>>>>>>> development
   return <Container>
     <Row>
       <Col><h1>Register</h1></Col>
     </Row>
+<<<<<<< HEAD
     <Row>
       <p>All fields are required</p>
     </Row>
+=======
+>>>>>>> development
     <Row>
       <Col className={'mb-16'}>
         <Form
@@ -261,6 +388,7 @@ const Register = ({ history }) => {
     </Row>
   </Container>
 }
+<<<<<<< HEAD
 export default Register
 
 
@@ -269,3 +397,6 @@ export default Register
 
 
 
+=======
+export default Register
+>>>>>>> development

@@ -33,7 +33,7 @@ const Comment = ({ data, deleteHandler, editHandler, likeHandler }) => {
     : null
 
 
-  return <Container id={data._id}>
+  return <Container id={data._id} className={'comment-container'}>
     <Media>
       {profilePicture}
       <Media.Body>

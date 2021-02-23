@@ -56,11 +56,11 @@ const NavBar = ({ history }) => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
         {loggedIn && <>
-          <Button class={'btn btn-secondary btn-sm'} onClick={handleLogout}>Logout</Button>
+          <Button className={'btn btn-secondary btn-sm'} onClick={handleLogout}>Logout</Button>
           <NavDropdown title={loggedIn.fullName} id="basic-nav-dropdown" className="justify-content-end">
-            <NavDropdown.Item href="/user">Profile</NavDropdown.Item>
+            <NavDropdown.Item href={`/users/${loggedIn.userId}`}>Profile</NavDropdown.Item>
             <NavDropdown.Item href="">New Nofications</NavDropdown.Item>
-            <NavDropdown.Item href="/search-countries">Explore...</NavDropdown.Item>
+            <NavDropdown.Item href="/countries">Explore...</NavDropdown.Item>
             <NavDropdown.Item href="/search-profiles">Search for friends</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>

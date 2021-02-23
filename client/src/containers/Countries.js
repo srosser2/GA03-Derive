@@ -4,7 +4,7 @@ import { Container, Row, Col, CardDeck, Card, Dropdown } from 'react-bootstrap'
 
 import Form from '../components/Form.js'
 
-const SearchCountries = () => {
+const Countries = () => {
 
   const [countries, updateCountries] = useState([])
   const [displayCountries, updateDisplayCountries] = useState([])
@@ -73,7 +73,7 @@ const SearchCountries = () => {
             <Card.Body>
               <Card.Title>{country.name}</Card.Title>
               <Card.Text>{country.nativeName}</Card.Text>
-              <Card.Link href={`/country/${country._id}`}>View</Card.Link>
+              <Card.Link href={`/countries/${country._id}`}>View</Card.Link>
             </Card.Body>
           </Card>
         </Col>
@@ -112,4 +112,4 @@ const SearchCountries = () => {
   </>
 }
 
-export default SearchCountries
+export default Countries

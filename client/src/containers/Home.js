@@ -8,6 +8,8 @@ const Home = () => {
 
   const loggedIn = getLoggedInUserId()
 
+  console.log(loggedIn.userId)
+
   return <>
     <Container>
       <h1>Title</h1>
@@ -26,7 +28,7 @@ const Home = () => {
         </>}
         {loggedIn && <Link
           to={{
-            pathname: '/user'
+            pathname: `/users/${loggedIn.userId}`
           }}><Button variant="warning">Profile</Button></Link>}
       </div>
     </Container>
