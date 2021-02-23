@@ -47,7 +47,24 @@ const SearchProfiles = () => {
     updateSearchText(updatedForm)
   }
 
-  const handleSubmit = () => {
+  // LEGACY - REMOVE
+  // const handleSubmit = () => {
+  //   try {
+  //     const nameSearched = searchText.title.value
+  //     const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
+  //     const matchingNames = removeLoggedInUser.filter(user => {
+  //       return user.fullName.toLowerCase().includes(nameSearched.toLowerCase()) || user.username.toLowerCase().includes(nameSearched.toLowerCase())
+  //     })
+  //     updateDisplayUsers(matchingNames)
+  //     updateSearch(nameSearched)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+
+  const formControls = {
+    submit: {
+      handler: () => {
     try {
       const nameSearched = searchText.title.value
       const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
@@ -59,7 +76,11 @@ const SearchProfiles = () => {
     } catch (err) {
       console.log(err)
     }
+  },
+    label: 'Search',
+    classes: []
   }
+}
 
   const addFriend = async (user) => {
     try {
@@ -114,7 +135,12 @@ const SearchProfiles = () => {
   return <>
     <Container>
       <h1>Search Profiles</h1>
-      <Form config={searchText} onChange={handleChange} onSubmit={handleSubmit} />
+      <Form 
+        config={searchText} 
+        onChange={handleChange} 
+        onSubmit={handleSubmit} 
+        controls={formControls}
+        />
       {searchResults}
     </Container>
   </>

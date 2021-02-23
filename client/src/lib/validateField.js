@@ -22,6 +22,7 @@ const validateField = (value, rulesObj) => {
         if(!valid) {
           validationErrorMessages.push(`The minimum length for this field is ${rulesObj.minLength} characters.`)
         }
+        break
       case 'maxLength': 
         valid = validator.isLength(value, { max: rulesObj.maxLength})
         validationErrorMessages.push(`The minimum length for this field is ${rulesObj.maxLength} characters.`)
