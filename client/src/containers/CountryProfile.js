@@ -7,7 +7,7 @@ import Comment from '../components/Comment'
 import Form from '../components/Form'
 import Modal from '../components/Modal'
 
-const CountryProfile = ({ match }) => {
+const CountryProfile = ({ match, history }) => {
 
   const countryId = match.params.id
   const token = localStorage.getItem('token')
@@ -204,7 +204,15 @@ const CountryProfile = ({ match }) => {
   })
   }
 
-  const comments = commentData.sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1).map(comment => <Comment key={comment._id} data={comment} deleteHandler={handleCommentDelete} editHandler={handleEditCommentModal} likeHandler={likeCommentHandler}/>)
+  const comments = commentData
+    .sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1)
+    .map(comment => <Comment 
+      key={comment._id} 
+      data={comment} 
+      deleteHandler={handleCommentDelete} 
+      editHandler={handleEditCommentModal} 
+      likeHandler={likeCommentHandler} 
+      viewProfileHandler={(userId) => history.push(`/users/${userId}`)}/>)
 
   const commentFormElement = <Form 
     config={commentForm}

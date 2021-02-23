@@ -3,7 +3,7 @@ import { Container, Media } from 'react-bootstrap'
 
 import { getLoggedInUserId } from '../lib/auth.js'
 
-const Comment = ({ data, deleteHandler, editHandler, likeHandler }) => {
+const Comment = ({ data, deleteHandler, editHandler, likeHandler, viewProfileHandler}) => {
 
   const user = getLoggedInUserId()
 
@@ -32,13 +32,14 @@ const Comment = ({ data, deleteHandler, editHandler, likeHandler }) => {
     </div> 
     : null
 
+  console.log(data)
 
   return <Container id={data._id} className={'comment-container'}>
     <Media>
       {profilePicture}
       <Media.Body>
         <div className={'comment-header'}>
-          <h5>{data.user.fullName} - {data.createdAt}</h5>
+          <h5><span className={'comment-control'} onClick={() => viewProfileHandler(data.user._id)}>{data.user.fullName}</span> - {data.createdAt}</h5>
           {editDeleteControls}
           
         </div>
