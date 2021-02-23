@@ -56,13 +56,16 @@ const CountryProfile = ({ match }) => {
     />
     : null
 
-
-  const handleCommentDelete = e => {
+  const getCommentId = e => {
     let commentContainer = e.target
     while (!commentContainer.hasAttribute('id')) {
       commentContainer = commentContainer.parentElement
     }
-    const commentId = commentContainer.getAttribute('id')
+    return commentContainer.getAttribute('id')
+  }
+
+  const handleCommentDelete = e => {
+    const commentId = getCommentId(e)
     axios.delete(`/api/countries/${countryData._id}/comments/${commentId}`, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -111,8 +114,6 @@ const CountryProfile = ({ match }) => {
   // TODO - Refactor in user profile to use toggle modal
   const closeModal = () => updateShowModal(false)
 
-  const comments = commentData.sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1).map(comment => <Comment key={comment._id} data={comment} deleteHandler={handleCommentDelete} editHandler={handleEditCommentModal}/>)
-
   const toggleCommentForm = () => {
     updateShowCommentForm(!showCommentForm)
   }
@@ -141,6 +142,21 @@ const CountryProfile = ({ match }) => {
       updateCommentForm(updatedCommentForm)
     }).catch(err => console.log(err))
   }
+
+  const likeCommentHandler = e => {
+    const commentId = getCommentId(e)
+    axios.post(`/api/comments/${commentId}`, {}, { headers: {
+      Authorization: `Bearer ${token}`
+    }
+    }).then(({ data }) => {
+      const updatedCommentData = [ ...commentData ]
+      const commentToUpdate = updatedCommentData.find(comment => comment._id === data._id)
+      commentToUpdate.likes = data.likes
+      updateCommentData(updatedCommentData)
+  })
+  }
+
+  const comments = commentData.sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1).map(comment => <Comment key={comment._id} data={comment} deleteHandler={handleCommentDelete} editHandler={handleEditCommentModal} likeHandler={likeCommentHandler}/>)
 
   const commentFormElement = <Form config={commentForm} onChange={e => handleChange(e, commentForm, updateCommentForm)} onSubmit={handleCommentSubmit} />
 

@@ -2,6 +2,9 @@
   margin-bottom: 16px;
 }
 
+
+/** Comments **/ 
+
 .comment-header {
   display: flex;
   justify-content: space-between;
@@ -13,4 +16,10 @@
 
 .comment-control:hover {
   text-decoration: underline;
+}
+
+.comment-likes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

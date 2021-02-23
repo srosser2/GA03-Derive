@@ -87,7 +87,7 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
       <label>{config[field].label}</label>
       {fieldBody}
       {/* {!config[field].dirty ? null : <div>{validationErrorMessages.map((err, i) => <p key={i}>{err}</p>)}</div>} */}
-      {/* {!config[field].dirty ? null : <Form.Text id="passwordHelpBlock" muted>{validationErrorMessages.join(' ')}</Form.Text>} */}
+      {!config[field].dirty ? null : <Form.Text id="passwordHelpBlock" muted>{validationErrorMessages.join(' ')}</Form.Text>}
     </div>
   })
 

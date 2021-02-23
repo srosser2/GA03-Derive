@@ -66,10 +66,10 @@ const commentController = {
       const comment = await Comment.findById(commentId)
       if (comment.likes.indexOf(currentUser._id) === -1){
         const updatedComment = await Comment.findByIdAndUpdate({ _id: commentId }, { $push: { likes: currentUser._id } }, { new: true } )
-        return res.send({ message: 'Count increased', updatedComment })
+        return res.send(updatedComment)
       } else {
         const updatedComment = await Comment.findByIdAndUpdate({ _id: commentId }, { $pull: { likes: currentUser._id } }, { new: true } )
-        return res.send({ message: 'Count decreased', updatedComment })
+        return res.send(updatedComment)
       }
       
     } catch (err) {
