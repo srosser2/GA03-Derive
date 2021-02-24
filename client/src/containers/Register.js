@@ -314,27 +314,53 @@ const Register = ({ history }) => {
     />
   </>
 
-  return <Container>
+  return <Container md={{ span: 8, offset: 2}}>
     <Row>
-      <Col><h1>Register</h1></Col>
-    </Row>
-    <Row>
-      <p>All fields are required</p>
-    </Row>
-    <Row>
-      <Col className={'mb-16'}>
-        <Form
-          config={{ fullName: registerForm.fullName, username: registerForm.username, email: registerForm.email, password: registerForm.password, passwordConfirmation: registerForm.passwordConfirmation }}
-          controls={formControls}
-          onChange={e => handleChange(e)}
-          onSelectChange={handleSelectChange}
-        // onSubmit={e => handleSubmit(e)} LEGACY
-        />
+      <Col md={{ span: 6 }}>
+
       </Col>
-      <Col>
+      <Col sm={{ span: 12, offset: 0}} md={{ span: 6 }}>
+        {/* <Row>
+          <Col><h1>Register</h1></Col>
+        </Row>
+        <Row>
+          <p>All fields are required</p>
+        </Row>
+        <Row>
+          <Col className={'mb-16'}>
+            <Form
+              config={{ fullName: registerForm.fullName, username: registerForm.username, email: registerForm.email, password: registerForm.password, passwordConfirmation: registerForm.passwordConfirmation }}
+              controls={formControls}
+              onChange={e => handleChange(e)}
+              onSelectChange={handleSelectChange}
+            // onSubmit={e => handleSubmit(e)} LEGACY
+            />
+          </Col>
+          <Col>
+            <Modal body={modalBody} title={modalTitle} show={showModal} hideModalHandler={() => updateShowModal(false)} />
+          </Col>
+        </Row> */}
+        <h1>Register</h1>
+        <p>All fields are required</p>
+         <Form
+            config={{ 
+              fullName: registerForm.fullName, 
+              username: registerForm.username, 
+              email: registerForm.email, 
+              password: registerForm.password, 
+              passwordConfirmation: registerForm.passwordConfirmation 
+            }}
+            controls={formControls}
+            onChange={e => handleChange(e)}
+            onSelectChange={handleSelectChange}
+          />
         <Modal body={modalBody} title={modalTitle} show={showModal} hideModalHandler={() => updateShowModal(false)} />
+
       </Col>
     </Row>
   </Container>
 }
 export default Register
+
+{/* <Container md={{ span: 8, offset: 2}}>
+</Container> */}

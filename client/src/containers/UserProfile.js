@@ -128,7 +128,7 @@ const UserProfile = ({ match }) => {
   const [isLoading, updateIsLoading] = useState(true)
   const [selectedModal, updateSelectedModal] = useState('')
   const [showModal, updateShowModal] = useState(false)
-  // const [currentFriend, updateCurrentFriend] = useState(null)
+  const [currentFriend, updateCurrentFriend] = useState(null)
 
   useEffect(() => {
     axios.get(`/api/users/${match.params.id}`)
@@ -280,23 +280,86 @@ const UserProfile = ({ match }) => {
         // resolve(res.target.result);
       };
 
-      reader.onerror = reject;
+      reader.onerror = reject
 
       return reader.readAsArrayBuffer(file);
     })
   }
 
-  const imageUploadHandler = async (e) => {
-    const file = e.target.files[0].name
-    const fileObj = {
-      filePath: file
-    }
-    axios.post('/api/images', fileObj, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
+  function readAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onerror = reject;
+        fr.onload = function() {
+            resolve(fr.result);
+        }
+        fr.readAsDataURL(file);
+    });
   }
+
+  // THIS WORKS - NEED TO STOR PRESET ON BACKEND
+  // const imageUploadHandler = async (e) => {
+  //   const cloudURL = 'https://api.cloudinary.com/v1_1/dn39ocqwt/image/upload'
+  //   const file = e.target.files[0]
+  //   const formData = new FormData()
+
+  //   formData.append('file', file)
+  //   formData.append('upload_preset', 'tx2dafyx')
+
+  //   axios.post(cloudURL, formData)
+  //   .then(res => console.log(res))
+  //   .catch(err => console.log(err))
+  // }
+
+  const imageUploadHandler = async (e) => {
+    const cloudURL = 'https://api.cloudinary.com/v1_1/dn39ocqwt/image/upload'
+    const file = e.target.files[0]
+    const formData = new FormData()
+
+    // formData.append('file', file)
+    // formData.append('upload_preset', 'tx2dafyx')
+
+    readAsDataURL(file)
+      .then(async (res) => {
+        console.log(res.toString())
+        axios.post('/api/images', { fileName: 'a'}, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        })
+        .then(res => console.log(res))
+    })
+
+    
+  }
+
+  // const imageUploadHandler = async (e) => {
+  //   const formData = new FormData()
+  //   const file = e.target.files[0]
+  //   // const fileObj = {
+  //   //   upload_preset: 'sqxnw3gx'
+  //   // }
+  //   const fileObj = new Promise((resolve, reject) => {
+
+  //   })
+  //   const reader = new FileReader()
+  //   reader.readAsDataURL(file)
+
+  //   reader.onloadend = () => {
+  //     console.log(reader.result)
+  //     resolve({
+  //       filePath: reader.result,
+  //       upload_preset: 'sqxnw3gx'
+  //     })
+  //   }
+  //   console.log(fileObj)
+  //   axios.post('/api/images', fileObj, {
+  //     headers: {
+  //       Authorization: `Bearer ${localStorage.getItem('token')}`
+  //     }
+  //   })
+  // }
 
 
 
