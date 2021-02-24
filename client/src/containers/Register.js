@@ -16,7 +16,7 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'text',
       placeholder: 'Enter your username',
-      value: 'hannah',
+      value: '',
       validation: {
         required: true
       },
@@ -27,7 +27,7 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'text',
       placeholder: 'Enter your full name',
-      value: 'hannah',
+      value: '',
       validation: {
         required: true
       },
@@ -38,7 +38,7 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'text',
       placeholder: 'Enter your email',
-      value: 'hannah@hananh.com',
+      value: '',
       validation: {
         required: true,
         isEmail: true
@@ -50,7 +50,7 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'password',
       placeholder: 'Enter your password',
-      value: 'hannah',
+      value: '',
       validation: {
         required: true
       },
@@ -61,7 +61,7 @@ const Register = ({ history }) => {
       element: 'input',
       type: 'password',
       placeholder: 'Please retype your password',
-      value: 'hannah',
+      value: '',
       validation: {
         required: true
       },
@@ -171,7 +171,7 @@ const Register = ({ history }) => {
         newModalForm.languages.options = languages
         updateRegisterForm(newModalForm)
       })
-    axios.get('api/countries')
+    axios.get('/api/countries')
       .then(({ data }) => {
         const countries = data.map(country => {
           return { label: country.name, value: country._id }
@@ -189,7 +189,7 @@ const Register = ({ history }) => {
     updatedForm[name].value = value
     updateRegisterForm(updatedForm)
   }
-  
+
   const handleSelectChange = (e, name) => {
     const updatedForm = { ...registerForm }
     updatedForm[name].value = e.value
@@ -228,7 +228,7 @@ const Register = ({ history }) => {
           formData.languages = registerForm.languages.value.map(language => language.value)
           formData.isTravelling = registerForm.isTravelling.value.value
           formData.isPublic = registerForm.isPublic.value.value
-
+          // ! 
           formData.countriesVisited = registerForm.countriesVisited.value.map(country => country.value)
           formData.countriesWishList = registerForm.countriesWishList.value.map(country => country.value)
           await axios.post('/api/register', formData)
@@ -304,14 +304,14 @@ const Register = ({ history }) => {
   let modalTitle = null
   modalTitle = <h2>Finish creating your profile</h2>
   let modalBody = null
-  modalBody = <> 
+  modalBody = <>
     <Form
       config={{ bio: registerForm.bio, nationality: registerForm.nationality, languages: registerForm.languages, isPublic: registerForm.isPublic, isTravelling: registerForm.isTravelling, countriesVisited: registerForm.countriesVisited, countriesWishList: registerForm.countriesWishList }}
       controls={modalFormControls}
       onChange={e => handleModalChange(e)}
-      onSelectChange={handleModalSelectChange} 
-      // onSubmit={e => handleModalSubmit(e)} LEGACY
-      />
+      onSelectChange={handleModalSelectChange}
+    // onSubmit={e => handleModalSubmit(e)} LEGACY
+    />
   </>
 
   return <Container>
@@ -328,8 +328,8 @@ const Register = ({ history }) => {
           controls={formControls}
           onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange}
-          // onSubmit={e => handleSubmit(e)} LEGACY
-          />
+        // onSubmit={e => handleSubmit(e)} LEGACY
+        />
       </Col>
       <Col>
         <Modal body={modalBody} title={modalTitle} show={showModal} hideModalHandler={() => updateShowModal(false)} />
