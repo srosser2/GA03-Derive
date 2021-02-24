@@ -11,7 +11,7 @@ const Home = () => {
   return <>
     <Container className="home-container">
       <h1>DÉRIVE</h1>
-      <p>Connect, explore, travel.</p>
+      <p>Connect, Explore, Travel</p>
       <div>
         {!loggedIn && <>
           <Link
