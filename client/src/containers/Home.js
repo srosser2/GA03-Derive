@@ -11,6 +11,7 @@ const Home = () => {
   console.log(loggedIn.userId)
 
   return <>
+  <div className={'heroHome'}>
     <Container>
       <h1>Title</h1>
       <p>Subtitle</p>
@@ -32,6 +33,7 @@ const Home = () => {
           }}><Button variant="warning">Profile</Button></Link>}
       </div>
     </Container>
+  </div>
   </>
 }
 

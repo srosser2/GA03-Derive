@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/index.scss'
 
@@ -11,6 +11,8 @@ import Register from './containers/Register'
 import UserProfile from './containers/UserProfile'
 import Countries from './containers/Countries'
 import SearchProfiles from './containers/SearchProfiles'
+import NotFound from './containers/NotFound'
+import About from './containers/About'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import NavBar from './components/Navbar'
@@ -20,13 +22,16 @@ function App() {
     <BrowserRouter>
       <NavBar />
       <Switch>
+        <Route exact path="/not-found" component={NotFound}/>
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/users/:id" component={UserProfile} />
         <Route exact path="/countries" component={Countries} />
         <Route exact path="/countries/:id" component={CountryProfile} />
+        <Route exact path="/about" component={About} />
         <Route exact path="/search-profiles" component={SearchProfiles} />
+        <Redirect to="/not-found"/>
       </Switch>
     </BrowserRouter>
   </>

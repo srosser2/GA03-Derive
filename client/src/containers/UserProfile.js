@@ -19,24 +19,23 @@ const EditButton = ({ isEditMode, updateIsEditMode }) => {
   </>
 }
 
-// const AddFriendButton = ({ currentFriendState, currentFriend }) => {
-//   useEffect(() => {
-//     currentFriendState()
-//   },[])
-
-//   return <>
-//     {currentFriend === 'pending' && <Button>Request pending...</Button>}
-//     {currentFriend === 'addfriend' && <Button>Add friend</Button>}
-//   </>
-// }
+const AddFriendButton = ({ isPending, updateIsPending, addFriend }) => {
+  return <>
+    {isPending && <Button>Request pending...</Button>}
+    {!isPending && <Button onClick={() => {
+      updateIsPending(() => true)
+      addFriend()
+    }}>Add friend</Button>}
+  </>
+}
 
 const UserProfile = ({ match }) => {
   const loggedInUser = getLoggedInUserId()
-  // console.log(loggedInUser)
 
   const [fileUploadPath, updateFileUploadPath] = useState('')
   const [userProfileData, updateUserProfileData] = useState({})
   const [isEditMode, updateIsEditMode] = useState(false)
+  const [isPending, updateIsPending] = useState(false)
   const [userForm, updateUserForm] = useState({
     fullName: {
       label: 'Name',
@@ -128,7 +127,7 @@ const UserProfile = ({ match }) => {
   const [isLoading, updateIsLoading] = useState(true)
   const [selectedModal, updateSelectedModal] = useState('')
   const [showModal, updateShowModal] = useState(false)
-  // const [currentFriend, updateCurrentFriend] = useState(null)
+  const [currentFriend, updateCurrentFriend] = useState(null)
 
   useEffect(() => {
     axios.get(`/api/users/${match.params.id}`)
@@ -230,17 +229,20 @@ const UserProfile = ({ match }) => {
     return <Container><h1>Loading...</h1></Container>
   }
 
-  // const currentFriendState = () => {
-  //   if (userProfileData.friends.map(e => e.friends.includes(userProfileData._id))[0]){
-  //     updateCurrentFriend('myFriend')
-  //   } else {
-  //     if (userProfileData.receivedRequests.map(e => e.sentRequests.includes(userProfileData._id))[0]){
-  //       updateCurrentFriend('pending')
-  //     } else {
-  //       updateCurrentFriend('addFriend')
-  //     }
-  //   }
-  // }
+  function checkCurrentFriendState(){
+    if (isEditMode) return
+    if (userProfileData.friends !== undefined){
+      if (userProfileData.friends.map(e => e.friends.includes(userProfileData._id))[0]){
+        return 
+      } else {
+        if (userProfileData.receivedRequests.map(e => e.sentRequests.includes(userProfileData._id))[0]){
+          return <Button>Request pending...</Button>
+        } else {
+          return <AddFriendButton isPending={isPending} updateIsPending={updateIsPending} addFriend={addFriend} />
+        }
+      }
+    }
+  }
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
@@ -298,20 +300,7 @@ const UserProfile = ({ match }) => {
     })
   }
 
-
-
-  // // If we find a user, but it's not the logged in user
-  // if (userProfileData._id !== loggedInUser.userId) {
-  //   body = <h1>This isn't you, but that's ok</h1>
-  // }
-
-  // // If we find a user and it's us, show edit controls
-  // if (userProfileData._id === loggedInUser.userId) {
-  //   body = <h1>It's You</h1>
-  // }
-
   const printLanguages = () => {
-    // e.name for || e.label for -- problematic 
     const data = userProfileData.languages.map((e) => {
       return e.name === undefined ? e.label : e.name
     })
@@ -335,6 +324,18 @@ const UserProfile = ({ match }) => {
     updateUserProfileData(userProfileData)
   }
 
+  const addFriend = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      await axios.post(`/api/users/${userProfileData._id}/add`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log('friend added')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const userInfo = <div id={'about'} className={'content-block'}>
     <div className={'content-block-header'}>
       <div>{<img src={(userProfileData.profilePicture)} alt="Profile picture"
@@ -342,7 +343,7 @@ const UserProfile = ({ match }) => {
       <h2>{userProfileData.fullName}</h2>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
       <h4>{userProfileData.username}</h4>
 
-      {/* <AddFriendButton currentFriend={currentFriend} currentFriendState={currentFriendState}/> */}
+      {userProfileData.friends !== undefined && checkCurrentFriendState() }
 
       {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
 
@@ -372,7 +373,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesVisited.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%' }} /></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }}/></a>
               </div>
             </div>
           })}
@@ -389,7 +390,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesWishList.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%' }} /></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }}/></a>
               </div>
             </div>
           })}
@@ -402,7 +403,7 @@ const UserProfile = ({ match }) => {
     <h3>Friends</h3>{isEditMode && <img src={penIcon} width='30px' onClick={() => alert('going to all friends page...')} />}
     <div>
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', maxHeight: '200px' }}>
-        {userProfileData.friends.map((e, i) => {
+        {userProfileData.friends.slice(0, 8).map((e, i) => {
           if (e._id === undefined) return alert('friend mapping error')
           return <a href={`/users/${e._id}`} key={i}>
             <img src={e.profilePicture} alt={e.username} style={{ borderRadius: '100%', width: '100px', padding: 5 }} />

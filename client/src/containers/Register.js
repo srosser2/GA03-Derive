@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Container, Row, Col } from 'react-bootstrap'
 import 'react-hook-form'
+import { getLoggedInUserId } from '../lib/auth'
 
 import Form from '../components/Form.js'
 import Modal from '../components/Modal.js'
@@ -159,6 +160,9 @@ const Register = ({ history }) => {
       }
     }
   })
+
+  // if there is a logged in user, redirect them
+  if (getLoggedInUserId()) history.goBack()
 
   // ? this has been udpated to reflect one big form
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Button, Navbar, Nav, NavDropdown } from 'react-bootstrap'
+import { Button, Navbar, Nav, NavDropdown, Container } from 'react-bootstrap'
 import axios from 'axios'
 
 import { getLoggedInUserId } from '../lib/auth.js'
@@ -54,15 +54,15 @@ const NavBar = ({ history }) => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
         {loggedIn && <>
-          <Button className={'btn btn-secondary btn-sm'} onClick={handleLogout}>Logout</Button>
-          <NavDropdown title={loggedIn.fullName} id="basic-nav-dropdown" className="justify-content-end">
-            <NavDropdown.Item href={`/users/${loggedIn.userId}`}>Profile</NavDropdown.Item>
-            <NavDropdown.Item href="">New Nofications</NavDropdown.Item>
-            <NavDropdown.Item href="/countries">Explore...</NavDropdown.Item>
-            <NavDropdown.Item href="/search-profiles">Search for friends</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-          </NavDropdown>
+            <Button className='btn btn-secondary btn-sm' onClick={handleLogout}>Logout</Button>
+            <NavDropdown title={loggedIn.fullName} id="basic-nav-dropdown" className="justify-content-end">
+              <NavDropdown.Item href={`/users/${loggedIn.userId}`}>Profile</NavDropdown.Item>
+              <NavDropdown.Item href="">New Nofications</NavDropdown.Item>
+              <NavDropdown.Item href="/countries">Explore...</NavDropdown.Item>
+              <NavDropdown.Item href="/search-profiles">Search for friends</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+            </NavDropdown>
         </>}
         <Nav.Link onClick={() => handleShow()}>Notifications</Nav.Link>
         {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}

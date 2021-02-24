@@ -3,7 +3,7 @@ import { Container, Media } from 'react-bootstrap'
 
 import { getLoggedInUserId } from '../lib/auth.js'
 
-const Comment = ({ data, deleteHandler, editHandler, likeHandler, viewProfileHandler}) => {
+const Comment = ({ data, deleteHandler, editHandler, likeHandler, viewProfileHandler }) => {
 
   const user = getLoggedInUserId()
 
