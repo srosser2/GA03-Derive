@@ -6,7 +6,7 @@ const About = () => {
   
   const history = useHistory()
 
-  console.log('%cHello!', 'color: red; font-family: sans-serif; font-size: 4.5em; font-weight: bolder; text-shadow: #000 1px 1px;', '\nAre you reading? We\'re hiring!\n\nGet in contact today...\n\n');
+  console.log('%cHello!', 'color: red; font-family: sans-serif; font-size: 4.5em; font-weight: bolder; text-shadow: #000 1px 1px;', '\nAre you reading? We\'re hiring!\n\nGet in contact today...\n\n')
 
   return <>
     <Container>

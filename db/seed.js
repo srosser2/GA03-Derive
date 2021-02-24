@@ -23,26 +23,43 @@ async function seedDatabase() {
     const countries = await Country.create(countriesData)
     console.log(`${countries.length} countries added`)
 
-    const languages = []
-    countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
-    let uniqueLangs = [...new Set(languages)].map(e => {
-      return { name: e }
-    })
-    uniqueLangs = uniqueLangs.sort((a,b) => {
-      if (a.name < b.name){
-        return -1
-      }
-      if (a.name > b.name){
-        return 1
-      }
-      return 0
-    })
-    const languagesAdded = await Language.create(uniqueLangs)
-    console.log(`${languagesAdded.length} languages added`)
+    // const languages = []
+    // countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
+    // let uniqueLangs = [...new Set(languages)].map(e => {
+    //   return { name: e }
+    // })
+    // uniqueLangs = uniqueLangs.sort((a,b) => {
+    //   if (a.name < b.name){
+    //     return -1
+    //   }
+    //   if (a.name > b.name){
+    //     return 1
+    //   }
+    //   return 0
+    // })
+    // const languagesAdded = await Language.create(uniqueLangs)
+    // console.log(`${languagesAdded.length} languages added`)
 
     const combinedUserArray = userData.concat(dummyUserData(60, countries))
     const users = await User.create(combinedUserArray)
     console.log(`${users.length} users added`)
+
+    console.log(users)
+    const usersArray = users.map(user => {
+      return user._id
+    })
+    console.log(usersArray)
+
+    for (let i = 0; i < users.length; i++) {
+      const rand = (Math.floor(Math.floor() * users.length))
+      for (let j = 0; j < 5; j++) {
+        if (users[i]._id !== usersArray[rand]) {
+          await User.findByIdAndUpdate({ _id: users[i]._id }, { $push: { friends: usersArray[rand] } })
+          await User.findByIdAndUpdate({ _id: usersArray[rand] }, { $push: { friends: users[i]._id } })
+        }
+      }
+    }
+
     const commentsToBeCommited = createManyComments(2000, users, countries)
 
     const comments = await Comment.create(commentsToBeCommited)
@@ -53,12 +70,11 @@ async function seedDatabase() {
 
   } catch (err) {
     console.log('SOMETHIN AINT RIGHT')
-
     console.log(err)
   }
 
   await mongoose.connection.close()
   console.log('🤖 Goodbye!')
-} 
+}
 
 seedDatabase()

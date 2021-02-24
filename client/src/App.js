@@ -13,6 +13,8 @@ import Countries from './containers/Countries'
 import SearchProfiles from './containers/SearchProfiles'
 import NotFound from './containers/NotFound'
 import About from './containers/About'
+import MyFriends from './containers/MyFriends'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import NavBar from './components/Navbar'
@@ -31,6 +33,7 @@ function App() {
         <Route exact path="/countries/:id" component={CountryProfile} />
         <Route exact path="/about" component={About} />
         <Route exact path="/search-profiles" component={SearchProfiles} />
+        <Route exact path="/friends" component={MyFriends}/>
         <Redirect to="/not-found"/>
       </Switch>
     </BrowserRouter>

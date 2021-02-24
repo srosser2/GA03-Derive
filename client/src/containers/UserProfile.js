@@ -230,14 +230,18 @@ const UserProfile = ({ match }) => {
   }
 
   function checkCurrentFriendState(){
+    console.log("233")
     if (isEditMode) return
     if (userProfileData.friends !== undefined){
       if (userProfileData.friends.map(e => e.friends.includes(userProfileData._id))[0]){
+        console.log("237")
         return 
       } else {
         if (userProfileData.receivedRequests.map(e => e.sentRequests.includes(userProfileData._id))[0]){
+          console.log("241")
           return <Button>Request pending...</Button>
         } else {
+          console.log("244")
           return <AddFriendButton isPending={isPending} updateIsPending={updateIsPending} addFriend={addFriend} />
         }
       }
@@ -343,7 +347,7 @@ const UserProfile = ({ match }) => {
       <h2>{userProfileData.fullName}</h2>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
       <h4>{userProfileData.username}</h4>
 
-      {userProfileData.friends !== undefined && checkCurrentFriendState() }
+      {userProfileData.friends !== undefined && checkCurrentFriendState()}
 
       {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
 
