@@ -8,12 +8,10 @@ const Home = () => {
 
   const loggedIn = getLoggedInUserId()
 
-  console.log(loggedIn.userId)
-
   return <>
-    <Container>
-      <h1>Title</h1>
-      <p>Subtitle</p>
+    <Container className="home-container">
+      <h1>DÉRIVE</h1>
+      <p>Connect, explore, travel.</p>
       <div>
         {!loggedIn && <>
           <Link

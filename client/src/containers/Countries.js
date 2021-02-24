@@ -101,18 +101,6 @@ const Countries = () => {
       classes: ['hide']
     }
   }
-  // const handleSubmit = () => {
-  //   try {
-  //     const countryRequested = searchText.title.value
-  //     const singleCountry = countries.filter(country => {
-  //       return country.name.toLowerCase().startsWith(countryRequested.toLowerCase())
-  //     })
-  //     updateDisplayCountries(singleCountry)
-  //     updateSearch(countryRequested)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
 
   let searchResults
   if (displayCountries.length > 0) {
@@ -124,7 +112,7 @@ const Countries = () => {
             <Card.Body>
               <Card.Title>{country.name}</Card.Title>
               <Card.Text>{country.nativeName}</Card.Text>
-              <a href={`https://en.wikipedia.org/wiki/${country.name}`} target='_blank' >Wiki</a> 
+              <a href={`https://en.wikipedia.org/wiki/${country.name}`} target='_blank' >Wiki</a>
               <Card.Link href={`/countries/${country._id}`}>View</Card.Link>
             </Card.Body>
           </Card>
@@ -141,33 +129,33 @@ const Countries = () => {
 
   return <>
     <Container>
-      <Row>
+      <Col>
         <h1>Explore Countries</h1>
-      </Row>
-      <Row>
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="country-search-dropdown">Filter by region</Dropdown.Toggle>
-          <Dropdown.Menu>
-            {regions.map((region, index) => {
-              return <Dropdown.Item key={index} onClick={() => handleClick(region)}>{region}</Dropdown.Item>
-            })}
-          </Dropdown.Menu>
-        </Dropdown>
-      </Row>
-      <Row>
-        <Button onClick={() => filterCountriesWishList()}>See countries on my wish list</Button>
-      </Row>
-      <Row>
-        <Button onClick={() => filterCountriesVisited()}>See countries visited</Button>
-      </Row>
-
-      <Row>
+      </Col>
+      <Col>
+        <Row>
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="country-search-dropdown">Filter by region</Dropdown.Toggle>
+            <Dropdown.Menu>
+              {regions.map((region, index) => {
+                return <Dropdown.Item key={index} onClick={() => handleClick(region)}>{region}</Dropdown.Item>
+              })}
+            </Dropdown.Menu>
+          </Dropdown>
+        </Row>
+        <Row>
+          <Button onClick={() => filterCountriesWishList()}>See countries on my wish list</Button>
+        </Row>
+        <Row>
+          <Button onClick={() => filterCountriesVisited()}>See countries visited</Button>
+        </Row>
+      </Col>
+      <Col>
         <Form
           config={searchText}
           onChange={handleChange}
-          // onSubmit={handleSubmit}
           controls={formControls} />
-      </Row>
+      </Col>
       <Row>
         {searchResults}
       </Row>

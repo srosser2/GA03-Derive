@@ -13,6 +13,8 @@ import Register from './containers/Register'
 import UserProfile from './containers/UserProfile'
 import Countries from './containers/Countries'
 import SearchProfiles from './containers/SearchProfiles'
+import MyFriends from './containers/MyFriends'
+
 
 import NavBar from './components/Navbar'
 
@@ -28,6 +30,7 @@ function App() {
         <Route exact path="/countries" component={Countries} />
         <Route exact path="/countries/:id" component={CountryProfile} />
         <Route exact path="/search-profiles" component={SearchProfiles} />
+        <Route exact path="/friends" component={MyFriends}/>
       </Switch>
     </BrowserRouter>
   </>

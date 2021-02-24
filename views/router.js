@@ -27,6 +27,9 @@ router.route('/users/:id/add')
 router.route('/users/:id/acceptFriend')
   .post(secureRoute, userController.confirmRequest)
 
+router.route('/users/:id/deleteFriend')
+  .delete(secureRoute, userController.deleteFriend)
+
 router.route('/countries')
   .get(countryController.getAllCountries)
 

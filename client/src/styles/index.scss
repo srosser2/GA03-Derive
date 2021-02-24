@@ -12,6 +12,16 @@ $font-primary: 'Josefin Sans', sans-serif;
 // @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 // @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+/** Home Page **/ 
+
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/** Comments **/ 
+
 
 body {
   background-color: $light-grey;
