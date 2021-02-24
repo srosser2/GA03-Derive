@@ -51,12 +51,22 @@ async function seedDatabase() {
     console.log(usersArray)
 
     for (let i = 0; i < users.length; i++) {
-      const rand = (Math.floor(Math.floor() * users.length))
+      const usersCopy = [...usersArray]
+      const currentUser = usersCopy[i]
+      const currentUserIndex = usersCopy.indexOf(currentUser._id)
+      // create a new array without the current user
+      const startArr = usersCopy.slice(0, currentUserIndex)
+      const endArr = usersCopy.slice(currentUserIndex + 1)
+      let combinedArr = startArr.concat(endArr)
       for (let j = 0; j < 5; j++) {
-        if (users[i]._id !== usersArray[rand]) {
-          await User.findByIdAndUpdate({ _id: users[i]._id }, { $push: { friends: usersArray[rand] } })
-          await User.findByIdAndUpdate({ _id: usersArray[rand] }, { $push: { friends: users[i]._id } })
-        }
+        const randomIndex = Math.floor(Math.random() * combinedArr.length)
+        const targetUser = combinedArr[randomIndex]
+        const targetUserIndex = combinedArr.indexOf(targetUser._id)
+        const startArr = combinedArr.slice(0, targetUserIndex)
+        const endArr = combinedArr.slice(targetUserIndex + 1)
+        combinedArr = startArr.concat(endArr)
+        await User.findByIdAndUpdate({ _id: targetUser }, { $push: { friends: currentUser } })
+        await User.findByIdAndUpdate({ _id: currentUser }, { $push: { friends: targetUser } })
       }
     }
 
