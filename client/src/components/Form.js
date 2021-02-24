@@ -78,7 +78,7 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onSelectChange, c
 
     const validationErrorMessages = validateField(config[field].value, config[field].validation)
 
-    return <div key={field} className={'form-element-group mb-4'}>
+    return <div key={field} className={'form-element-group'}>
       <label>{config[field].label}</label>
       {fieldBody}
       {/* {!config[field].dirty ? null : <div>{validationErrorMessages.map((err, i) => <p key={i}>{err}</p>)}</div>} */}

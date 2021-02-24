@@ -1,0 +1,20 @@
+/** Comments **/ 
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-control {
+  cursor: pointer;
+}
+
+.comment-control:hover {
+  text-decoration: underline;
+}
+
+.comment-likes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

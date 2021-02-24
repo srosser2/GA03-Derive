@@ -49,12 +49,11 @@ const NavBar = ({ history }) => {
   }
 
   return <>
-    <Navbar bg="dark" expand="lg">
-      <Nav.Link href="/">Logo</Nav.Link>
+    <Navbar expand="lg">
+      <Nav.Link href="/">DÉRIVE</Nav.Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
         {loggedIn && <>
-          <Button className={'btn btn-secondary btn-sm'} onClick={handleLogout}>Logout</Button>
           <NavDropdown title={loggedIn.fullName} id="basic-nav-dropdown" className="justify-content-end">
             <NavDropdown.Item href={`/users/${loggedIn.userId}`}>Profile</NavDropdown.Item>
             <NavDropdown.Item href="">New Nofications</NavDropdown.Item>

@@ -2,6 +2,8 @@ import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/index.scss'
+import './styles/components/Comments.scss'
+import './styles/containers/Register.scss'
 
 // Pages
 import CountryProfile from './containers/CountryProfile'
@@ -11,7 +13,6 @@ import Register from './containers/Register'
 import UserProfile from './containers/UserProfile'
 import Countries from './containers/Countries'
 import SearchProfiles from './containers/SearchProfiles'
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 import NavBar from './components/Navbar'
 
