@@ -30,6 +30,15 @@ const Countries = () => {
       const { data } = await axios.get('/api/countries')
       updateCountries(data)
       updateDisplayCountries(data)
+
+      axios.get('https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population')
+        .then(function (html) {
+          console.log(html)
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
+
     }
     fetchData()
     async function fetchUser() {

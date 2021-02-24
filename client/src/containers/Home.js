@@ -8,8 +8,6 @@ const Home = () => {
 
   const loggedIn = getLoggedInUserId()
 
-  console.log(loggedIn.userId)
-
   return <>
     <Container>
       <h1>Title</h1>
