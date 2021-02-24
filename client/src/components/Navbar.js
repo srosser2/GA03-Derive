@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Button, Navbar, Nav, NavDropdown } from 'react-bootstrap'
+import { Button, Navbar, Nav, NavDropdown, Container } from 'react-bootstrap'
 import axios from 'axios'
 
 import { getLoggedInUserId } from '../lib/auth.js'
@@ -49,12 +49,22 @@ const NavBar = ({ history }) => {
   }
 
   return <>
-    <Navbar bg="dark" expand="lg">
-      <Nav.Link href="/">Logo</Nav.Link>
+    <Navbar expand="lg">
+      <Nav.Link href="/">DÉRIVE</Nav.Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
         {loggedIn && <>
-          <Button className={'btn btn-secondary btn-sm'} onClick={handleLogout}>Logout</Button>
+<<<<<<< HEAD
+            <Button className='btn btn-secondary btn-sm' onClick={handleLogout}>Logout</Button>
+            <NavDropdown title={loggedIn.fullName} id="basic-nav-dropdown" className="justify-content-end">
+              <NavDropdown.Item href={`/users/${loggedIn.userId}`}>Profile</NavDropdown.Item>
+              <NavDropdown.Item href="">New Nofications</NavDropdown.Item>
+              <NavDropdown.Item href="/countries">Explore...</NavDropdown.Item>
+              <NavDropdown.Item href="/search-profiles">Search for friends</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+            </NavDropdown>
+=======
           <NavDropdown title={loggedIn.fullName} id="basic-nav-dropdown" className="justify-content-end">
             <NavDropdown.Item href={`/users/${loggedIn.userId}`}>Profile</NavDropdown.Item>
             <NavDropdown.Item href="">New Nofications</NavDropdown.Item>
@@ -63,6 +73,7 @@ const NavBar = ({ history }) => {
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
           </NavDropdown>
+>>>>>>> c957a553011e80a9f8d56eaf723467594e9f3504
         </>}
         <Nav.Link onClick={() => handleShow()}>Notifications</Nav.Link>
         {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}

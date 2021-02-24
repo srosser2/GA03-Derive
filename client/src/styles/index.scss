@@ -1,8 +1,19 @@
-.mb-16 {
-  margin-bottom: 16px;
-}
+$light-grey: #f4f5f7;
+$primary: #397ef6;
+$secondary: #fafbfc;
+$text-subtle: #62718e;
+$default-radius: 24px;
+$font-primary: 'Josefin Sans', sans-serif;
+// $font-primary: 'Source Sans Pro', sans-serif;
+// $font-primary: 'Poppins', sans-serif;
+
+
+// @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 /** Home Page **/ 
+
 
 .home-container {
   display: flex;
@@ -11,24 +22,30 @@
 }
 /** Comments **/ 
 
-.comment-header {
+
+body {
+  background-color: $light-grey;
+  font-family: $font-primary;
+}
+
+h1 {
+  text-transform: uppercase;
+  font-size: 30px;
+  color: $text-subtle;
+}
+
+// General Layout
+
+.flex-row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
 }
 
-.comment-control {
-  cursor: pointer;
-}
-
-.comment-control:hover {
-  text-decoration: underline;
-}
-
-.comment-likes {
+.flex-col {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: col;
 }
+
 
 /** Photo Library **/
 
@@ -42,4 +59,96 @@
     flex: 1 0 auto;
     width: 30%;
     height: auto;
+}
+
+
+/** Notifications **/
+
+@media only screen and (max-width: 988px) {
+  .notificationBox {
+    left: 0;
+  }
+  .notificationIcon {
+    position: "fixed";
+    left: "92%";
+    top: "50px";
+    float: "right";
+  }
+} 
+
+
+.heroHome {
+  color: white;
+  background-image: url("https://images.unsplash.com/photo-1531219432768-9f540ce91ef3?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1050&q=80");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+
+
+// /* Small devices (landscape phones, 544px and up) */
+// @media (min-width: 544px) {  
+//   h1 {
+//     // color: green;
+//   } /*1rem = 16px*/
+
+//   .navbar {
+//     margin-bottom: 1rem;
+//   }
+// }
+ 
+// /* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+// @media (min-width: 768px) {  
+//   h1 {font-size:2rem;} /*1rem = 16px*/
+// }
+ 
+// /* Large devices (desktops, 992px and up) */
+// @media (min-width: 992px) { 
+//   h1 {font-size:2.5rem;} /*1rem = 16px*/
+// }
+ 
+// /* Extra large devices (large desktops, 1200px and up) */
+// @media (min-width: 1200px) {  
+//   h1 {font-size:3rem;} /*1rem = 16px*/    
+// }
+
+
+.navbar {
+  background-color: #fff;
+  font-size: 12px;
+}
+
+.text-link {
+  color: $primary;
+  cursor: pointer;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+// FORMS
+
+.form-element-group {
+  margin-bottom: 16px;
+}
+
+.form-element-group input {
+  padding: 20px 16px;
+  font-size: 14px;
+}
+
+.form-element-group label {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  color: $text-subtle;
+}
+
+@media only screen and (max-width: 600px) {
+  .registration-container .lhs {
+    flex: 0;
+  }
 }

@@ -51,10 +51,11 @@ async function seedDatabase() {
     console.log(usersArray)
 
     for (let i = 0; i < users.length; i++) {
+      const rand = (Math.floor(Math.floor() * users.length))
       for (let j = 0; j < 5; j++) {
-        if (users[i]._id !== usersArray[j]) {
-          await User.findByIdAndUpdate({ _id: users[i]._id }, { $push: { friends: usersArray[j] } })
-          await User.findByIdAndUpdate({ _id: usersArray[j] }, { $push: { friends: users[i]._id } })
+        if (users[i]._id !== usersArray[rand]) {
+          await User.findByIdAndUpdate({ _id: users[i]._id }, { $push: { friends: usersArray[rand] } })
+          await User.findByIdAndUpdate({ _id: usersArray[rand] }, { $push: { friends: users[i]._id } })
         }
       }
     }

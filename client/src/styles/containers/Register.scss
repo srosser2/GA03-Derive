@@ -1,0 +1,67 @@
+// Registration Page
+
+$light-grey: #f4f5f7;
+$primary: #397ef6;
+$secondary: #fafbfc;
+$text-subtle: #62718e;
+$default-radius: 24px;
+$font-primary: 'Josefin Sans', sans-serif;
+// $font-primary: 'Source Sans Pro', sans-serif;
+// $font-primary: 'Poppins', sans-serif;
+
+
+// @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+
+
+.registration-container {
+  margin: 50px auto;
+  width: 90%;
+  height: 60%;
+  max-width: 1280px;
+  display: flex;
+  background-color: #fff;
+  border-radius: $default-radius;
+}
+
+.registration-container .lhs {
+  // border: 1px solid brown;
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: $default-radius;
+  border-bottom-left-radius: $default-radius;
+  background-color: $secondary;
+  flex: 1.5;
+}
+
+.registration-container .lhs img {
+  border-top-left-radius: $default-radius;
+  border-bottom-left-radius: $default-radius;
+  height: 100%;
+  overflow: hidden;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+
+.registration-container .rhs {
+  // border: 1px solid orange;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  padding: 60px 0;
+}
+
+.registration-form-container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.registration-form-container button {
+  width: 100%;
+  padding: 16px 16px;
+  background-color: $primary;
+  text-transform: uppercase;
+}

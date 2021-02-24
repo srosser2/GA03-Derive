@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Container, Row, Col } from 'react-bootstrap'
 import 'react-hook-form'
+import { getLoggedInUserId } from '../lib/auth'
 
 import Form from '../components/Form.js'
 import Modal from '../components/Modal.js'
+
 
 const Register = ({ history }) => {
 
@@ -160,6 +162,9 @@ const Register = ({ history }) => {
     }
   })
 
+  // if there is a logged in user, redirect them
+  if (getLoggedInUserId()) history.goBack()
+
   // ? this has been udpated to reflect one big form
   useEffect(() => {
     axios.get('/api/languages')
@@ -314,27 +319,60 @@ const Register = ({ history }) => {
     />
   </>
 
-  return <Container>
-    <Row>
-      <Col><h1>Register</h1></Col>
-    </Row>
-    <Row>
-      <p>All fields are required</p>
-    </Row>
-    <Row>
-      <Col className={'mb-16'}>
+  // return <Container md={{ span: 8, offset: 2}}>
+  //   <Row>
+  //     <Col md={{ span: 6 }}>
+
+  //     </Col>
+  //     <Col sm={{ span: 12, offset: 0}} md={{ span: 6 }}>
+  //       <h1>Register</h1>
+  //       <p>All fields are required</p>
+  //        <Form
+  //           config={{ 
+  //             fullName: registerForm.fullName, 
+  //             username: registerForm.username, 
+  //             email: registerForm.email, 
+  //             password: registerForm.password, 
+  //             passwordConfirmation: registerForm.passwordConfirmation 
+  //           }}
+  //           controls={formControls}
+  //           onChange={e => handleChange(e)}
+  //           onSelectChange={handleSelectChange}
+  //         />
+  //       <Modal body={modalBody} title={modalTitle} show={showModal} hideModalHandler={() => updateShowModal(false)} />
+
+  //     </Col>
+  //   </Row>
+  // </Container>
+
+  return <div className={'registration-container'}>
+    <div className={'lhs'}>
+      <img src={'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80'} alt={'register'}/>
+    </div>
+    <div className={'rhs'}>
+      <div className={'registration-form-container'}>
+        <h1>Register</h1>
+        <p>Already a member? <span className={'text-link'} onClick={() => history.push('/login')}>Login</span></p>
         <Form
-          config={{ fullName: registerForm.fullName, username: registerForm.username, email: registerForm.email, password: registerForm.password, passwordConfirmation: registerForm.passwordConfirmation }}
+          config={{ 
+            fullName: registerForm.fullName, 
+            email: registerForm.email, 
+            password: registerForm.password, 
+            passwordConfirmation: registerForm.passwordConfirmation 
+          }}
           controls={formControls}
           onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange}
-        // onSubmit={e => handleSubmit(e)} LEGACY
         />
-      </Col>
-      <Col>
         <Modal body={modalBody} title={modalTitle} show={showModal} hideModalHandler={() => updateShowModal(false)} />
-      </Col>
-    </Row>
-  </Container>
+      </div>
+
+    </div>
+      
+  </div>
+
 }
 export default Register
+
+{/* <Container md={{ span: 8, offset: 2}}>
+</Container> */}
