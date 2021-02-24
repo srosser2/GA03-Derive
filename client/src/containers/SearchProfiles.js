@@ -69,7 +69,7 @@ const SearchProfiles = () => {
           const nameSearched = searchText.title.value
           const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
           const matchingNames = removeLoggedInUser.filter(user => {
-            return user.fullName.toLowerCase().includes(nameSearched.toLowerCase()) || user.username.toLowerCase().includes(nameSearched.toLowerCase())
+            return user.fullName.toLowerCase().startsWith(nameSearched.toLowerCase()) || user.username.toLowerCase().startsWith(nameSearched.toLowerCase())
           })
           updateDisplayUsers(matchingNames)
           updateSearch(nameSearched)
