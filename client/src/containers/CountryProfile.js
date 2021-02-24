@@ -136,7 +136,7 @@ const CountryProfile = ({ match }) => {
             Authorization: `Bearer ${token}`
           }
         }).then(({ data }) => {
-          const updatedCommentData = ([ ...commentData ])
+          const updatedCommentData = ([...commentData])
           updatedCommentData.push(data)
           updateCommentData(updatedCommentData)
           const updatedCommentForm = { ...commentForm }
@@ -193,32 +193,33 @@ const CountryProfile = ({ match }) => {
 
   const likeCommentHandler = e => {
     const commentId = getCommentId(e)
-    axios.post(`/api/comments/${commentId}`, {}, { headers: {
-      Authorization: `Bearer ${token}`
-    }
+    axios.post(`/api/comments/${commentId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     }).then(({ data }) => {
-      const updatedCommentData = [ ...commentData ]
+      const updatedCommentData = [...commentData]
       const commentToUpdate = updatedCommentData.find(comment => comment._id === data._id)
       commentToUpdate.likes = data.likes
       updateCommentData(updatedCommentData)
-  })
+    })
   }
 
-  const comments = commentData.sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1).map(comment => <Comment key={comment._id} data={comment} deleteHandler={handleCommentDelete} editHandler={handleEditCommentModal} likeHandler={likeCommentHandler}/>)
+  const comments = commentData.sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1).map(comment => <Comment key={comment._id} data={comment} deleteHandler={handleCommentDelete} editHandler={handleEditCommentModal} likeHandler={likeCommentHandler} />)
 
-  const commentFormElement = <Form 
+  const commentFormElement = <Form
     config={commentForm}
     controls={postCommmentControls}
-    onChange={e => handleChange(e, commentForm, updateCommentForm)} 
-    // onSubmit={handleCommentSubmit} 
-    />
+    onChange={e => handleChange(e, commentForm, updateCommentForm)}
+  // onSubmit={handleCommentSubmit} 
+  />
 
-  const modalFormBody = <Form 
-    config={editCommentForm} 
-    onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)} 
+  const modalFormBody = <Form
+    config={editCommentForm}
+    onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)}
     // onSubmit={handleEditCommentSubmit}
     controls={modalCommentFormControls}
-    />
+  />
 
   return <Container>
     {/* <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} /> */}

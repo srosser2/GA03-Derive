@@ -50,6 +50,7 @@ const userController = {
         .populate('comments')
         .populate('friends')
         .populate('countriesVisited')
+        .populate('countriesWishList')
         .populate('receivedRequests')
         .populate('languages')
       //.populate('comments.user')
