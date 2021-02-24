@@ -7,7 +7,7 @@ import Comment from '../components/Comment'
 import Form from '../components/Form'
 import Modal from '../components/Modal'
 
-const CountryProfile = ({ match }) => {
+const CountryProfile = ({ match, history }) => {
 
   const countryId = match.params.id
   const token = localStorage.getItem('token')
@@ -56,13 +56,16 @@ const CountryProfile = ({ match }) => {
     />
     : null
 
-
-  const handleCommentDelete = e => {
+  const getCommentId = e => {
     let commentContainer = e.target
     while (!commentContainer.hasAttribute('id')) {
       commentContainer = commentContainer.parentElement
     }
-    const commentId = commentContainer.getAttribute('id')
+    return commentContainer.getAttribute('id')
+  }
+
+  const handleCommentDelete = e => {
+    const commentId = getCommentId(e)
     axios.delete(`/api/countries/${countryData._id}/comments/${commentId}`, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -111,8 +114,6 @@ const CountryProfile = ({ match }) => {
   // TODO - Refactor in user profile to use toggle modal
   const closeModal = () => updateShowModal(false)
 
-  const comments = commentData.sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1).map(comment => <Comment key={comment._id} data={comment} deleteHandler={handleCommentDelete} editHandler={handleEditCommentModal}/>)
-
   const toggleCommentForm = () => {
     updateShowCommentForm(!showCommentForm)
   }
@@ -124,27 +125,109 @@ const CountryProfile = ({ match }) => {
     updateFormCb(updatedForm)
   }
 
-  const handleCommentSubmit = () => {
-    const comment = {
-      text: commentForm.text.value
+  const postCommmentControls = {
+    submit: {
+      handler: () => {
+        const comment = {
+          text: commentForm.text.value
+        }
+        axios.post(`/api/countries/${match.params.id}/comments`, comment, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(({ data }) => {
+          const updatedCommentData = ([...commentData])
+          updatedCommentData.push(data)
+          updateCommentData(updatedCommentData)
+          const updatedCommentForm = { ...commentForm }
+          commentForm.text.value = ''
+          updateCommentForm(updatedCommentForm)
+        }).catch(err => console.log(err))
+      },
+      label: 'Post Comment',
+      classes: ['btn', 'btn-primary']
     }
-    axios.post(`/api/countries/${match.params.id}/comments`, comment, {
+  }
+
+  const modalCommentFormControls = {
+    submit: {
+      handler: () => {
+        const comment = {
+          text: editCommentForm.text.value
+        }
+        axios.put(`/api/countries/${countryId}/comments/${editCommentId}`, comment, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(({ data }) => {
+          const updatedCommentData = [...commentData]
+          const commentToUpdate = updatedCommentData.find(comment => comment._id === data._id)
+          commentToUpdate.text = data.text
+          console.log(updatedCommentData)
+          updateCommentData(updatedCommentData)
+          updateShowModal(false)
+        })
+      },
+      label: 'Post Comment',
+      classes: ['btn', 'btn-primary']
+    }
+  }
+
+  // const handleCommentSubmit = () => {
+  //   const comment = {
+  //     text: commentForm.text.value
+  //   }
+  //   axios.post(`/api/countries/${match.params.id}/comments`, comment, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   }).then(({ data }) => {
+  //     const updatedCommentData = ([ ...commentData ])
+  //     updatedCommentData.push(data)
+  //     updateCommentData(updatedCommentData)
+  //     const updatedCommentForm = { ...commentForm }
+  //     commentForm.text.value = ''
+  //     updateCommentForm(updatedCommentForm)
+  //   }).catch(err => console.log(err))
+  // }
+
+  const likeCommentHandler = e => {
+    const commentId = getCommentId(e)
+    axios.post(`/api/comments/${commentId}`, {}, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     }).then(({ data }) => {
-      const updatedCommentData = ([ ...commentData ])
-      updatedCommentData.push(data)
+      const updatedCommentData = [...commentData]
+      const commentToUpdate = updatedCommentData.find(comment => comment._id === data._id)
+      commentToUpdate.likes = data.likes
       updateCommentData(updatedCommentData)
-      const updatedCommentForm = { ...commentForm }
-      commentForm.text.value = ''
-      updateCommentForm(updatedCommentForm)
-    }).catch(err => console.log(err))
+    })
   }
 
-  const commentFormElement = <Form config={commentForm} onChange={e => handleChange(e, commentForm, updateCommentForm)} onSubmit={handleCommentSubmit} />
+  const comments = commentData
+    .sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1)
+    .map(comment => <Comment 
+      key={comment._id} 
+      data={comment} 
+      deleteHandler={handleCommentDelete} 
+      editHandler={handleEditCommentModal} 
+      likeHandler={likeCommentHandler} 
+      viewProfileHandler={(userId) => history.push(`/users/${userId}`)}/>)
 
-  const modalFormBody = <Form config={editCommentForm} onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)} onSubmit={handleEditCommentSubmit}/>
+  const commentFormElement = <Form
+    config={commentForm}
+    controls={postCommmentControls}
+    onChange={e => handleChange(e, commentForm, updateCommentForm)}
+  // onSubmit={handleCommentSubmit} 
+  />
+
+  const modalFormBody = <Form
+    config={editCommentForm}
+    onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)}
+    // onSubmit={handleEditCommentSubmit}
+    controls={modalCommentFormControls}
+  />
 
   return <Container>
     {/* <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} /> */}

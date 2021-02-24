@@ -5,7 +5,7 @@ import validateField from '../lib/validateField'
 import { Form } from 'react-bootstrap'
 import Select from 'react-select'
 
-const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) => {
+const FormGenerator = ({ config, controls, onSubmit, onChange, onSelectChange, classes }) => {
 
   const formFields = Object.keys(config)
 
@@ -19,7 +19,7 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
     defaultValues
   })
 
-  const formElements = formFields.map(field => {
+  const formBody = formFields.map(field => {
 
     let fieldBody
 
@@ -28,7 +28,6 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
         fieldBody = <Controller
           control={control}
           name={field}
-          // rules={config[field].validation}
           render={() => (
             <Form.Control
               onChange={e => onChange(e)}
@@ -46,7 +45,6 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
           control={control}
           name={field}
           placeholder={config[field].type}
-          // rules={config[field].validation}
           render={() => (
             <Form.Control as='textarea'
               name={field}
@@ -62,9 +60,7 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
         fieldBody = <Controller 
           control={control}
           name={field}  
-          // rules={config[field].validation}    
           render={() => (
-
             <Select
               defaultValue={config[field].value}
               options={config[field].options}
@@ -80,24 +76,30 @@ const FormGenerator = ({ config, onSubmit, onChange, onSelectChange, classes }) 
       }
     }
 
-
     const validationErrorMessages = validateField(config[field].value, config[field].validation)
 
     return <div key={field} className={'form-element-group'}>
       <label>{config[field].label}</label>
       {fieldBody}
       {/* {!config[field].dirty ? null : <div>{validationErrorMessages.map((err, i) => <p key={i}>{err}</p>)}</div>} */}
-      {/* {!config[field].dirty ? null : <Form.Text id="passwordHelpBlock" muted>{validationErrorMessages.join(' ')}</Form.Text>} */}
+      {!config[field].dirty ? null : <Form.Text muted>{validationErrorMessages.join(' ')}</Form.Text>}
     </div>
   })
 
-  return <form onSubmit={handleSubmit(onSubmit)} className={Array.isArray(classes) ? classes.join(' ') : null}>
-    {formElements}
-    <input 
-      type={'submit'} 
-      ref={register} 
-      name={'submit'}
-      className={'btn btn-primary'}/>
+  let formControls  
+
+  if (controls) {
+    const formControlKeys = Object.keys(controls)
+    formControls = formControlKeys.map(controlKey => {
+      return <button key={controlKey}
+        className={controls[controlKey].classes ? controls[controlKey].classes.join(' ') : null}
+        onClick={controls[controlKey].handler}>{controls[controlKey].label}</button>
+    })
+  }
+
+  return <form onSubmit={e => e.preventDefault()} className={Array.isArray(classes) ? classes.join(' ') : null}>
+    {formBody}
+    {formControls}
   </form>
 
 }

@@ -19,7 +19,8 @@ const Register = ({ history }) => {
       value: '',
       validation: {
         required: true
-      }
+      },
+      dirty: false
     },
     fullName: {
       label: 'Full Name',
@@ -29,28 +30,31 @@ const Register = ({ history }) => {
       value: '',
       validation: {
         required: true
-      }
+      },
+      dirty: false
     },
     email: {
       label: 'Email',
       element: 'input',
       type: 'text',
       placeholder: 'Enter your email',
-      value: 'samtest2@samtest.com',
+      value: '',
       validation: {
         required: true,
         isEmail: true
-      }
+      },
+      dirty: false
     },
     password: {
       label: 'Password',
       element: 'input',
       type: 'password',
       placeholder: 'Enter your password',
-      value: 'sam1234',
+      value: '',
       validation: {
         required: true
-      }
+      },
+      dirty: false
     },
     passwordConfirmation: {
       label: 'Password Confirmation',
@@ -60,10 +64,9 @@ const Register = ({ history }) => {
       value: '',
       validation: {
         required: true
-      }
-    }
-  })
-  const [modalForm, updateModalForm] = useState({
+      },
+      dirty: false
+    },
     bio: {
       label: 'Bio',
       element: 'input',
@@ -157,22 +160,28 @@ const Register = ({ history }) => {
     }
   })
 
+  // ? this has been udpated to reflect one big form
   useEffect(() => {
-    getCountries()
+    axios.get('/api/languages')
+      .then(({ data }) => {
+        const languages = data.map(language => {
+          return { label: language.name, value: language._id }
+        })
+        const newModalForm = { ...registerForm }
+        newModalForm.languages.options = languages
+        updateRegisterForm(newModalForm)
+      })
+    axios.get('/api/countries')
+      .then(({ data }) => {
+        const countries = data.map(country => {
+          return { label: country.name, value: country._id }
+        })
+        const newModalForm = { ...registerForm }
+        newModalForm.countriesVisited.options = countries
+        newModalForm.countriesWishList.options = countries
+        updateRegisterForm(newModalForm)
+      })
   }, [])
-  // * trying to populate countries in the select form (need to do same with languages)
-  async function getCountries() {
-    const { data } = await axios.get('/api/countries')
-    // console.log(data)
-    const countries = data.map(e => {
-      return { label: e.name, value: e._id }
-    })
-    const newRegForm = registerForm
-    newRegForm.countriesVisited.options = countries
-    newRegForm.countriesWishList.options = countries
-    // console.log(newRegForm)
-    updateRegisterForm(newRegForm)
-  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -180,65 +189,130 @@ const Register = ({ history }) => {
     updatedForm[name].value = value
     updateRegisterForm(updatedForm)
   }
+
   const handleSelectChange = (e, name) => {
-    const updatedForm = { ...modalForm }
+    const updatedForm = { ...registerForm }
     updatedForm[name].value = e.value
-    updateModalForm(updatedForm)
-    console.log(updatedForm[name])
+    updateRegisterForm(updatedForm)
   }
 
-  const handleSubmit = async () => {
-    try {
-      const formData = {}
-      for (const field in registerForm) {
-        formData[field] = registerForm[field].value
-      }
-      await axios.post('/api/register', formData)
-        .then(({ data }) => {
-          console.log(data)
-        })
-      updateDisplayModal(true)
-      updateShowModal(true)
-    } catch (err) {
-      console.log(err)
+  const formControls = {
+    submit: {
+      handler: () => {
+        try {
+          const formData = {}
+          for (const field in registerForm) {
+            formData[field] = registerForm[field].value
+            registerForm[field].dirty = true
+          }
+          updateDisplayModal(true)
+          updateShowModal(true)
+
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      label: 'Continue',
+      classes: ['btn', 'btn-primary']
     }
   }
+
+  const modalFormControls = {
+    submit: {
+      handler: async () => {
+        try {
+          const formData = {}
+          for (const field in registerForm) {
+            formData[field] = registerForm[field].value
+          }
+          formData.languages = registerForm.languages.value.map(language => language.value)
+          formData.isTravelling = registerForm.isTravelling.value.value
+          formData.isPublic = registerForm.isPublic.value.value
+          // ! 
+          formData.countriesVisited = registerForm.countriesVisited.value.map(country => country.value)
+          formData.countriesWishList = registerForm.countriesWishList.value.map(country => country.value)
+          await axios.post('/api/register', formData)
+            .then(({ data }) => {
+              console.log('I have registered', data)
+            })
+          updateDisplayModal(false)
+          updateShowModal(false)
+          history.push('/login')
+        } catch (err) {
+          console.log(err)
+        }
+      },
+      label: 'Sign Me Up!',
+      classes: ['btn', 'btn-primary']
+    }
+  }
+
+  // LEGACY - to be removed
+  // const handleSubmit = () => {
+  //   try {
+  //     const formData = {}
+  //     for (const field in registerForm) {
+  //       formData[field] = registerForm[field].value
+  //       registerForm[field].dirty = true
+  //     }
+  //     updateDisplayModal(true)
+  //     updateShowModal(true)
+
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   const handleModalChange = (e) => {
     const { name, value } = e.target
-    const updatedForm = { ...modalForm }
+    const updatedForm = { ...registerForm }
     updatedForm[name].value = value
-    updateModalForm(updatedForm)
+    updateRegisterForm(updatedForm)
   }
 
-  const handleModalSubmit = async () => {
-    try {
-      const formData = {}
-      for (const field in modalForm) {
-        formData[field] = modalForm[field].value
-      }
-      await axios.post('/api/register', formData)
-        .then(({ data }) => {
-          console.log(data)
-        })
-      updateDisplayModal(false)
-      updateShowModal(false)
-      history.push('/login')
-    } catch (err) {
-      console.log(err)
-    }
+  const handleModalSelectChange = (e, name) => {
+    const updatedForm = { ...registerForm }
+    updatedForm[name].value = e
+    updateRegisterForm(updatedForm)
   }
+
+  // LEGACY - to be removed
+  // const handleModalSubmit = async () => {
+  //   try {
+  //     const formData = {}
+  //     for (const field in registerForm) {
+  //       formData[field] = registerForm[field].value
+  //     }
+  //     formData.languages = registerForm.languages.value.map(language => language.value)
+  //     formData.isTravelling = registerForm.isTravelling.value.value
+  //     formData.isPublic = registerForm.isPublic.value.value
+
+  //     formData.countriesVisited = registerForm.countriesVisited.value.map(country => country.value)
+  //     formData.countriesWishList = registerForm.countriesWishList.value.map(country => country.value)
+  //     await axios.post('/api/register', formData)
+  //       .then(({ data }) => {
+  //         console.log('I have registered', data)
+  //       })
+  //     updateDisplayModal(false)
+  //     updateShowModal(false)
+  //     history.push('/login')
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
   let modalTitle = null
   modalTitle = <h2>Finish creating your profile</h2>
   let modalBody = null
   modalBody = <>
     <Form
-      config={modalForm}
-      onSubmit={e => handleModalSubmit(e)} onChange={e => handleModalChange(e)}
-      onSelectChange={handleSelectChange} />
+      config={{ bio: registerForm.bio, nationality: registerForm.nationality, languages: registerForm.languages, isPublic: registerForm.isPublic, isTravelling: registerForm.isTravelling, countriesVisited: registerForm.countriesVisited, countriesWishList: registerForm.countriesWishList }}
+      controls={modalFormControls}
+      onChange={e => handleModalChange(e)}
+      onSelectChange={handleModalSelectChange}
+    // onSubmit={e => handleModalSubmit(e)} LEGACY
+    />
   </>
-
 
   return <Container>
     <Row>
@@ -250,9 +324,12 @@ const Register = ({ history }) => {
     <Row>
       <Col className={'mb-16'}>
         <Form
-          config={registerForm}
-          onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
-          onSelectChange={handleSelectChange} />
+          config={{ fullName: registerForm.fullName, username: registerForm.username, email: registerForm.email, password: registerForm.password, passwordConfirmation: registerForm.passwordConfirmation }}
+          controls={formControls}
+          onChange={e => handleChange(e)}
+          onSelectChange={handleSelectChange}
+        // onSubmit={e => handleSubmit(e)} LEGACY
+        />
       </Col>
       <Col>
         <Modal body={modalBody} title={modalTitle} show={showModal} hideModalHandler={() => updateShowModal(false)} />
@@ -261,10 +338,3 @@ const Register = ({ history }) => {
   </Container>
 }
 export default Register
-
-
-
-
-
-
-

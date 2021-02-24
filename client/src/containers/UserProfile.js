@@ -184,6 +184,51 @@ const UserProfile = ({ match }) => {
       }) 
   }, [])
 
+  const formControls = {
+    submit: {
+      handler: async () => {
+        const formData = {}
+        for (const field in userForm) {
+          formData[field] = userForm[field].value
+        }
+        try {
+          const formData = {}
+          for (const field in userForm) {
+            formData[field] = userForm[field].value
+          }
+          formData.languages = formData.languages.map(language => language.value)
+          formData.isTravelling = formData.isTravelling.value
+          formData.countriesVisited = formData.countriesVisited.map(country => country.value)
+          formData.countriesWishList = formData.countriesWishList.map(country => country.value)
+  
+          console.log(formData, "form data")
+          const token = localStorage.getItem('token')
+          await axios.put(`/api/users/${loggedInUser.userId}`, formData, { headers: { Authorization: `Bearer ${token}` } })
+            .then(({ data }) => {
+              console.log(data, "the data to change")
+              const countriesVisited = data.countriesVisited.map(country => {
+                return { label: country.name, value: country._id, flag: country.flag }
+              })
+              const countriesWishList = data.countriesWishList.map(country => {
+                return { label: country.name, value: country._id, flag: country.flag }
+              })
+              const updatedUserForm = { ...userForm }
+              updatedUserForm.countriesVisited = countriesVisited
+              updatedUserForm.countriesWishList = countriesWishList
+              console.log(updatedUserForm, "updated user form ")
+              updateUserProfileData(data)
+              updateShowModal(false)
+            })
+            .catch(err => console.log(err))
+        } catch (err) {
+          alert(err)
+        }
+      },
+      label: 'Continue',
+      classes: ['btn', 'btn-primary']
+    }
+  }
+
   // Show something while axios is loading
   if (isLoading) {
     return <Container><h1>Loading...</h1></Container>
@@ -217,44 +262,6 @@ const UserProfile = ({ match }) => {
       const updatedForm = { ...userForm }
       updatedForm[name].value = e
       updateUserForm(updatedForm)
-    },
-    async handleSubmit(){
-      const formData = {}
-      for (const field in userForm) {
-        formData[field] = userForm[field].value
-      }
-      try {
-        const formData = {}
-        for (const field in userForm) {
-          formData[field] = userForm[field].value
-        }
-        formData.languages = formData.languages.map(language => language.value)
-        formData.isTravelling = formData.isTravelling.value
-        formData.countriesVisited = formData.countriesVisited.map(country => country.value)
-        formData.countriesWishList = formData.countriesWishList.map(country => country.value)
-
-        console.log(formData, "form data")
-        const token = localStorage.getItem('token')
-        await axios.put(`/api/users/${loggedInUser.userId}`, formData, { headers: { Authorization: `Bearer ${token}` } })
-          .then(({ data }) => {
-            console.log(data, "the data to change")
-            const countriesVisited = data.countriesVisited.map(country => {
-              return { label: country.name, value: country._id, flag: country.flag }
-            })
-            const countriesWishList = data.countriesWishList.map(country => {
-              return { label: country.name, value: country._id, flag: country.flag }
-            })
-            const updatedUserForm = { ...userForm }
-            updatedUserForm.countriesVisited = countriesVisited
-            updatedUserForm.countriesWishList = countriesWishList
-            console.log(updatedUserForm, "updated user form ")
-            updateUserProfileData(data)
-            updateShowModal(false)
-          })
-          .catch(err => console.log(err))
-      } catch (err) {
-        alert(err)
-      }
     }
   }
 
@@ -412,19 +419,19 @@ const UserProfile = ({ match }) => {
 
   switch (selectedModal){
     case 'about':
-      modalBody = <Form onSelectChange={formHandlers.handleSelectChange} config={{ fullName: userForm.fullName, username: userForm.username }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ fullName: userForm.fullName, username: userForm.username }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
       break
     case 'bio':
-      modalBody = <Form onSelectChange={formHandlers.handleSelectChange} config={{ bio: userForm.bio }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ bio: userForm.bio }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
       break
     case 'general':
-      modalBody = <Form onSelectChange={formHandlers.handleSelectChange} config={{ nationality: userForm.nationality, isTravelling: userForm.isTravelling, languages: userForm.languages }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ nationality: userForm.nationality, isTravelling: userForm.isTravelling, languages: userForm.languages }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
       break
     case 'countriesVisited':
-      modalBody = <Form onSelectChange={formHandlers.handleSelectChange} config={{ countriesVisited: userForm.countriesVisited }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesVisited: userForm.countriesVisited }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
       break
     case 'countriesWishList':
-      modalBody = <Form onSelectChange={formHandlers.handleSelectChange} config={{ countriesWishList: userForm.countriesWishList }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesWishList: userForm.countriesWishList }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
       break
   }
 
