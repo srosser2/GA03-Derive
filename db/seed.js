@@ -23,35 +23,33 @@ async function seedDatabase() {
     const countries = await Country.create(countriesData)
     console.log(`${countries.length} countries added`)
 
-    // const languages = []
-    // countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
-    // const uniqueLangs = [...new Set(languages)].map(e => {
-    //   return { name: e }
-    // })
-    // const languagesAdded = await Language.create(uniqueLangs)
-    // console.log(`${languagesAdded.length} languages added`)
+    const languages = []
+    countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
+    let uniqueLangs = [...new Set(languages)].map(e => {
+      return { name: e }
+    })
+    uniqueLangs = uniqueLangs.sort((a,b) => {
+      if (a.name < b.name){
+        return -1
+      }
+      if (a.name > b.name){
+        return 1
+      }
+      return 0
+    })
+    const languagesAdded = await Language.create(uniqueLangs)
+    console.log(`${languagesAdded.length} languages added`)
 
-    const combinedUserArray = userData.concat(dummyUserData(10, countries))
+    const combinedUserArray = userData.concat(dummyUserData(60, countries))
     const users = await User.create(combinedUserArray)
     console.log(`${users.length} users added`)
-    // const userId = User._id
-    // console.log(userId)
-    // for each user
+    const commentsToBeCommited = createManyComments(2000, users, countries)
 
-    // const userFriends = users.map()
-
-    // for (let i = 0; i < users.length; i++) {
-    //   const userId = User._id
-    //   const fiveRandomUsers = users.sort(() => 0.5 - Math.random())
-    //   console.log('randomIDS', fiveRandomUsers)
-    // }
-
-    // const commentsToBeCommited = createManyComments(2000, users, countries)
-    // const comments = await Comment.create(commentsToBeCommited)
-    // for (let i = 0; i < comments.length; i++) {
-    //   await Country.findByIdAndUpdate({ _id: comments[i].country }, { $push: { comments: comments[i]._id } })
-    // }
-    // console.log(`${comments.length} comments added`)
+    const comments = await Comment.create(commentsToBeCommited)
+    for (let i = 0; i < comments.length; i++) {
+      await Country.findByIdAndUpdate({ _id: comments[i].country }, { $push: { comments: comments[i]._id } })
+    }
+    console.log(`${comments.length} comments added`)
 
   } catch (err) {
     console.log('SOMETHIN AINT RIGHT')

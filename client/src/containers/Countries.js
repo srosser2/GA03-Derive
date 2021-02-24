@@ -133,6 +133,7 @@ const Countries = () => {
             <Card.Body>
               <Card.Title>{country.name}</Card.Title>
               <Card.Text>{country.nativeName}</Card.Text>
+              <a href={`https://en.wikipedia.org/wiki/${country.name}`} target='_blank' >Wiki</a> 
               <Card.Link href={`/countries/${country._id}`}>View</Card.Link>
             </Card.Body>
           </Card>

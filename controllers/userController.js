@@ -53,6 +53,7 @@ const userController = {
         .populate('countriesWishList')
         .populate('receivedRequests')
         .populate('languages')
+        .populate('images')
       //.populate('comments.user')
       res.status(202).send(user)
     } catch (err) {
@@ -65,16 +66,24 @@ const userController = {
     const currentUser = req.currentUser
     const body = req.body
     try {
-      const userToUpdate = await User.findById(id)
+      const userToUpdate = await User.findById(id).populate('languages')
       if (!userToUpdate) {
         return res.send({ message: 'No user found' })
       }
       if (!userToUpdate._id.equals(currentUser._id)) {
         return res.status(401).send({ message: 'Unauthorized' })
       }
-      userToUpdate.set(body)
-      userToUpdate.save()
-      res.send(userToUpdate)
+      const updatedUser = await User.findByIdAndUpdate({ _id: id }, body, { new: true } )
+        .populate('comments')
+        .populate('friends')
+        .populate('countriesVisited')
+        .populate('countriesWishList')
+        .populate('receivedRequests')
+        .populate('languages')
+      // userToUpdate.set(body)
+      // userToUpdate.save()
+      // const populatedUser = await User.findById(id).populate('languages')
+      res.send(updatedUser)
     } catch (err) {
       next(err)
     }

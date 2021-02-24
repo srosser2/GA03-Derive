@@ -4,6 +4,7 @@ import secureRoute from '../middleware/secureRoute.js'
 import countryController from '../controllers/countryController.js'
 import commentController from '../controllers/commentController.js'
 import languageController from '../controllers/languageController.js'
+import fileUploadController from '../controllers/fileUploadController.js'
 
 const router = express.Router()
 
@@ -47,6 +48,14 @@ router.route('/comments/:commentId')
 
 router.route('/languages')
   .get(languageController.getAllLanguages)
+
+router.route('/images')
+  .get(fileUploadController.getAllImages)
+  .post(secureRoute, fileUploadController.postImage)
+
+router.route('/images/:imageId')
+  .get(fileUploadController.getImageById)
+  .delete(secureRoute, fileUploadController.deleteImage)
 
 export default router
 

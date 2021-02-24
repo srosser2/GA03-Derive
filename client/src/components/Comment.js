@@ -39,7 +39,7 @@ const Comment = ({ data, deleteHandler, editHandler, likeHandler, viewProfileHan
       {profilePicture}
       <Media.Body>
         <div className={'comment-header'}>
-          <h5><span className={'comment-control'} onClick={() => viewProfileHandler(data.user._id)}>{data.user.fullName}</span> - {data.createdAt}</h5>
+          <h5>{data.user.fullName} - {new Date(data.createdAt).toDateString()}</h5>
           {editDeleteControls}
           
         </div>
