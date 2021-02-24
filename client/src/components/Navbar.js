@@ -41,13 +41,11 @@ const NavBar = ({ history }) => {
   async function postFriendRequest(targetFriendId, action) {
     const body = { "isAccepted": action }
     const token = localStorage.getItem('token')
-    const { data } = await axios.post(`/api/users/${targetFriendId}/acceptFriend`, body, { headers: { "Authorization" : `Bearer ${token}` } }).catch(err => console.log(err))
-    console.log(data, "friend request dealt with")
+    const { data } = await axios.post(`/api/users/${targetFriendId}/acceptFriend`, body, { headers: { "Authorization" : `Bearer ${token}` } }).catch(err => console.log(err, data))
     // remove the friend from the friendsRequests state
     const copy = user
     copy.receivedRequests = copy.receivedRequests.filter(e => e._id !== targetFriendId)
     updateUser(copy)
-    console.log(user, "this is what will be updated in state")
   }
 
   return <>
@@ -69,14 +67,14 @@ const NavBar = ({ history }) => {
         <Nav.Link onClick={() => handleShow()}>Notifications</Nav.Link>
         {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}
         {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
-        {loggedIn && <img src="https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg" alt="placeholder" style={{ borderRadius: '100%', width: '50px', padding: 5 }} />}
+        {loggedIn && <a href={`/users/${loggedIn.userId}`} ><img src={user.profilePicture} alt="placeholder" style={{ borderRadius: '100%', width: '50px', padding: 5 }} /></a>}
       </Navbar.Collapse>
     </Navbar>
     {user.receivedRequests && <>{user.receivedRequests.length > 0 && <img src="http://www.pngmart.com/files/9/YouTube-Bell-Icon-PNG-Transparent-Picture.png" width="30px" style={{
-      position: "fixed",
-      left: "92%",
-      top: "50px",
-      float: "right"
+      position: 'fixed',
+      left: '92%',
+      top: '50px',
+      float: 'right'
     }}/>}</>}
 
     {user.receivedRequests && <Notifications postFriendRequest={postFriendRequest} handleShow={handleShow} notificationsOn={notificationsOn} user={user}/>}

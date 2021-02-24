@@ -38,7 +38,7 @@ const Comment = ({ data, deleteHandler, editHandler, likeHandler }) => {
       {profilePicture}
       <Media.Body>
         <div className={'comment-header'}>
-          <h5>{data.user.fullName} - {data.createdAt}</h5>
+          <h5>{data.user.fullName} - {new Date(data.createdAt).toDateString()}</h5>
           {editDeleteControls}
           
         </div>

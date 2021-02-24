@@ -17,7 +17,6 @@ export default [
     languages: [],
     _id: '123f9be5b2113853ac6fd89c',
     profilePicture: 'https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Light'
-
   },
   {
     fullName: 'Hannah Akhtar',
@@ -35,7 +34,8 @@ export default [
     sentRequests: [],
     receivedRequests: [],
     languages: [],
-    _id: '456f9be5b2113853ac6fd89b'
+    _id: '456f9be5b2113853ac6fd89b',
+    profilePicture: 'https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Light'
   },
   {
     fullName: 'Stefan Sokolowski',
@@ -53,6 +53,7 @@ export default [
     sentRequests: [],
     receivedRequests: [],
     languages: [],
-    _id: '789f9be5b2113853ac6fd89a'
+    _id: '789f9be5b2113853ac6fd89a',
+    profilePicture: 'https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Light'
   }
 ]

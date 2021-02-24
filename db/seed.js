@@ -25,8 +25,17 @@ async function seedDatabase() {
 
     const languages = []
     countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
-    const uniqueLangs = [...new Set(languages)].map(e => {
+    let uniqueLangs = [...new Set(languages)].map(e => {
       return { name: e }
+    })
+    uniqueLangs = uniqueLangs.sort((a,b) => {
+      if (a.name < b.name){
+        return -1
+      }
+      if (a.name > b.name){
+        return 1
+      }
+      return 0
     })
     const languagesAdded = await Language.create(uniqueLangs)
     console.log(`${languagesAdded.length} languages added`)
@@ -35,6 +44,7 @@ async function seedDatabase() {
     const users = await User.create(combinedUserArray)
     console.log(`${users.length} users added`)
     const commentsToBeCommited = createManyComments(2000, users, countries)
+
     const comments = await Comment.create(commentsToBeCommited)
     for (let i = 0; i < comments.length; i++) {
       await Country.findByIdAndUpdate({ _id: comments[i].country }, { $push: { comments: comments[i]._id } })
