@@ -13,9 +13,9 @@ const penIcon = 'https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0k
 
 const EditButton = ({ isEditMode, updateIsEditMode }) => {
   return <>
-  {isEditMode
-    ? <Button onClick={() => updateIsEditMode(!isEditMode)}>Finish editing</Button>
-    : <Button onClick={() => updateIsEditMode(!isEditMode)}>Edit profile</Button>}
+    {isEditMode
+      ? <Button onClick={() => updateIsEditMode(!isEditMode)}>Finish editing</Button>
+      : <Button onClick={() => updateIsEditMode(!isEditMode)}>Edit profile</Button>}
   </>
 }
 
@@ -130,12 +130,9 @@ const UserProfile = ({ match }) => {
   const [showModal, updateShowModal] = useState(false)
   // const [currentFriend, updateCurrentFriend] = useState(null)
 
-  console.log(userProfileData, "user profile data")
-  
   useEffect(() => {
     axios.get(`/api/users/${match.params.id}`)
       .then(({ data }) => {
-        console.log(data)
         const modifiedData = { ...data }
         const mappedLanguages = modifiedData.languages.map(language => {
           return {
@@ -170,7 +167,7 @@ const UserProfile = ({ match }) => {
         const languages = data.map(language => {
           return { label: language.name, value: language._id }
         })
-        const updatedUserForm =  { ...userForm }
+        const updatedUserForm = { ...userForm }
         updatedUserForm.languages.options = languages
         updateUserForm(updatedUserForm)
       })
@@ -183,7 +180,7 @@ const UserProfile = ({ match }) => {
         updatedUserForm.countriesVisited.options = countries
         updatedUserForm.countriesWishList.options = countries
         updateUserForm(updatedUserForm)
-      }) 
+      })
   }, [])
 
   const formControls = {
@@ -202,12 +199,10 @@ const UserProfile = ({ match }) => {
           formData.isTravelling = formData.isTravelling.value
           formData.countriesVisited = formData.countriesVisited.map(country => country.value)
           formData.countriesWishList = formData.countriesWishList.map(country => country.value)
-  
-          console.log(formData, "form data")
+
           const token = localStorage.getItem('token')
           await axios.put(`/api/users/${loggedInUser.userId}`, formData, { headers: { Authorization: `Bearer ${token}` } })
             .then(({ data }) => {
-              console.log(data, "the data to change")
               const countriesVisited = data.countriesVisited.map(country => {
                 return { label: country.name, value: country._id, flag: country.flag }
               })
@@ -217,7 +212,6 @@ const UserProfile = ({ match }) => {
               const updatedUserForm = { ...userForm }
               updatedUserForm.countriesVisited = countriesVisited
               updatedUserForm.countriesWishList = countriesWishList
-              console.log(updatedUserForm, "updated user form ")
               updateUserProfileData(data)
               updateShowModal(false)
             })
@@ -254,13 +248,13 @@ const UserProfile = ({ match }) => {
   }
 
   const formHandlers = {
-    handleChange(e){
+    handleChange(e) {
       const { name, value } = e.target
       const updatedForm = { ...userForm }
       updatedForm[name].value = value
       updateUserForm(updatedForm)
     },
-    handleSelectChange(e, name){
+    handleSelectChange(e, name) {
       const updatedForm = { ...userForm }
       updatedForm[name].value = e
       updateUserForm(updatedForm)
@@ -292,29 +286,16 @@ const UserProfile = ({ match }) => {
     })
   }
 
-  // async function imageUploadHandler() {
-  //   try {
-  //     let file = document.getElementById('fileInput').files[0];
-  //     let contentBuffer = await readFileAsync(file);
-  //     console.log(contentBuffer);
-  //   } catch(err) {
-  //     console.log(err);
-  //   }
-  // }
-
   const imageUploadHandler = async (e) => {
-      const file = e.target.files[0].name
-      console.log(file)
-      const fileObj = {
-        filePath: file
+    const file = e.target.files[0].name
+    const fileObj = {
+      filePath: file
+    }
+    axios.post('/api/images', fileObj, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
-      axios.post('/api/images', fileObj, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-
-
+    })
   }
 
 
@@ -345,7 +326,7 @@ const UserProfile = ({ match }) => {
     return date.toDateString()
   }
 
-  async function deleteComment(id, country){
+  async function deleteComment(id, country) {
     const token = localStorage.getItem('token')
     const { data } = await axios.delete(`/api/countries/${country}/comments/${id}`, { headers: { 'Authorization': `Bearer ${token}` } })
       .catch(err => console.log(err, data))
@@ -357,26 +338,26 @@ const UserProfile = ({ match }) => {
   const userInfo = <div id={'about'} className={'content-block'}>
     <div className={'content-block-header'}>
       <div>{<img src={(userProfileData.profilePicture)} alt="Profile picture"
-        style={{ borderRadius: '100%', width: '150px', padding: 5 }}/>}</div>
-      <h2>{userProfileData.fullName}</h2>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler}/>}
+        style={{ borderRadius: '100%', width: '150px', padding: 5 }} />}</div>
+      <h2>{userProfileData.fullName}</h2>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
       <h4>{userProfileData.username}</h4>
-      
+
       {/* <AddFriendButton currentFriend={currentFriend} currentFriendState={currentFriendState}/> */}
 
-      {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode}/>}
-      
+      {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
+
     </div>
     <div className={'content-block-body'}>
     </div>
   </div>
 
   const bio = <div id={'bio'}>
-    <h3>Bio</h3>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler}/>}
+    <h3>Bio</h3>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
     <Card style={{ minHeight: '100px' }}>{userProfileData.bio}</Card>
   </div>
 
   const general = <div id={'general'}>
-    <h3>General</h3>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler}/>}
+    <h3>General</h3>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
     <div>Nationality: {userProfileData.nationality}</div>
     <div>Currently travelling: {userProfileData.isTravelling === true ? 'Yes' : 'No'}</div>
     <div>Lanugages spoken: {userProfileData.languages && printLanguages()}</div>
@@ -384,7 +365,7 @@ const UserProfile = ({ match }) => {
 
   const countriesVisited = <div id={'countriesVisited'}>
     <h3>Countries</h3>
-    <h4>Been to:</h4>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler}/>}
+    <h4>Been to:</h4>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
     <Card style={{ width: '45%' }}>
       <Card.Body>
         <Carousel show={3}>
@@ -401,7 +382,7 @@ const UserProfile = ({ match }) => {
   </div>
 
   const countriesWishList = <div id={'countriesWishList'}>
-    <h4>Wish list:</h4>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler}/>}
+    <h4>Wish list:</h4>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
     <Card style={{ width: '45%' }}>
       <Card.Body>
         <Carousel show={3}>
@@ -418,7 +399,7 @@ const UserProfile = ({ match }) => {
   </div>
 
   const friends = <div id={'friends'}>
-    <h3>Friends</h3>{isEditMode && <img src={penIcon} width='30px' onClick={() => alert('going to all friends page...')}/>}
+    <h3>Friends</h3>{isEditMode && <img src={penIcon} width='30px' onClick={() => alert('going to all friends page...')} />}
     <div>
       <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', maxHeight: '200px' }}>
         {userProfileData.friends.map((e, i) => {
@@ -438,17 +419,17 @@ const UserProfile = ({ match }) => {
     <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
       {userProfileData.comments.map((e, i) => {
         return <>
-        <Card style={{ width: '18rem' }} key={i}>
-          <Card.Body>
-            <Card.Title>{e.country.name}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
-            <Card.Text>
-              {e.text}
-            </Card.Text>
-            <div><small>Likes: {e.likes.length}</small></div>
-            {isEditMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
-          </Card.Body>
-        </Card>
+          <Card style={{ width: '18rem' }} key={i}>
+            <Card.Body>
+              <Card.Title>{e.country.name}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
+              <Card.Text>
+                {e.text}
+              </Card.Text>
+              <div><small>Likes: {e.likes.length}</small></div>
+              {isEditMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
+            </Card.Body>
+          </Card>
         </>
       })}
     </div>
@@ -460,7 +441,7 @@ const UserProfile = ({ match }) => {
     <div className={'photo-library-container'}>
       {userProfileData.images.map(image => {
         return <div key={image._id} className={'img photo-thumb'}>
-          <img src={image.url} id={image._id} className={''}/>
+          <img src={image.url} id={image._id} className={''} />
         </div>
       })}
     </div>
@@ -470,29 +451,29 @@ const UserProfile = ({ match }) => {
 
   let modalBody
 
-  switch (selectedModal){
+  switch (selectedModal) {
     case 'about':
-      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ fullName: userForm.fullName, username: userForm.username }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ fullName: userForm.fullName, username: userForm.username }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
       break
     case 'bio':
-      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ bio: userForm.bio }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ bio: userForm.bio }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
       break
     case 'general':
-      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ nationality: userForm.nationality, isTravelling: userForm.isTravelling, languages: userForm.languages }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ nationality: userForm.nationality, isTravelling: userForm.isTravelling, languages: userForm.languages }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
       break
     case 'countriesVisited':
-      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesVisited: userForm.countriesVisited }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesVisited: userForm.countriesVisited }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
       break
     case 'countriesWishList':
-      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesWishList: userForm.countriesWishList }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange}/>
+      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesWishList: userForm.countriesWishList }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
       break
   }
 
-  const modal = <Modal 
+  const modal = <Modal
     title={null}
-    body={modalBody} 
-    show={showModal} 
-    hideModalHandler={() => updateShowModal(false)}/>
+    body={modalBody}
+    show={showModal}
+    hideModalHandler={() => updateShowModal(false)} />
 
   return <>
     <Container>
@@ -506,7 +487,7 @@ const UserProfile = ({ match }) => {
       {friends}
       {comments}
     </Container>
-    
+
   </>
 
 }
