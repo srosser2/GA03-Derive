@@ -2,6 +2,8 @@ import React from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/index.scss'
+import './styles/components/Comments.scss'
+import './styles/containers/Register.scss'
 
 // Pages
 import CountryProfile from './containers/CountryProfile'
@@ -15,7 +17,6 @@ import NotFound from './containers/NotFound'
 import About from './containers/About'
 import MyFriends from './containers/MyFriends'
 
-import 'bootstrap/dist/css/bootstrap.min.css'
 
 import NavBar from './components/Navbar'
 
