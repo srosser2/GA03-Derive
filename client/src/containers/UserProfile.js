@@ -4,6 +4,7 @@ import axios from 'axios'
 // Components
 import Form from '../components/Form.js'
 import Modal from '../components/Modal.js'
+import FileUpload from '../components/FileUpload.js'
 import { Container } from 'react-bootstrap'
 
 import { getLoggedInUserId } from '../lib/auth'
@@ -13,6 +14,7 @@ const UserProfile = ({ match }) => {
   const loggedInUser = getLoggedInUserId()
   // console.log(loggedInUser)
 
+  const [fileUploadPath, updateFileUploadPath] = useState('')
   const [userProfileData, updateUserProfileData] = useState({})
   const [userForm, updateUserForm] = useState({
     fullName: {
@@ -196,6 +198,46 @@ const UserProfile = ({ match }) => {
   //   return (data.join(', ') + ' and ' + lastLanguage)
   // }
 
+  function readFileAsync(file) {
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+
+      reader.onload = (res) => {
+        // resolve(res.target.result);
+      };
+
+      reader.onerror = reject;
+
+      return reader.readAsArrayBuffer(file);
+    })
+  }
+
+  // async function imageUploadHandler() {
+  //   try {
+  //     let file = document.getElementById('fileInput').files[0];
+  //     let contentBuffer = await readFileAsync(file);
+  //     console.log(contentBuffer);
+  //   } catch(err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  const imageUploadHandler = async (e) => {
+      const file = e.target.files[0].name
+      console.log(file)
+      const fileObj = {
+        filePath: file
+      }
+      axios.post('/api/images', fileObj, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+
+
+  }
+
+
 
   // All Content Sections
 
@@ -235,6 +277,18 @@ const UserProfile = ({ match }) => {
     {userProfileData._id === loggedInUser.userId ? <button onClick={showEditFieldModalHandler} >Edit field</button> : null}
   </div>
 
+  const images = <div>
+    <h2>{userProfileData.fullName}'s Images</h2>
+    <FileUpload handleUpload={imageUploadHandler} />
+    <div className={'photo-library-container'}>
+      {userProfileData.images.map(image => {
+        return <div className={'img photo-thumb'}>
+          <img src={image.url} id={image._id} className={''}/>
+        </div>
+      })}
+    </div>
+  </div>
+
   // Modal Body Logic
 
   let modalBody
@@ -264,6 +318,7 @@ const UserProfile = ({ match }) => {
       {userInfo}
       {bio}
       {countries}
+      {images}
       {comments}
     </Container>
     

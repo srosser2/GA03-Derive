@@ -42,7 +42,8 @@ const userSchema = new mongoose.Schema({
   sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   languages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Language' }],
-  profilePicture: { type: String }
+  profilePicture: { type: String },
+  images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image'}]
 })
 
 userSchema.pre('save', function(next) {

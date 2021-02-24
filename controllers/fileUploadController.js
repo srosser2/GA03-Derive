@@ -1,4 +1,5 @@
 import Image from '../models/image.js'
+import User from '../models/user.js'
 import fileManager from '../lib/fileManager.js'
 
 const fileUploadController = {
@@ -26,6 +27,7 @@ const fileUploadController = {
       body.public_id = file.public_id,
       body.user = req.currentUser._id
       const image = await Image.create(body)
+      await User.findByIdAndUpdate({ _id: body.user }, { $push: { images: image._id } })
       res.send(image)
     } catch (err) {
       next(err)
