@@ -21,7 +21,7 @@ const userController = {
         return res.status(401).send({ message: 'Unauthorized' })
       }
       const token = jwt.sign(
-        { 
+        {
           userId: user._id,
           fullName: user.fullName
         },
@@ -73,7 +73,7 @@ const userController = {
       if (!userToUpdate._id.equals(currentUser._id)) {
         return res.status(401).send({ message: 'Unauthorized' })
       }
-      const updatedUser = await User.findByIdAndUpdate({ _id: id }, body, { new: true } )
+      const updatedUser = await User.findByIdAndUpdate({ _id: id }, body, { new: true })
         .populate('comments')
         .populate('friends')
         .populate('countriesVisited')
@@ -140,6 +140,23 @@ const userController = {
         return res.send({ message: 'They like you - congrats, friend request accepted' })
       }
       res.send({ message: 'Sorry, they don\'t like you' })
+    } catch (err) {
+      next(err)
+    }
+  },
+
+  async deleteFriend(req, res, next) {
+    const friendToDelete = req.params.id
+    const currentUser = req.currentUser._id
+    try {
+      const friendIWantToDelete = await User.findById(friendToDelete)
+      const friendDeleting = await User.findById(currentUser)
+      if (!friendIWantToDelete) {
+        return res.send({ message: 'This user does not exist so you can\'t delete them' })
+      }
+      await User.findByIdAndUpdate({ _id: friendIWantToDelete._id }, { $pull: { friends: friendDeleting._id } })
+      await User.findByIdAndUpdate({ _id: friendDeleting._id }, { $pull: { friends: friendIWantToDelete._id } })
+      res.status(200).send({ message: `Friend ${friendIWantToDelete._id} deleted!` })
     } catch (err) {
       next(err)
     }

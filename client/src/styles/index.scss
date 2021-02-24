@@ -2,7 +2,13 @@
   margin-bottom: 16px;
 }
 
+/** Home Page **/ 
 
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 /** Comments **/ 
 
 .comment-header {
