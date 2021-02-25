@@ -70,6 +70,7 @@ const NavBar = ({ history }) => {
             {user.receivedRequests && <NotificationDisplay postFriendRequest={postFriendRequest} handleShow={handleShow} notificationsOn={notificationsOn} user={user}/>}
           </NavDropdown>
         </>}
+        <Nav.Link href="/about">About</Nav.Link>
         {loggedIn && <Nav.Link onClick={() => handleShow()}>Notifications</Nav.Link>}
         {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}
         {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
