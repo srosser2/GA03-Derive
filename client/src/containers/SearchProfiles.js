@@ -47,21 +47,6 @@ const SearchProfiles = () => {
     updateSearchText(updatedForm)
   }
 
-  // LEGACY - REMOVE
-  // const handleSubmit = () => {
-  //   try {
-  //     const nameSearched = searchText.title.value
-  //     const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
-  //     const matchingNames = removeLoggedInUser.filter(user => {
-  //       return user.fullName.toLowerCase().includes(nameSearched.toLowerCase()) || user.username.toLowerCase().includes(nameSearched.toLowerCase())
-  //     })
-  //     updateDisplayUsers(matchingNames)
-  //     updateSearch(nameSearched)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-
   const formControls = {
     submit: {
       handler: () => {
@@ -114,7 +99,11 @@ const SearchProfiles = () => {
           friendStatus = <div className={'addFriendButtonContainer'}>
             <Button onClick={() => addFriend(user)}>Add Friend</Button>
           </div>
+        }
 
+        {user.profilePicture.length === -1
+          ? https://avataaars.io/
+          : user.profilePicture
         }
 
         return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4}>

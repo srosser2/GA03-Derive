@@ -262,7 +262,6 @@ const UserProfile = ({ match }) => {
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
-    notify.show('Error: user not found', 'error', 2500)
     return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
   }
 
