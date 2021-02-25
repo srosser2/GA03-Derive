@@ -125,9 +125,9 @@ const UserProfile = ({ match }) => {
       return obj[key].map(item => {
         return {
           ...item,
-          value: item[val], 
-          label: item[lab] 
-        } 
+          value: item[val],
+          label: item[lab]
+        }
       })
     },
     incoming: (data) => {
@@ -137,9 +137,9 @@ const UserProfile = ({ match }) => {
         return obj[key].map(item => {
           return {
             ...item,
-            value: item[val], 
-            label: item[lab] 
-          } 
+            value: item[val],
+            label: item[lab]
+          }
         })
       }
       const countriesVisited = mapArrayToSelectOptions(transformedData, 'countriesVisited', '_id', 'name')
@@ -151,7 +151,7 @@ const UserProfile = ({ match }) => {
       transformedData.isTravelling = { value: transformedData.isTravelling, label: transformedData.isTravelling ? 'Yes' : 'No' }
       transformedData.isPublic = { value: transformedData.isPublic, label: transformedData.isPublic ? 'Yes' : 'No' }
       return transformedData
-      
+
     }
   }
 
@@ -251,8 +251,12 @@ const UserProfile = ({ match }) => {
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
+<<<<<<< HEAD
     // add a button to return the user home
     return <Container><h1>User not found :(</h1></Container>
+=======
+    return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
+>>>>>>> development
   }
 
   const formHandlers = {
@@ -296,7 +300,7 @@ const UserProfile = ({ match }) => {
     return new Promise((resolve, reject) => {
       const fr = new FileReader()
       fr.onerror = reject
-      fr.onload = function() {
+      fr.onload = function () {
         resolve(fr.result)
       }
       fr.readAsDataURL(file)
@@ -305,7 +309,7 @@ const UserProfile = ({ match }) => {
 
   const imageUploadHandler = async (e) => {
     const file = e.target.files[0]
-    
+
     readAsDataURL(file)
       .then(async (res) => {
         console.log(res.toString())
@@ -318,7 +322,7 @@ const UserProfile = ({ match }) => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
-          })
+        })
           .then(res => console.log(res))
       })
   }
@@ -359,11 +363,14 @@ const UserProfile = ({ match }) => {
     }
   }
 
+
   const userInfo = <div id={'about'} className={'content-block'}>
     <Card className='profileCard'>
       <div className={'content-block-header'}>
         <div className="justifySpaceBetween">
-          <img src={(userProfileData.profilePicture)} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
+          <img src={(userProfileData.profilePicture
+            ? userProfileData.profilePicture
+            : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg')} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
           <div>
             {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
             {userProfileData.friends !== undefined && checkCurrentFriendState()}
@@ -394,7 +401,7 @@ const UserProfile = ({ match }) => {
   </div>
 
   const countriesVisited = <div id={'countriesVisited'}>
-    
+
     <h3>Countries</h3>
     <h4>Been to:{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h4>
     <Card style={{ width: '45%' }}>
@@ -413,7 +420,7 @@ const UserProfile = ({ match }) => {
   </div>
 
   const countriesWishList = <div id={'countriesWishList'}>
-    
+
     <h4>Wish list:{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h4>
     <Card style={{ width: '45%' }}>
       <Card.Body>
@@ -430,14 +437,22 @@ const UserProfile = ({ match }) => {
     </Card>
   </div>
 
+
+
   const friends = <div id={'friends'}>
-    <h3>Friends{isEditMode && <a href="/friends"><img src={penIcon} width='30px'/></a>}</h3>
+    <h3>Friends{isEditMode && <a href="/friends"><img src={penIcon} width='30px' /></a>}</h3>
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       {userProfileData.friends.slice(0, 8).map((e, i) => {
         return <div key={i}>
           <Container>
             <a href={`/users/${e._id}`}>
+<<<<<<< HEAD
               <Row><img src={e.profilePicture} alt={e.fullName} style={{ width: '100%', height: '80%', objectFit: 'fill' }}/></Row>
+=======
+              <Row><img src={e.profilePicture
+                ? e.profilePicture
+                : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt={e.fullName} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
+>>>>>>> development
               <Row className="justifyCenter"><small>{e.fullName}</small></Row>
             </a>
           </Container>
@@ -537,7 +552,7 @@ const UserProfile = ({ match }) => {
         {countriesWishList}
       </Card>
 
-      
+
       {comments}
 
     </Container>

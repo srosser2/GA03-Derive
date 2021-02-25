@@ -15,17 +15,6 @@ const Register = ({ history }) => {
   const [displayModal, updateDisplayModal] = useState(false)
   const [showModal, updateShowModal] = useState(false)
   const [registerForm, updateRegisterForm] = useState({
-    username: {
-      label: 'Username',
-      element: 'input',
-      type: 'text',
-      placeholder: 'Enter your username',
-      value: '',
-      validation: {
-        required: true
-      },
-      dirty: false
-    },
     fullName: {
       label: 'Full Name',
       element: 'input',

@@ -47,21 +47,6 @@ const SearchProfiles = () => {
     updateSearchText(updatedForm)
   }
 
-  // LEGACY - REMOVE
-  // const handleSubmit = () => {
-  //   try {
-  //     const nameSearched = searchText.title.value
-  //     const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
-  //     const matchingNames = removeLoggedInUser.filter(user => {
-  //       return user.fullName.toLowerCase().includes(nameSearched.toLowerCase()) || user.username.toLowerCase().includes(nameSearched.toLowerCase())
-  //     })
-  //     updateDisplayUsers(matchingNames)
-  //     updateSearch(nameSearched)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-
   const formControls = {
     submit: {
       handler: () => {
@@ -69,7 +54,7 @@ const SearchProfiles = () => {
           const nameSearched = searchText.title.value
           const removeLoggedInUser = allUsers.filter(user => !user._id.includes(`${currentUserToken.userId}`))
           const matchingNames = removeLoggedInUser.filter(user => {
-            return user.fullName.toLowerCase().startsWith(nameSearched.toLowerCase()) || user.username.toLowerCase().startsWith(nameSearched.toLowerCase())
+            return user.fullName.toLowerCase().startsWith(nameSearched.toLowerCase())
           })
           updateDisplayUsers(matchingNames)
           updateSearch(nameSearched)
@@ -101,10 +86,14 @@ const SearchProfiles = () => {
 
   let searchResults
 
+
+
+
   if (displayUsers.length > 0) {
 
     searchResults = <CardDeck>
       {displayUsers.map((user, index) => {
+
         let friendStatus
         if (user.friends.includes(currentUserToken.userId)) {
           friendStatus = <p className={'cardText'}>Friends ✅</p>
@@ -114,27 +103,31 @@ const SearchProfiles = () => {
           friendStatus = <div className={'addFriendButtonContainer'}>
             <Button onClick={() => addFriend(user)}>Add Friend</Button>
           </div>
-
         }
 
-        return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4}>
-          <Card className={'country-card'}>
-            <div>
-              <Card.Img variant="top" width={64} height={64} src={user.profilePicture} alt="user image" className={'flag'} />
-            </div>
-            <Card.Body>
-              <Card.Title>
-                <Link to={`/users/${user._id}`}>
-                  <h4 className={'FriendsCardHeader'}>{user.fullName.length >= 15
-                    ? user.fullName.slice(0, 15) + '...'
-                    : user.fullName
-                  }</h4>
-                </Link>
-              </Card.Title>
-              {friendStatus}
-            </Card.Body>
-          </Card>
-        </Col>
+        if (user._id !== currentUserToken.userId) {
+          return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4}>
+            <Card className={'country-card'}>
+              <div>
+                <Card.Img variant="top" width={64} height={64} src={user.profilePicture
+                  ? user.profilePicture
+                  : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'
+                } alt="user image" className={'flag'} />
+              </div>
+              <Card.Body>
+                <Card.Title>
+                  <Link to={`/users/${user._id}`}>
+                    <h4 className={'FriendsCardHeader'}>{user.fullName.length >= 15
+                      ? user.fullName.slice(0, 15) + '...'
+                      : user.fullName
+                    }</h4>
+                  </Link>
+                </Card.Title>
+                {friendStatus}
+              </Card.Body>
+            </Card>
+          </Col>
+        }
       })}
     </CardDeck>
   }
