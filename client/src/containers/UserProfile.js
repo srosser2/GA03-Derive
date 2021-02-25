@@ -262,8 +262,8 @@ const UserProfile = ({ match }) => {
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
-    notify.show('Error: user not found', 'error', 2500)
-    return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
+    // add a button to return the user home
+    return <Container><h1>User not found :(</h1></Container>
   }
 
   const formHandlers = {
@@ -468,8 +468,8 @@ const UserProfile = ({ match }) => {
         return <div key={i}>
           <Container>
             <a href={`/users/${e._id}`}>
-              <Row><img src={e.profilePicture} alt={e.username} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
-              <Row className="justifyCenter"><small>{e.username}</small></Row>
+              <Row><img src={e.profilePicture} alt={e.fullName} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
+              <Row className="justifyCenter"><small>{e.fullName}</small></Row>
             </a>
           </Container>
         </div>
