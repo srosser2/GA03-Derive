@@ -7,9 +7,6 @@ import { getLoggedInUserId } from '../lib/auth.js'
 
 import NotificationDisplay from './NotificationDisplay'
 
-// ! Outstanding to do:
-// ! 1. new notfications - define route and what are we displaying?
-
 const NavBar = ({ history }) => {
 
   const [user, updateUser] = useState({})
@@ -41,7 +38,7 @@ const NavBar = ({ history }) => {
   async function postFriendRequest(targetFriendId, action) {
     const body = { 'isAccepted': action }
     const token = localStorage.getItem('token')
-    const { data } = await axios.post(`/api/users/${targetFriendId}/acceptFriend`, body, { headers: { "Authorization": `Bearer ${token}` } }).catch(err => console.log(err, data))
+    const { data } = await axios.post(`/api/users/${targetFriendId}/acceptFriend`, body, { headers: { 'Authorization': `Bearer ${token}` } }).catch(err => console.log(err, data))
     // remove the friend from the friendsRequests state
     const copy = user
     copy.receivedRequests = copy.receivedRequests.filter(e => e._id !== targetFriendId)
@@ -58,7 +55,7 @@ const NavBar = ({ history }) => {
         {loggedIn && <>
           <NavDropdown title={loggedIn.fullName} id="basic-nav-dropdown" className="justify-content-end">
             <NavDropdown.Item href={`/users/${loggedIn.userId}`}>Profile</NavDropdown.Item>
-            <NavDropdown.Item href="/countries">Explore...</NavDropdown.Item>
+            <NavDropdown.Item href="/countries">Explore Countries</NavDropdown.Item>
             <NavDropdown.Item href="/search-profiles">Search for friends</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
