@@ -12,7 +12,9 @@ dotenv.config()
 const startServer = async () => {
   
   await connectDB()
-  app.use(express.json())
+  app.use(express.json({
+    limit: 10000000
+  }))
   app.use('/api', router)
   // app.use(logger)
   app.use(errorHandler)
