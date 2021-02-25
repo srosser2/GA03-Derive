@@ -8,7 +8,6 @@ import FileUpload from '../components/FileUpload.js'
 import { Container, Card, Button, Row, Col } from 'react-bootstrap'
 import Carousel from '../components/Carousel.js'
 import { getLoggedInUserId } from '../lib/auth'
-import Notifications, { notify } from 'react-notify-toast'
 import NavBar from '../components/Navbar'
 
 const penIcon = 'https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg'
@@ -252,7 +251,12 @@ const UserProfile = ({ match }) => {
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
+<<<<<<< HEAD
+    // add a button to return the user home
+    return <Container><h1>User not found :(</h1></Container>
+=======
     return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
+>>>>>>> development
   }
 
   const formHandlers = {
@@ -406,7 +410,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesVisited.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }} /></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100px', height: '80px' }} /></a>
               </div>
             </div>
           })}
@@ -424,7 +428,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesWishList.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }} /></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80%', objectFit: 'fill' }} /></a>
               </div>
             </div>
           })}
@@ -442,9 +446,13 @@ const UserProfile = ({ match }) => {
         return <div key={i}>
           <Container>
             <a href={`/users/${e._id}`}>
+<<<<<<< HEAD
+              <Row><img src={e.profilePicture} alt={e.fullName} style={{ width: '100%', height: '80%', objectFit: 'fill' }}/></Row>
+=======
               <Row><img src={e.profilePicture
                 ? e.profilePicture
                 : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt={e.fullName} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
+>>>>>>> development
               <Row className="justifyCenter"><small>{e.fullName}</small></Row>
             </a>
           </Container>
