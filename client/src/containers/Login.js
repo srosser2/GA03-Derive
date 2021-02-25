@@ -5,6 +5,8 @@ import { getLoggedInUserId } from '../lib/auth'
 import { Container, Row, Col } from 'react-bootstrap'
 import Form from '../components/Form.js'
 
+import Notifications, { notify } from 'react-notify-toast'
+
 const Login = ({ history }) => {
 
   const [loginForm, updateLoginForm] = useState({
@@ -93,6 +95,7 @@ const Login = ({ history }) => {
           history.push(`/users/${getLoggedInUserId().userId}`)
         } catch (err) {
           console.log(err)
+          notify.show('Error: please fill in all the required fields', 'error', 2500)
         }
       },
       classes: [
@@ -141,11 +144,12 @@ const Login = ({ history }) => {
   //   }
   // }
 
-  return <Container>
+  return <>
+  <Notifications />
+  <Container>
     <Row>
       <Col><h1>Login</h1></Col>
     </Row>
-
     <Row>
       <Col className={'mb-16'}>
         <Form
@@ -159,6 +163,7 @@ const Login = ({ history }) => {
     </Row>
 
   </Container>
+  </>
 
 
 }

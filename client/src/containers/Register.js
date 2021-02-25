@@ -7,6 +7,8 @@ import { getLoggedInUserId } from '../lib/auth'
 import Form from '../components/Form.js'
 import Modal from '../components/Modal.js'
 
+import Notifications, { notify } from 'react-notify-toast'
+
 
 const Register = ({ history }) => {
 
@@ -214,6 +216,7 @@ const Register = ({ history }) => {
           updateShowModal(true)
 
         } catch (err) {
+          notify.show('Error: please fill in the required fields', 'error', 2500)
           console.log(err)
         }
       },
@@ -244,6 +247,7 @@ const Register = ({ history }) => {
           updateShowModal(false)
           history.push('/login')
         } catch (err) {
+          notify.show('Error: please fill in the required fields', 'error', 2500)
           console.log(err)
         }
       },
@@ -345,7 +349,9 @@ const Register = ({ history }) => {
   //   </Row>
   // </Container>
 
-  return <div className={'registration-container'}>
+  return <>
+  <Notifications />
+  <div className={'registration-container'}>
     <div className={'lhs'}>
       <img src={'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80'} alt={'register'}/>
     </div>
@@ -370,6 +376,7 @@ const Register = ({ history }) => {
     </div>
       
   </div>
+  </>
 
 }
 export default Register
