@@ -182,6 +182,16 @@ const UserProfile = ({ match }) => {
       })
   }, [])
 
+  const transformData = {
+    incoming: (data) => {
+      // Transform data from api call to form friendly format
+      
+    },
+    outgoing: (data) => {
+      // Transform data from form to post friendly format
+    }
+  }
+
   const formControls = {
     submit: {
       handler: async () => {
@@ -325,12 +335,18 @@ const UserProfile = ({ match }) => {
     // formData.append('file', file)
     // formData.append('upload_preset', 'tx2dafyx')
 
+    
     readAsDataURL(file)
       .then(async (res) => {
         console.log(res.toString())
-        axios.post('/api/images', { fileName: 'a'}, {
+
+        const obj = {
+          filePath: res
+        }
+
+        axios.post('/api/images', obj, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         })

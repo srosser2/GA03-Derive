@@ -107,7 +107,7 @@ const Login = ({ history }) => {
       },
       classes: [
         'btn',
-        'btn-light'
+        'btn-secondary'
       ]
     }
   }
@@ -141,24 +141,42 @@ const Login = ({ history }) => {
   //   }
   // }
 
-  return <Container>
-    <Row>
-      <Col><h1>Login</h1></Col>
-    </Row>
+  // return <Container>
+  //   <Row>
+  //     <Col><h1>Login</h1></Col>
+  //   </Row>
 
-    <Row>
-      <Col className={'mb-16'}>
+  //   <Row>
+  //     <Col className={'mb-16'}>
+  //       <Form
+  //         config={loginForm}
+  //         controls={formControls}
+  //         onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
+  //         onSelectChange={handleSelectChange} />
+  //     </Col>
+  //     <Col>
+  //     </Col>
+  //   </Row>
+
+  // </Container>
+
+  return <div className={'registration-container'}>
+    <div className={'lhs'}>
+      <img src={'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?ixlib=rb-1.2.1&amp;ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80'} alt={'register'}/>
+    </div>
+    <div className={'rhs'}>
+      <div className={'registration-form-container'}>
+        <h1>Sign In</h1>
         <Form
           config={loginForm}
           controls={formControls}
           onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange} />
-      </Col>
-      <Col>
-      </Col>
-    </Row>
+      </div>
 
-  </Container>
+    </div>
+      
+  </div>
 
 
 }

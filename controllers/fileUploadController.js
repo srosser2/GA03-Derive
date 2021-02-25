@@ -24,16 +24,16 @@ const fileUploadController = {
     try {
       console.log(req.body)
       res.send(req.body)
-      // console.log('Trying to post the file')
-      // const file = await fileManager.uploadImage(req.body.filePath)
-      // console.log('File posted: ')
-      // console.log(file)
-      // body.url = file.secure_url
-      // body.public_id = file.public_id,
-      // body.user = req.currentUser._id
-      // const image = await Image.create(body)
-      // await User.findByIdAndUpdate({ _id: body.user }, { $push: { images: image._id } })
-      // res.send(image)
+      console.log('Trying to post the file')
+      const file = await fileManager.uploadImage(req.body.filePath)
+      console.log('File posted: ')
+      console.log(file)
+      body.url = file.secure_url
+      body.public_id = file.public_id,
+      body.user = req.currentUser._id
+      const image = await Image.create(body)
+      await User.findByIdAndUpdate({ _id: body.user }, { $push: { images: image._id } })
+      res.send(image)
     } catch (err) {
       next(err)
     }
