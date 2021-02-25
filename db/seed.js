@@ -23,32 +23,32 @@ async function seedDatabase() {
     const countries = await Country.create(countriesData)
     console.log(`${countries.length} countries added`)
 
-    // const languages = []
-    // countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
-    // let uniqueLangs = [...new Set(languages)].map(e => {
-    //   return { name: e }
-    // })
-    // uniqueLangs = uniqueLangs.sort((a,b) => {
-    //   if (a.name < b.name){
-    //     return -1
-    //   }
-    //   if (a.name > b.name){
-    //     return 1
-    //   }
-    //   return 0
-    // })
-    // const languagesAdded = await Language.create(uniqueLangs)
-    // console.log(`${languagesAdded.length} languages added`)
+    const languages = []
+    countriesData.map(e => e.languages.map(e => e.name).forEach(e => languages.push(e)))
+    let uniqueLangs = [...new Set(languages)].map(e => {
+      return { name: e }
+    })
+    uniqueLangs = uniqueLangs.sort((a,b) => {
+      if (a.name < b.name){
+        return -1
+      }
+      if (a.name > b.name){
+        return 1
+      }
+      return 0
+    })
+    const languagesAdded = await Language.create(uniqueLangs)
+    console.log(`${languagesAdded.length} languages added`)
 
     const combinedUserArray = userData.concat(dummyUserData(60, countries))
     const users = await User.create(combinedUserArray)
     console.log(`${users.length} users added`)
 
-    console.log(users)
+    // console.log(users)
     const usersArray = users.map(user => {
       return user._id
     })
-    console.log(usersArray)
+    // console.log(usersArray)
 
     for (let i = 0; i < users.length; i++) {
       const usersCopy = [...usersArray]

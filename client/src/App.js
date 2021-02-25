@@ -1,9 +1,16 @@
 import React from 'react'
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+
+// General Styles
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/index.scss'
-import './styles/components/Comments.scss'
+
+// Container Styles
 import './styles/containers/Register.scss'
+
+// Component Styles
+import './styles/components/Comments.scss'
+import './styles/components/Modal.scss'
 
 // Pages
 import CountryProfile from './containers/CountryProfile'

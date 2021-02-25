@@ -50,7 +50,7 @@ const NavBar = ({ history }) => {
 
   return <>
     <Navbar expand="lg">
-      <Nav.Link href="/">DÉRIVE</Nav.Link>
+      <Nav.Link href="/" className={'logo'}>Dérive</Nav.Link>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse className="justify-content-end">
         {loggedIn && <>
