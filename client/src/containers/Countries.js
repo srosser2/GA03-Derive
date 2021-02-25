@@ -108,6 +108,7 @@ const Countries = () => {
   if (displayCountries.length > 0) {
     searchResults = <CardDeck>
       {displayCountries.map((country, index) => {
+        console.log(country._id, "country")
         return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4} >
           <Card className={'country-card'}>
             <div>

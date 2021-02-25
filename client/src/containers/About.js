@@ -1,28 +1,32 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { Button, Container, Table } from 'react-bootstrap'
+import { Container, Table, Card } from 'react-bootstrap'
 
 import NavBar from '../components/Navbar'
 
 const About = () => {
-
-  const history = useHistory()
 
   console.log('%cHello!', 'color: red; font-family: sans-serif; font-size: 4.5em; font-weight: bolder; text-shadow: #000 1px 1px;', '\nAre you reading? We\'re hiring!\n\nGet in contact today...\n\n')
 
   return <>
     <NavBar />
     <Container>
-      <h1>About us</h1>
-      <p>
-        Dérive brings together like-minded individuals who have a passion for travelling and provides a space to explore countries, connect with others and share experiences.
-      </p>
-      <h3>Created by</h3>
-      <p>
-        <a href="https://github.com/hannahakhtar">Hannah Akhtar</a>, <a href="https://github.com/srosser2">Sam Rosser</a> and <a href="https://github.com/steftones">Stefan Sokolowski</a> as part of Project 3 for <a href="https://generalassemb.ly/">General Assembly’s</a> Software Engineering Immersive.
-      </p>
-      <div>
-        Technology used:
+
+      <Card className="profileCard">
+        <h1>About us</h1>
+        <p>
+          Dérive brings together like-minded individuals who have a passion for travelling and provides a space to explore countries, connect with others and share experiences.
+        </p>
+      </Card>
+
+      <Card className="profileCard">
+        <h3>Created by</h3>
+        <p>
+          <a href="https://github.com/hannahakhtar">Hannah Akhtar</a>, <a href="https://github.com/srosser2">Sam Rosser</a> and <a href="https://github.com/steftones">Stefan Sokolowski</a> as part of Project 3 for <a href="https://generalassemb.ly/">General Assembly’s</a> Software Engineering Immersive course.
+        </p>
+      </Card>
+      
+      <Card className="profileCard">
+        <h4>Technology used:</h4>
         <Table borderless={true}>
           <thead>
             <tr>
@@ -44,9 +48,7 @@ const About = () => {
             </tr>
           </tbody>
         </Table>
-      </div>
-      <br />
-      <Button onClick={() => history.goBack()}>Go back</Button>
+      </Card>
     </Container>
   </>
 }

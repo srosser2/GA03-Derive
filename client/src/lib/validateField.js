@@ -1,4 +1,5 @@
 import validator from 'validator'
+import Notifications, { notify } from 'react-notify-toast'
 
 const validateField = (value, rulesObj) => {
   let valid = true
@@ -13,13 +14,13 @@ const validateField = (value, rulesObj) => {
         break
       case 'isEmail': 
         valid = validator.isEmail(value)
-        if(!valid) {
+        if (!valid) {
           validationErrorMessages.push('Please provide a valid email.')
         }
         break
       case 'minLength':
         valid = validator.isLength(value, { min: rulesObj.minLength})
-        if(!valid) {
+        if (!valid) {
           validationErrorMessages.push(`The minimum length for this field is ${rulesObj.minLength} characters.`)
         }
         break
