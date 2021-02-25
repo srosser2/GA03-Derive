@@ -14,6 +14,7 @@ const Countries = () => {
   const [displayCountries, updateDisplayCountries] = useState([])
   const [searchText, updateSearchText] = useState({
     title: {
+      placeholder: 'Search for countries',
       label: '',
       element: 'input',
       type: 'text',
@@ -99,7 +100,7 @@ const Countries = () => {
         updateSearch(countryRequested)
       },
       label: 'Search',
-      classes: ['hide']
+      classes: ['searchButton']
     }
   }
 
@@ -107,14 +108,21 @@ const Countries = () => {
   if (displayCountries.length > 0) {
     searchResults = <CardDeck>
       {displayCountries.map((country, index) => {
-        return <Col key={index} xs={3}>
-          <Card>
-            <Card.Img variant="top" src={country.flag} alt={country.name} width={180} height={180} />
+        return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4} >
+          <Card className={'country-card'}>
+            <div>
+              <Card.Img variant="top" src={country.flag} alt={country.name} className={'flag'} />
+            </div>
             <Card.Body>
-              <Card.Title>{country.name}</Card.Title>
-              <Card.Text>{country.nativeName}</Card.Text>
-              <a href={`https://en.wikipedia.org/wiki/${country.name}`} target='_blank' >Wiki</a>
-              <Card.Link href={`/countries/${country._id}`}>View</Card.Link>
+              <Card.Title className={'cardTitle'}>{country.name.length >= 20
+                ? country.name.slice(0, 15) + '...'
+                : country.name
+              }</Card.Title>
+              <Card.Text className={'cardText'}>{country.nativeName}</Card.Text>
+              <div className={'countriesCardLinks'}>
+                <Card.Link href={`/countries/${country._id}`}>View</Card.Link>
+                <Card.Link href={`https://en.wikipedia.org/wiki/${country.name}`} target='_blank' >Wiki</Card.Link>
+              </div>
             </Card.Body>
           </Card>
         </Col>
@@ -131,37 +139,50 @@ const Countries = () => {
   return <>
     <NavBar />
     <Container>
-      <Col>
-        <h1>Explore Countries</h1>
-      </Col>
-      <Col>
-        <Row>
-          <Dropdown>
-            <Dropdown.Toggle variant="success" id="country-search-dropdown">Filter by region</Dropdown.Toggle>
+      <Row>
+        <Col>
+          <h2 className={'countriesH2'}>Explore Countries</h2>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col className={'countriesDropdownContainer'}>
+          <Dropdown className={'countriesDropdown'}>
+            <Dropdown.Toggle id="country-search-dropdown">Filter by region</Dropdown.Toggle>
             <Dropdown.Menu>
               {regions.map((region, index) => {
                 return <Dropdown.Item key={index} onClick={() => handleClick(region)}>{region}</Dropdown.Item>
               })}
             </Dropdown.Menu>
           </Dropdown>
-        </Row>
-        <Row>
-          <Button onClick={() => filterCountriesWishList()}>See countries on my wish list</Button>
-        </Row>
-        <Row>
-          <Button onClick={() => filterCountriesVisited()}>See countries visited</Button>
-        </Row>
-      </Col>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col className={'countriesButtonsContainer'}>
+          <button className={'countriesButton'} onClick={() => filterCountriesWishList()}>My wish list</button>
+          <button className={'countriesButton'} onClick={() => filterCountriesVisited()}>Countries visited</button>
+        </Col>
+      </Row>
+
+    </Container>
+
+    <Container>
       <Col>
         <Form
           config={searchText}
           onChange={handleChange}
-          controls={formControls} />
+          controls={formControls}
+          classes={['countriesForm']} />
       </Col>
+    </Container>
+
+    <Container>
       <Row>
         {searchResults}
       </Row>
     </Container>
+
   </>
 }
 
