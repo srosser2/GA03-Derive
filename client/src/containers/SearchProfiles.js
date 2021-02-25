@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Form from '../components/Form.js'
 import axios from 'axios'
-import { Button, Container, Media } from 'react-bootstrap'
+import { Button, Card, CardDeck, Col, Container } from 'react-bootstrap'
 import { getLoggedInUserId } from '../lib/auth.js'
 import { Link } from 'react-router-dom'
 import NavBar from '../components/Navbar'
@@ -13,7 +13,7 @@ const SearchProfiles = () => {
   const [searchText, updateSearchText] = useState({
     title: {
       input: '',
-      placeholder: 'Search by name or username: ',
+      placeholder: 'Search by name: ',
       element: 'input',
       type: 'text',
       value: '',
@@ -78,7 +78,7 @@ const SearchProfiles = () => {
         }
       },
       label: 'Search',
-      classes: []
+      classes: ['searchButton']
     }
   }
 
@@ -102,28 +102,41 @@ const SearchProfiles = () => {
   let searchResults
 
   if (displayUsers.length > 0) {
-    searchResults = displayUsers.map((user, index) => {
-      let friendStatus
-      if (user.friends.includes(currentUserToken.userId)) {
-        friendStatus = <p>Friends ✅</p>
-      } else if (user.receivedRequests.includes(currentUserToken.userId) || user.sentRequests.includes(currentUserToken.userId)) {
-        friendStatus = <p>Friend request sent</p>
-      } else {
-        friendStatus = <Button onClick={() => addFriend(user)}>Add Friend</Button>
-      }
 
-      return <div key={index}>
-        <Media>
-          <img width={64} height={64} src={user.profilePicture} alt="user image" />
-          <Media.Body>
-            <Link to={`/users/${user._id}`}>
-              <h4>{user.fullName}</h4>
-            </Link>
-            {friendStatus}
-          </Media.Body>
-        </Media>
-      </div>
-    })
+    searchResults = <CardDeck>
+      {displayUsers.map((user, index) => {
+        let friendStatus
+        if (user.friends.includes(currentUserToken.userId)) {
+          friendStatus = <p className={'cardText'}>Friends ✅</p>
+        } else if (user.receivedRequests.includes(currentUserToken.userId) || user.sentRequests.includes(currentUserToken.userId)) {
+          friendStatus = <p className={'cardText'}>Friend request sent</p>
+        } else {
+          friendStatus = <div className={'addFriendButtonContainer'}>
+            <Button onClick={() => addFriend(user)}>Add Friend</Button>
+          </div>
+
+        }
+
+        return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4}>
+          <Card className={'country-card'}>
+            <div>
+              <Card.Img variant="top" width={64} height={64} src={user.profilePicture} alt="user image" className={'flag'} />
+            </div>
+            <Card.Body>
+              <Card.Title>
+                <Link to={`/users/${user._id}`}>
+                  <h4 className={'FriendsCardHeader'}>{user.fullName.length >= 15
+                    ? user.fullName.slice(0, 15) + '...'
+                    : user.fullName
+                  }</h4>
+                </Link>
+              </Card.Title>
+              {friendStatus}
+            </Card.Body>
+          </Card>
+        </Col>
+      })}
+    </CardDeck>
   }
 
   if (search.length > 0 && displayUsers.length === 0) {
@@ -135,12 +148,12 @@ const SearchProfiles = () => {
   return <>
     <NavBar />
     <Container>
-      <h1>Search Profiles</h1>
+      <h2 className={'countriesH2'}>Search Profiles</h2>
       <Form
         config={searchText}
         onChange={handleChange}
-        // onSubmit={handleSubmit}
         controls={formControls}
+        classes={['countriesForm']}
       />
       {searchResults}
     </Container>
@@ -148,3 +161,4 @@ const SearchProfiles = () => {
 }
 
 export default SearchProfiles
+
