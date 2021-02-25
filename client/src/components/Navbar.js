@@ -63,7 +63,7 @@ const NavBar = ({ history }) => {
             <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
           </NavDropdown>
         </>}
-        <Nav.Link onClick={() => handleShow()}>Notifications</Nav.Link>
+        {loggedIn && <Nav.Link onClick={() => handleShow()}>Notifications</Nav.Link>}
         {!loggedIn && <Nav.Link href="/register">Register</Nav.Link>}
         {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
         {loggedIn && <a href={`/users/${loggedIn.userId}`} ><img src={user.profilePicture} alt="placeholder" style={{ borderRadius: '100%', width: '50px', padding: 5 }} /></a>}
