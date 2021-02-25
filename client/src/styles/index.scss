@@ -41,6 +41,10 @@ h1 {
   color: $text-subtle;
 }
 
+div {
+  white-space: pre-wrap; 
+}
+
 .logo {
   font-family: $font-logo;
   font-size: 24px;

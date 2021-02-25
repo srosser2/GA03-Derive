@@ -5,7 +5,7 @@ import axios from 'axios'
 import Form from '../components/Form.js'
 import Modal from '../components/Modal.js'
 import FileUpload from '../components/FileUpload.js'
-import { Container, Card, Button } from 'react-bootstrap'
+import { Container, Card, Button, FormLabel } from 'react-bootstrap'
 import Carousel from '../components/Carousel.js'
 import { getLoggedInUserId } from '../lib/auth'
 import NavBar from '../components/Navbar'
@@ -35,7 +35,7 @@ const UserProfile = ({ match }) => {
 
   const [fileUploadPath, updateFileUploadPath] = useState('')
   const [userProfileData, updateUserProfileData] = useState({})
-  const [isEditMode, updateIsEditMode] = useState(false)
+  const [isEditMode, updateIsEditMode] = useState(true)
   const [isPending, updateIsPending] = useState(false)
   const [userForm, updateUserForm] = useState({
     fullName: {
@@ -128,38 +128,54 @@ const UserProfile = ({ match }) => {
   const [isLoading, updateIsLoading] = useState(true)
   const [selectedModal, updateSelectedModal] = useState('')
   const [showModal, updateShowModal] = useState(false)
-  const [currentFriend, updateCurrentFriend] = useState(null)
+
+  const transformData = {
+    mapArrayToSelectOptions: (obj, key, val, lab) => {
+      return obj[key].map(item => {
+        return {
+          ...item,
+          value: item[val], 
+          label: item[lab] 
+        } 
+      })
+    },
+    incoming: (data) => {
+      // Transform data from api call to form friendly format
+      const transformedData = { ...data }
+      const mapArrayToSelectOptions = (obj, key, val, lab) => {
+        return obj[key].map(item => {
+          return {
+            ...item,
+            value: item[val], 
+            label: item[lab] 
+          } 
+        })
+      }
+      const countriesVisited = mapArrayToSelectOptions(transformedData, 'countriesVisited', '_id', 'name')
+      const countriesWishList = mapArrayToSelectOptions(transformedData, 'countriesWishList', '_id', 'name')
+      const languages = mapArrayToSelectOptions(transformedData, 'languages', '_id', 'name')
+      transformedData.countriesVisited = countriesVisited
+      transformedData.countriesWishList = countriesWishList
+      transformedData.languages = languages
+      transformedData.isTravelling = { value: transformedData.isTravelling, label: transformedData.isTravelling ? 'Yes' : 'No' }
+      transformedData.isPublic = { value: transformedData.isPublic, label: transformedData.isPublic ? 'Yes' : 'No' }
+      return transformedData
+      
+    }
+  }
 
   useEffect(() => {
     axios.get(`/api/users/${match.params.id}`)
       .then(({ data }) => {
-        const modifiedData = { ...data }
-        const mappedLanguages = modifiedData.languages.map(language => {
-          return {
-            value: language._id,
-            label: language.name
-          }
-        })
-        const transformedIsTravelling = {
-          value: modifiedData.isTravelling,
-          label: modifiedData.isTravelling === true ? 'Yes' : 'No'
-        }
-        const countriesVisited = data.countriesVisited.map(country => {
-          return { label: country.name, value: country._id, flag: country.flag }
-        })
-        const countriesWishList = data.countriesWishList.map(country => {
-          return { label: country.name, value: country._id, flag: country.flag }
-        })
-        modifiedData.countriesVisited = countriesVisited
-        modifiedData.countriesWishList = countriesWishList
-        modifiedData.languages = mappedLanguages
-        modifiedData.isTravelling = transformedIsTravelling
+        const modifiedData = transformData.incoming({ ...data })
         updateIsLoading(false)
         updateUserProfileData(modifiedData)
         const formKeys = Object.keys(userForm)
         formKeys.forEach(key => userForm[key].value = modifiedData[key])
+        // updateUserForm()
       })
       .catch(err => {
+        console.log(err)
         updateIsLoading(false)
       })
     axios.get('/api/languages')
@@ -168,6 +184,7 @@ const UserProfile = ({ match }) => {
           return { label: language.name, value: language._id }
         })
         const updatedUserForm = { ...userForm }
+        console.log(languages)
         updatedUserForm.languages.options = languages
         updateUserForm(updatedUserForm)
       })
@@ -182,16 +199,6 @@ const UserProfile = ({ match }) => {
         updateUserForm(updatedUserForm)
       })
   }, [])
-
-  const transformData = {
-    incoming: (data) => {
-      // Transform data from api call to form friendly format
-      
-    },
-    outgoing: (data) => {
-      // Transform data from form to post friendly format
-    }
-  }
 
   const formControls = {
     submit: {
@@ -213,16 +220,12 @@ const UserProfile = ({ match }) => {
           const token = localStorage.getItem('token')
           await axios.put(`/api/users/${loggedInUser.userId}`, formData, { headers: { Authorization: `Bearer ${token}` } })
             .then(({ data }) => {
-              const countriesVisited = data.countriesVisited.map(country => {
-                return { label: country.name, value: country._id, flag: country.flag }
-              })
-              const countriesWishList = data.countriesWishList.map(country => {
-                return { label: country.name, value: country._id, flag: country.flag }
-              })
+              const modifiedData = transformData.incoming({ ...data })
               const updatedUserForm = { ...userForm }
-              updatedUserForm.countriesVisited = countriesVisited
-              updatedUserForm.countriesWishList = countriesWishList
-              updateUserProfileData(data)
+              updateUserProfileData(modifiedData)
+              const formKeys = Object.keys(userForm)
+              formKeys.forEach(key => updatedUserForm[key].value = modifiedData[key])
+              updateUserForm(updatedUserForm)
               updateShowModal(false)
             })
             .catch(err => console.log(err))
@@ -241,18 +244,14 @@ const UserProfile = ({ match }) => {
   }
 
   function checkCurrentFriendState() {
-    console.log("233")
     if (isEditMode) return
     if (userProfileData.friends !== undefined) {
       if (userProfileData.friends.map(e => e.friends.includes(userProfileData._id))[0]) {
-        console.log("237")
         return
       } else {
         if (userProfileData.receivedRequests.map(e => e.sentRequests.includes(userProfileData._id))[0]) {
-          console.log("241")
           return <Button>Request pending...</Button>
         } else {
-          console.log("244")
           return <AddFriendButton isPending={isPending} updateIsPending={updateIsPending} addFriend={addFriend} />
         }
       }
@@ -272,6 +271,7 @@ const UserProfile = ({ match }) => {
       updateUserForm(updatedForm)
     },
     handleSelectChange(e, name) {
+      console.log(e)
       const updatedForm = { ...userForm }
       updatedForm[name].value = e
       updateUserForm(updatedForm)
@@ -289,20 +289,6 @@ const UserProfile = ({ match }) => {
 
   // All Content Sections
 
-  function readFileAsync(file) {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-
-      reader.onload = (res) => {
-        // resolve(res.target.result);
-      };
-
-      reader.onerror = reject
-
-      return reader.readAsArrayBuffer(file);
-    })
-  }
-
   function readAsDataURL(file) {
     return new Promise((resolve, reject) => {
       const fr = new FileReader();
@@ -314,28 +300,8 @@ const UserProfile = ({ match }) => {
     });
   }
 
-  // THIS WORKS - NEED TO STOR PRESET ON BACKEND
-  // const imageUploadHandler = async (e) => {
-  //   const cloudURL = 'https://api.cloudinary.com/v1_1/dn39ocqwt/image/upload'
-  //   const file = e.target.files[0]
-  //   const formData = new FormData()
-
-  //   formData.append('file', file)
-  //   formData.append('upload_preset', 'tx2dafyx')
-
-  //   axios.post(cloudURL, formData)
-  //   .then(res => console.log(res))
-  //   .catch(err => console.log(err))
-  // }
-
   const imageUploadHandler = async (e) => {
-    const cloudURL = 'https://api.cloudinary.com/v1_1/dn39ocqwt/image/upload'
     const file = e.target.files[0]
-    const formData = new FormData()
-
-    // formData.append('file', file)
-    // formData.append('upload_preset', 'tx2dafyx')
-
     
     readAsDataURL(file)
       .then(async (res) => {
@@ -347,10 +313,9 @@ const UserProfile = ({ match }) => {
 
         axios.post('/api/images', obj, {
           headers: {
-            // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
-        })
+          })
           .then(res => console.log(res))
       })
 
@@ -539,7 +504,7 @@ const UserProfile = ({ match }) => {
       {modal}
       {userInfo}
       {bio}
-      {images}
+      {/* {images} */}
       {general}
       {countriesVisited}
       {countriesWishList}
