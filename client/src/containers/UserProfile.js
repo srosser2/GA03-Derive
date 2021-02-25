@@ -5,9 +5,10 @@ import axios from 'axios'
 import Form from '../components/Form.js'
 import Modal from '../components/Modal.js'
 import FileUpload from '../components/FileUpload.js'
-import { Container, Card, Button } from 'react-bootstrap'
+import { Container, Card, Button, Row, Col } from 'react-bootstrap'
 import Carousel from '../components/Carousel.js'
 import { getLoggedInUserId } from '../lib/auth'
+import Notifications, { notify } from 'react-notify-toast'
 import NavBar from '../components/Navbar'
 
 const penIcon = 'https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg'
@@ -15,8 +16,8 @@ const penIcon = 'https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0k
 const EditButton = ({ isEditMode, updateIsEditMode }) => {
   return <>
     {isEditMode
-      ? <Button onClick={() => updateIsEditMode(!isEditMode)}>Finish editing</Button>
-      : <Button onClick={() => updateIsEditMode(!isEditMode)}>Edit profile</Button>}
+      ? <Button variant="outline-success" onClick={() => updateIsEditMode(!isEditMode)}>Finish editing</Button>
+      : <Button variant="outline-primary" onClick={() => updateIsEditMode(!isEditMode)}>Edit profile</Button>}
   </>
 }
 
@@ -261,6 +262,7 @@ const UserProfile = ({ match }) => {
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
+    notify.show('Error: user not found', 'error', 2500)
     return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
   }
 
@@ -291,27 +293,24 @@ const UserProfile = ({ match }) => {
 
   function readFileAsync(file) {
     return new Promise((resolve, reject) => {
-      let reader = new FileReader();
-
+      let reader = new FileReader()
       reader.onload = (res) => {
         // resolve(res.target.result);
-      };
-
+      }
       reader.onerror = reject
-
-      return reader.readAsArrayBuffer(file);
+      return reader.readAsArrayBuffer(file)
     })
   }
 
   function readAsDataURL(file) {
     return new Promise((resolve, reject) => {
-      const fr = new FileReader();
-      fr.onerror = reject;
-      fr.onload = function () {
-        resolve(fr.result);
+      const fr = new FileReader()
+      fr.onerror = reject
+      fr.onload = function() {
+        resolve(fr.result)
       }
-      fr.readAsDataURL(file);
-    });
+      fr.readAsDataURL(file)
+    })
   }
 
   // THIS WORKS - NEED TO STOR PRESET ON BACKEND
@@ -353,8 +352,6 @@ const UserProfile = ({ match }) => {
         })
           .then(res => console.log(res))
       })
-
-
   }
 
   const printLanguages = () => {
@@ -394,36 +391,43 @@ const UserProfile = ({ match }) => {
   }
 
   const userInfo = <div id={'about'} className={'content-block'}>
-    <div className={'content-block-header'}>
-      <div>{<img src={(userProfileData.profilePicture)} alt="Profile picture"
-        style={{ borderRadius: '100%', width: '150px', padding: 5 }} />}</div>
-      <h2>{userProfileData.fullName}</h2>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
-      <h4>{userProfileData.username}</h4>
-
-      {userProfileData.friends !== undefined && checkCurrentFriendState()}
-
-      {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
-
-    </div>
-    <div className={'content-block-body'}>
-    </div>
-  </div>
-
-  const bio = <div id={'bio'}>
-    <h3>Bio</h3>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
-    <Card style={{ minHeight: '100px' }}>{userProfileData.bio}</Card>
+    <Card className='profileCard'>
+      <div className={'content-block-header'}>
+        <div className="justifySpaceBetween">
+          <img src={(userProfileData.profilePicture)} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
+          <div>
+            {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
+            {userProfileData.friends !== undefined && checkCurrentFriendState()}
+          </div>
+        </div>
+        <h2>{userProfileData.fullName}{isEditMode && <img className="fade-in" src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h2>
+        <h4>{userProfileData.username}</h4>
+      </div>
+      <div className={'content-block-body'}>
+      </div>
+    </Card>
   </div>
 
   const general = <div id={'general'}>
-    <h3>General</h3>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
-    <div>Nationality: {userProfileData.nationality}</div>
-    <div>Currently travelling: {userProfileData.isTravelling === true ? 'Yes' : 'No'}</div>
-    <div>Lanugages spoken: {userProfileData.languages && printLanguages()}</div>
+    <Card className='profileCard'>
+      <h3>General{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h3>
+      <div>Nationality: {userProfileData.nationality}</div>
+      <div>Currently travelling: {userProfileData.isTravelling === true ? 'Yes' : 'No'}</div>
+      <div>Lanugages spoken: {userProfileData.languages && printLanguages()}</div>
+    </Card>
+  </div>
+
+  const bio = <div id={'bio'}>
+    <Card className='profileCard' style={{ minHeight: '100px' }}>
+      <h3>Bio{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h3>
+      {userProfileData.bio}
+    </Card>
   </div>
 
   const countriesVisited = <div id={'countriesVisited'}>
+    
     <h3>Countries</h3>
-    <h4>Been to:</h4>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
+    <h4>Been to:{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h4>
     <Card style={{ width: '45%' }}>
       <Card.Body>
         <Carousel show={3}>
@@ -440,7 +444,8 @@ const UserProfile = ({ match }) => {
   </div>
 
   const countriesWishList = <div id={'countriesWishList'}>
-    <h4>Wish list:</h4>{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}
+    
+    <h4>Wish list:{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h4>
     <Card style={{ width: '45%' }}>
       <Card.Body>
         <Carousel show={3}>
@@ -457,52 +462,56 @@ const UserProfile = ({ match }) => {
   </div>
 
   const friends = <div id={'friends'}>
-    <h3>Friends</h3>{isEditMode && <img src={penIcon} width='30px' onClick={() => alert('going to all friends page...')} />}
-    <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', width: '50%', maxHeight: '200px' }}>
-        {userProfileData.friends.slice(0, 8).map((e, i) => {
-          if (e._id === undefined) return alert('friend mapping error')
-          return <a href={`/users/${e._id}`} key={i}>
-            <img src={e.profilePicture} alt={e.username} style={{ borderRadius: '100%', width: '100px', padding: 5 }} />
-            <small>{e.username}</small>
-          </a>
-        })}
-      </div>
-      <br />
+    <h3>Friends{isEditMode && <a href="/friends"><img src={penIcon} width='30px'/></a>}</h3>
+    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      {userProfileData.friends.slice(0, 8).map((e, i) => {
+        return <div key={i}>
+          <Container>
+            <a href={`/users/${e._id}`}>
+              <Row><img src={e.profilePicture} alt={e.username} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
+              <Row className="justifyCenter"><small>{e.username}</small></Row>
+            </a>
+          </Container>
+        </div>
+      })}
     </div>
   </div>
 
   const comments = <div id={'comments'}>
-    <h3>Comments</h3>
-    <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
-      {userProfileData.comments.map((e, i) => {
-        return <>
-          <Card style={{ width: '18rem' }} key={i}>
-            <Card.Body>
-              <Card.Title>{e.country.name}</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
-              <Card.Text>
-                {e.text}
-              </Card.Text>
-              <div><small>Likes: {e.likes.length}</small></div>
-              {isEditMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
-            </Card.Body>
-          </Card>
-        </>
-      })}
-    </div>
+    <Card className='profileCard'>
+      <h3>Comments</h3>
+      <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
+        {userProfileData.comments.map((e, i) => {
+          return <>
+            <Card style={{ width: '18rem' }} key={i}>
+              <Card.Body>
+                <Card.Title>{e.country.name}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
+                <Card.Text>
+                  {e.text}
+                </Card.Text>
+                <div><small>Likes: {e.likes.length}</small></div>
+                {isEditMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
+              </Card.Body>
+            </Card>
+          </>
+        })}
+      </div>
+    </Card>
   </div>
 
   const images = <div>
-    <h2>{userProfileData.fullName}'s Images</h2>
-    <FileUpload handleUpload={imageUploadHandler} />
-    <div className={'photo-library-container'}>
-      {userProfileData.images.map(image => {
-        return <div key={image._id} className={'img photo-thumb'}>
-          <img src={image.url} id={image._id} className={''} />
-        </div>
-      })}
-    </div>
+    <Card className='profileCard'>
+      <h2>{userProfileData.fullName}'s Images</h2>
+      <FileUpload handleUpload={imageUploadHandler} />
+      <div className={'photo-library-container'}>
+        {userProfileData.images.map(image => {
+          return <div key={image._id} className={'img photo-thumb'}>
+            <img src={image.url} id={image._id} className={''} />
+          </div>
+        })}
+      </div>
+    </Card>
   </div>
 
   // Modal Body Logic
@@ -534,17 +543,34 @@ const UserProfile = ({ match }) => {
     hideModalHandler={() => updateShowModal(false)} />
 
   return <>
+    <Notifications />
     <NavBar />
     <Container>
       {modal}
-      {userInfo}
-      {bio}
-      {images}
+
+      <Container>
+        <Row>
+          <Col>{userInfo}</Col>
+          <Col>
+            <Card className='profileCard'>
+              {friends}
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+
       {general}
-      {countriesVisited}
-      {countriesWishList}
-      {friends}
+      {bio}
+
+      {images}
+      <Card className='profileCard'>
+        {countriesVisited}
+        {countriesWishList}
+      </Card>
+
+      
       {comments}
+
     </Container>
 
   </>

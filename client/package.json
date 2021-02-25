@@ -36,6 +36,7 @@
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.15.2",
     "react-map-gl": "^6.1.8",
+    "react-notify-toast": "^0.5.1",
     "react-router-dom": "^5.2.0",
     "react-select": "^4.1.0"
   }

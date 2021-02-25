@@ -253,3 +253,32 @@ h1 {
     flex: 0;
   }
 }
+
+/* profile page */
+.profileCard {
+  padding: 30px;
+  border-radius: 20px;
+  margin: 10px;
+}
+
+.fade-in {
+  animation: fadeIn ease 0.1s;
+  -webkit-animation: fadeIn ease 0.1s;
+  -moz-animation: fadeIn ease 0.1s;
+  -o-animation: fadeIn ease 0.1s;
+  -ms-animation: fadeIn ease 0.1s;
+  }
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+.justifyCenter {
+  display: flex;
+  justify-content: center;
+}
+
+.justifySpaceBetween {
+  display: flex;
+  justify-content: space-between;
+}
