@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Button, Container, Media } from 'react-bootstrap'
 import { getLoggedInUserId } from '../lib/auth.js'
 import { Link } from 'react-router-dom'
+import NavBar from '../components/Navbar'
 
 const SearchProfiles = () => {
 
@@ -22,7 +23,6 @@ const SearchProfiles = () => {
     }
   })
   const [search, updateSearch] = useState('')
-
 
   const currentUserToken = getLoggedInUserId()
   const token = localStorage.getItem('token')
@@ -133,6 +133,7 @@ const SearchProfiles = () => {
   }
 
   return <>
+    <NavBar />
     <Container>
       <h1>Search Profiles</h1>
       <Form
