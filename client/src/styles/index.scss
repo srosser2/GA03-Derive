@@ -26,7 +26,7 @@ $font-primary: 'Nunito', sans-serif;
   align-items: center;
 }
 
-/** All Countries **/
+/** All Countries, Search Friends, My Friends **/
 
 .countriesH2 {
   text-align: center;
@@ -94,9 +94,22 @@ margin: 10px;
   text-align: center;
 }
 
+.FriendsCardHeader {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .cardText {
   text-align: center;
 }
+
+.addFriendButtonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+
 /** Comments **/ 
 
 
