@@ -360,7 +360,7 @@ const Register = ({ history }) => {
         <h1>Register</h1>
         <p>Already a member? <span className={'text-link'} onClick={() => history.push('/login')}>Login</span></p>
         <Form
-          config={{ 
+          config={{
             fullName: registerForm.fullName, 
             email: registerForm.email, 
             password: registerForm.password, 

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Button, Col, Container, Media } from 'react-bootstrap'
 import { getLoggedInUserId } from '../lib/auth.js'
 import { Link } from 'react-router-dom'
+import NavBar from '../components/Navbar'
 
 const MyFriends = () => {
 
@@ -58,6 +59,7 @@ const MyFriends = () => {
   }
 
   return <>
+    <NavBar />
     <Container>
       <h1>My friends</h1>
       <p>Number of friends: {friends.length}</p>

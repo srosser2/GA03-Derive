@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import NavBar from '../components/Navbar'
 
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import Map from '../components/Map'
@@ -207,13 +208,13 @@ const CountryProfile = ({ match, history }) => {
 
   const comments = commentData
     .sort((a, b) => a.createdAt < b.updatedAt ? 1 : -1)
-    .map(comment => <Comment 
-      key={comment._id} 
-      data={comment} 
-      deleteHandler={handleCommentDelete} 
-      editHandler={handleEditCommentModal} 
-      likeHandler={likeCommentHandler} 
-      viewProfileHandler={(userId) => history.push(`/users/${userId}`)}/>)
+    .map(comment => <Comment
+      key={comment._id}
+      data={comment}
+      deleteHandler={handleCommentDelete}
+      editHandler={handleEditCommentModal}
+      likeHandler={likeCommentHandler}
+      viewProfileHandler={(userId) => history.push(`/users/${userId}`)} />)
 
   const commentFormElement = <Form
     config={commentForm}
@@ -229,30 +230,34 @@ const CountryProfile = ({ match, history }) => {
     controls={modalCommentFormControls}
   />
 
-  return <Container>
-    {/* <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} /> */}
-    <Modal show={showModal} hideModalHandler={closeModal} body={modalFormBody} />
-    <Row>
-      <Col>
-        <h1>{countryData.name}</h1>
-        <h2>Native Name: {countryData.nativeName}</h2>
-        <h4>Population: {countryData.population}</h4>
-      </Col>
-    </Row>
-    <Row>
-      <Col>
-        {map}
-      </Col>
-    </Row>
-    <Row>
-      <Col md={{ span: 8, offset: 2 }}>
-        <h4>Comments ({countryData.comments ? comments.length : null})</h4>
-        <Button onClick={toggleCommentForm} variant="light">Add Comment</Button>
-        {showCommentForm ? commentFormElement : null}
-        {comments}
-      </Col>
-    </Row>
-  </Container>
+  return <>
+    <NavBar />
+    <Container>
+
+      {/* <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} /> */}
+      <Modal show={showModal} hideModalHandler={closeModal} body={modalFormBody} />
+      <Row>
+        <Col>
+          <h1>{countryData.name}</h1>
+          <h2>Native Name: {countryData.nativeName}</h2>
+          <h4>Population: {countryData.population}</h4>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {map}
+        </Col>
+      </Row>
+      <Row>
+        <Col md={{ span: 8, offset: 2 }}>
+          <h4>Comments ({countryData.comments ? comments.length : null})</h4>
+          <Button onClick={toggleCommentForm} variant="light">Add Comment</Button>
+          {showCommentForm ? commentFormElement : null}
+          {comments}
+        </Col>
+      </Row>
+    </Container>
+  </>
 }
 
 export default CountryProfile

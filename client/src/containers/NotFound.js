@@ -3,9 +3,10 @@ import { useHistory } from 'react-router-dom'
 import { Button, Container } from 'react-bootstrap'
 import Notifications, { notify } from 'react-notify-toast'
 
+import NavBar from '../components/Navbar'
 
 const NotFound = () => {
-  
+
   const history = useHistory()
 
   useEffect(() => {
@@ -14,6 +15,7 @@ const NotFound = () => {
 
   return <>
     <Notifications />
+    <NavBar />
     <Container>
       <h1>Oops!</h1>
       <p>Your page was not found...</p>

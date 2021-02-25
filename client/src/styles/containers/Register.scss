@@ -68,3 +68,13 @@ $font-primary: 'Nunito', sans-serif;
   background-color: $primary;
   text-transform: uppercase;
 }
+
+.registration-form-container button.btn-secondary {
+  width: 100%;
+  padding: 16px 16px;
+  margin-top: 16px;
+  color: $text-subtle;
+  background-color: $light-grey;
+  border: none;
+  text-transform: uppercase;
+}

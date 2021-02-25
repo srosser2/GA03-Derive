@@ -9,6 +9,7 @@ import { Container, Card, Button, Row, Col } from 'react-bootstrap'
 import Carousel from '../components/Carousel.js'
 import { getLoggedInUserId } from '../lib/auth'
 import Notifications, { notify } from 'react-notify-toast'
+import NavBar from '../components/Navbar'
 
 const penIcon = 'https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg'
 
@@ -183,6 +184,16 @@ const UserProfile = ({ match }) => {
       })
   }, [])
 
+  const transformData = {
+    incoming: (data) => {
+      // Transform data from api call to form friendly format
+      
+    },
+    outgoing: (data) => {
+      // Transform data from form to post friendly format
+    }
+  }
+
   const formControls = {
     submit: {
       handler: async () => {
@@ -230,15 +241,15 @@ const UserProfile = ({ match }) => {
     return <Container><h1>Loading...</h1></Container>
   }
 
-  function checkCurrentFriendState(){
+  function checkCurrentFriendState() {
     console.log("233")
     if (isEditMode) return
-    if (userProfileData.friends !== undefined){
-      if (userProfileData.friends.map(e => e.friends.includes(userProfileData._id))[0]){
+    if (userProfileData.friends !== undefined) {
+      if (userProfileData.friends.map(e => e.friends.includes(userProfileData._id))[0]) {
         console.log("237")
-        return 
+        return
       } else {
-        if (userProfileData.receivedRequests.map(e => e.sentRequests.includes(userProfileData._id))[0]){
+        if (userProfileData.receivedRequests.map(e => e.sentRequests.includes(userProfileData._id))[0]) {
           console.log("241")
           return <Button>Request pending...</Button>
         } else {
@@ -324,12 +335,18 @@ const UserProfile = ({ match }) => {
     // formData.append('file', file)
     // formData.append('upload_preset', 'tx2dafyx')
 
+    
     readAsDataURL(file)
       .then(async (res) => {
         console.log(res.toString())
-        axios.post('/api/images', { fileName: 'a'}, {
+
+        const obj = {
+          filePath: res
+        }
+
+        axios.post('/api/images', obj, {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         })
@@ -417,7 +434,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesVisited.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }}/></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }} /></a>
               </div>
             </div>
           })}
@@ -435,7 +452,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesWishList.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }}/></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }} /></a>
               </div>
             </div>
           })}
@@ -527,6 +544,7 @@ const UserProfile = ({ match }) => {
 
   return <>
     <Notifications />
+    <NavBar />
     <Container>
       {modal}
 

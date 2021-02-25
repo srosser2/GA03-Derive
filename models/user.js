@@ -9,11 +9,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
   email: {
     type: String,
     required: true,
@@ -43,7 +38,7 @@ const userSchema = new mongoose.Schema({
   receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   languages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Language' }],
   profilePicture: { type: String },
-  images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image'}]
+  images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }]
 })
 
 userSchema.pre('save', function(next) {
