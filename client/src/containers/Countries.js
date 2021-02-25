@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Button, Container, Row, Col, CardDeck, Card, Dropdown } from 'react-bootstrap'
+import NavBar from '../components/Navbar'
 
 import { getLoggedInUserId } from '../lib/auth'
 import Form from '../components/Form.js'
@@ -128,6 +129,7 @@ const Countries = () => {
   }
 
   return <>
+    <NavBar />
     <Container>
       <Col>
         <h1>Explore Countries</h1>

@@ -17,13 +17,9 @@ import NotFound from './containers/NotFound'
 import About from './containers/About'
 import MyFriends from './containers/MyFriends'
 
-
-import NavBar from './components/Navbar'
-
 function App() {
   return <>
     <BrowserRouter>
-      <NavBar />
       <Switch>
         <Route exact path="/not-found" component={NotFound}/>
         <Route exact path="/" component={Home} />

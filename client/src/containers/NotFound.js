@@ -1,12 +1,14 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { Button, Container } from 'react-bootstrap'
+import NavBar from '../components/Navbar'
 
 const NotFound = () => {
-  
+
   const history = useHistory()
 
   return <>
+    <NavBar />
     <Container>
       <h1>Oops!</h1>
       <p>Your page was not found...</p>
