@@ -353,18 +353,18 @@ const UserProfile = ({ match }) => {
         Authorization: `Bearer ${token}`
       }
     })
-    .then(({ data }) => {
-      const modifiedData = transformData.incoming({ ...data })
-      const updatedUserForm = { ...userForm }
-      updateUserProfileData(modifiedData)
-      const formKeys = Object.keys(userForm)
-      formKeys.forEach(key => updatedUserForm[key].value = modifiedData[key])
-      updateUserForm(updatedUserForm)
-      updateShowModal(false)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .then(({ data }) => {
+        const modifiedData = transformData.incoming({ ...data })
+        const updatedUserForm = { ...userForm }
+        updateUserProfileData(modifiedData)
+        const formKeys = Object.keys(userForm)
+        formKeys.forEach(key => updatedUserForm[key].value = modifiedData[key])
+        updateUserForm(updatedUserForm)
+        updateShowModal(false)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const printLanguages = () => {
@@ -483,8 +483,7 @@ const UserProfile = ({ match }) => {
             key={image._id}
             className={'img photo-thumb photo-container'}>
             <img src={image.url} id={image._id} className={'image'} />  
-            {isEditMode && <div className={'edit-image'} style={{ cursor: 'pointer' }} onClick={getImageDetails} >edit</div>}
-
+            {isEditMode && <img src={penIcon} width='30px'className={'edit-image'} style={{ cursor: 'pointer' }} onClick={getImageDetails} />}
           </div>
         })}
       </div>
@@ -496,16 +495,15 @@ const UserProfile = ({ match }) => {
   switch (selectedModal) {
     case 'about':
       modalBody = <div>
-          <Form
-            controls={formControlsImage}
-            onSelectChange={formHandlers.handleSelectChange}
-            config={{ fullName: userForm.fullName, profilePicture: userForm.profilePicture }}
-            onSubmit={formHandlers.handleSubmit}
-            onChange={formHandlers.handleChange}
-            onFileChange={formHandlers.handleFileChange} />
-
-            {fileIsUploading ? <p style={{ margin: '10px 0'}}>Uploading File, please wait.</p> : null}
-        </div>
+        <Form
+          controls={formControlsImage}
+          onSelectChange={formHandlers.handleSelectChange}
+          config={{ fullName: userForm.fullName, profilePicture: userForm.profilePicture }}
+          onSubmit={formHandlers.handleSubmit}
+          onChange={formHandlers.handleChange}
+          onFileChange={formHandlers.handleFileChange} />
+        {fileIsUploading ? <p style={{ margin: '10px 0'}}>Uploading File, please wait.</p> : null}
+      </div>
       break
     case 'bio':
       modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ bio: userForm.bio }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
@@ -527,7 +525,7 @@ const UserProfile = ({ match }) => {
 
         <button className={'btn btn-light'} onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
         <button className={'btn btn-light'} onClick={() => setProfilePictureHandler(selectedImage.imageUrl)}>Set Profile Picture</button>
-     </div>
+      </div>
   }
 
   const modal = <Modal
