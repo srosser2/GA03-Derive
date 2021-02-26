@@ -80,6 +80,7 @@ const userController = {
         .populate('countriesWishList')
         .populate('receivedRequests')
         .populate('languages')
+        .populate('images')
       // userToUpdate.set(body)
       // userToUpdate.save()
       // const populatedUser = await User.findById(id).populate('languages')

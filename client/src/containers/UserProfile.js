@@ -357,8 +357,31 @@ const UserProfile = ({ match }) => {
     })
       .then(({ data }) => {
         updateShowModal(false)
+        console.log(data)
       })
       .catch(err => console.log(err))
+  }
+
+  const setProfilePictureHandler = async (url) => {
+    await axios.put(`/api/users/${loggedInUser.userId}`, {
+      profilePicture: url
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(({ data }) => {
+      const modifiedData = transformData.incoming({ ...data })
+      const updatedUserForm = { ...userForm }
+      updateUserProfileData(modifiedData)
+      const formKeys = Object.keys(userForm)
+      formKeys.forEach(key => updatedUserForm[key].value = modifiedData[key])
+      updateUserForm(updatedUserForm)
+      updateShowModal(false)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 
   const printLanguages = () => {
@@ -523,7 +546,8 @@ const UserProfile = ({ match }) => {
           <img id={selectedImage.imageId} src={selectedImage.imageUrl} />
         </div>
 
-        <button onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
+        <button className={'btn btn-light'} onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
+        <button className={'btn btn-light'} onClick={() => setProfilePictureHandler(selectedImage.imageUrl)}>Set Profile Picture</button>
       </div>
   }
 

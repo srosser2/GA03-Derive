@@ -39,17 +39,14 @@ const fileUploadController = {
     }
   },
   deleteImage: async (req, res, next) => {
-    console.log(req)
+    // console.log(req)
     try {
       
       const file = await Image.findById(req.params.imageId)
-      
-      // if (!comment.user.equals(currentUser._id)) {
-      //   return res.status(401).send({ message: 'Unauthorized - cant delete someone elses comment' })
-      // }
       const deletedFileCloud = await fileManager.deleteImage(file.public_id)
       console.log(deletedFileCloud)
       const deletedFile = await Image.findByIdAndDelete(file._id)
+      const updatedUser = await User.findByIdAndUpdate({ _id: req.currentUser._id }, { $pull: { images: req.params.imageId }} )
       res.send(deletedFile)
     } catch (err) {
       next(err)
