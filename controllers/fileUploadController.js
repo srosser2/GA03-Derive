@@ -22,12 +22,7 @@ const fileUploadController = {
   postImage: async (req, res, next) => {
     const body = req.body
     try {
-      console.log(req.body)
-      // res.send(req.body)
-      console.log('Trying to post the file')
       const file = await fileManager.uploadImage(req.body.filePath)
-      console.log('File posted: ')
-      console.log(file)
       body.url = file.secure_url
       body.public_id = file.public_id,
       body.user = req.currentUser._id
@@ -39,14 +34,12 @@ const fileUploadController = {
     }
   },
   deleteImage: async (req, res, next) => {
-    // console.log(req)
     try {
-      
       const file = await Image.findById(req.params.imageId)
       const deletedFileCloud = await fileManager.deleteImage(file.public_id)
       console.log(deletedFileCloud)
       const deletedFile = await Image.findByIdAndDelete(file._id)
-      const updatedUser = await User.findByIdAndUpdate({ _id: req.currentUser._id }, { $pull: { images: req.params.imageId }} )
+      await User.findByIdAndUpdate({ _id: req.currentUser._id }, { $pull: { images: req.params.imageId } } )
       res.send(deletedFile)
     } catch (err) {
       next(err)
