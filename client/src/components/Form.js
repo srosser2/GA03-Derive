@@ -98,6 +98,7 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onFileChange, onS
       {fieldBody}
       {/* {!config[field].dirty ? null : <div>{validationErrorMessages.map((err, i) => <p key={i}>{err}</p>)}</div>} */}
       {!config[field].dirty ? null : <Form.Text className={'invalid-field'}>{validationErrorMessages.join(' ')}</Form.Text>}
+      {}
     </div>
   })
 
@@ -112,11 +113,12 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onFileChange, onS
     })
   }
 
-  return <form onSubmit={e => e.preventDefault()} className={Array.isArray(classes) ? classes.join(' ') : null}>
-    {formBody}
-    {formControls}
-  </form>
-
+  return <>
+    <form onSubmit={e => e.preventDefault()} className={Array.isArray(classes) ? classes.join(' ') : null}>
+      {formBody}
+      {formControls}
+    </form>
+  </>
 }
 
 export default FormGenerator

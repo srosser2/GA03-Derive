@@ -41,14 +41,16 @@ const MyFriends = () => {
       <p>No results</p>
     </div>
   }
-
+              
   if (friends.length > 0) {
     myFriends = <CardDeck>
       {friends.map((friend, index) => {
         return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4}>
           <Card className={'country-card'}>
             <div>
-              <Card.Img variant="top" width={64} height={64} src={friend.profilePicture} alt="user image" className={'flag'} />
+              <Card.Img variant="top" width={64} height={64} src={friend.profilePicture
+                ? friend.profilePicture
+                : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt="user image" className={'flag'} />
             </div>
             <Card.Body>
               <Card.Title>

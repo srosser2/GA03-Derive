@@ -8,7 +8,6 @@ import FileUpload from '../components/FileUpload.js'
 import { Container, Card, Button, Row, Col } from 'react-bootstrap'
 import Carousel from '../components/Carousel.js'
 import { getLoggedInUserId } from '../lib/auth'
-import Notifications, { notify } from 'react-notify-toast'
 import NavBar from '../components/Navbar'
 
 const penIcon = 'https://t4.ftcdn.net/jpg/01/09/40/45/240_F_109404594_0N0O1Yki0kGrODecWMvVt3qettBtzWtq.jpg'
@@ -280,7 +279,6 @@ const UserProfile = ({ match }) => {
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
-    // notify.show('Error: user not found', 'error', 2500)
     return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
   }
 
@@ -413,11 +411,14 @@ const UserProfile = ({ match }) => {
     }
   }
 
+
   const userInfo = <div id={'about'} className={'content-block'}>
     <Card className='profileCard'>
       <div className={'content-block-header'}>
         <div className="justifySpaceBetween">
-          <img src={(userProfileData.profilePicture)} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
+          <img src={(userProfileData.profilePicture
+            ? userProfileData.profilePicture
+            : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg')} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
           <div>
             {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
             {userProfileData.friends !== undefined && checkCurrentFriendState()}
@@ -456,7 +457,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesVisited.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }} /></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100px', height: '80px' }} /></a>
               </div>
             </div>
           })}
@@ -474,7 +475,7 @@ const UserProfile = ({ match }) => {
           {userProfileData.countriesWishList.map((e, i) => {
             return <div key={i}>
               <div style={{ padding: 5 }}>
-                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80px' }} /></a>
+                <a href={`/countries/${e.value}`}><img src={e.flag} alt="country flag" style={{ width: '100%', height: '80%', objectFit: 'fill' }} /></a>
               </div>
             </div>
           })}
@@ -483,6 +484,8 @@ const UserProfile = ({ match }) => {
     </Card>
   </div>
 
+
+
   const friends = <div id={'friends'}>
     <h3>Friends{isEditMode && <a href="/friends"><img src={penIcon} width='30px' /></a>}</h3>
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -490,7 +493,9 @@ const UserProfile = ({ match }) => {
         return <div key={i}>
           <Container>
             <a href={`/users/${e._id}`}>
-              <Row><img src={e.profilePicture} alt={e.fullName} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
+              <Row><img src={e.profilePicture
+                ? e.profilePicture
+                : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt={e.fullName} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
               <Row className="justifyCenter"><small>{e.fullName}</small></Row>
             </a>
           </Container>
@@ -584,7 +589,6 @@ const UserProfile = ({ match }) => {
     hideModalHandler={() => updateShowModal(false)} />
 
   return <>
-    <Notifications />
     <NavBar />
     <Container>
       {modal}

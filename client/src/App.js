@@ -23,9 +23,11 @@ import SearchProfiles from './containers/SearchProfiles'
 import NotFound from './containers/NotFound'
 import About from './containers/About'
 import MyFriends from './containers/MyFriends'
+import Notifications, { notify } from 'react-notify-toast'
 
 function App() {
   return <>
+    <Notifications />
     <BrowserRouter>
       <Switch>
         <Route exact path="/not-found" component={NotFound}/>
