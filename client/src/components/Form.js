@@ -5,7 +5,7 @@ import validateField from '../lib/validateField'
 import { Form } from 'react-bootstrap'
 import Select from 'react-select'
 
-const FormGenerator = ({ config, controls, onSubmit, onChange, onSelectChange, classes }) => {
+const FormGenerator = ({ config, controls, onSubmit, onChange, onFileChange, onSelectChange, classes }) => {
 
   const formFields = Object.keys(config)
 
@@ -15,7 +15,7 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onSelectChange, c
     defaultValues[field] = config[field].value
   }
 
-  const { register, handleSubmit, errors, control } = useForm({
+  const { control } = useForm({
     defaultValues
   })
 
@@ -53,13 +53,13 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onSelectChange, c
             />
           )}
         />
-       
+
         break
       }
-      case 'select' : {
-        fieldBody = <Controller 
+      case 'select': {
+        fieldBody = <Controller
           control={control}
-          name={field}  
+          name={field}
           render={() => (
             <Select
               defaultValue={config[field].value}
@@ -71,7 +71,22 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onSelectChange, c
         />
         break
       }
-      default : {
+      case 'file-input': {
+        fieldBody = <Controller
+          control={control}
+          name={field}
+          render={() => (
+            <input
+              type='file'
+              onChange={e => onFileChange(e)}
+              label={field}
+              // custom
+            />
+          )}
+        />
+        break
+      }
+      default: {
         return null
       }
     }
@@ -87,7 +102,7 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onSelectChange, c
     </div>
   })
 
-  let formControls  
+  let formControls
 
   if (controls) {
     const formControlKeys = Object.keys(controls)

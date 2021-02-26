@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
 import '../styles/carousel.css'
 
 const Carousel = (props) => {
@@ -56,10 +57,7 @@ const Carousel = (props) => {
     <div className="carousel-container">
       <div className="carousel-wrapper">
         {
-          currentIndex > 0 &&
-          <button onClick={prev} className="left-arrow">
-              &lt;
-          </button>
+          currentIndex > 0 && <Button onClick={prev} className="left-arrow">&lt;</Button>
         }
         <div
           className="carousel-content-wrapper"
@@ -74,10 +72,7 @@ const Carousel = (props) => {
           </div>
         </div>
         {
-          currentIndex < (length - show) &&
-          <button onClick={next} className="right-arrow">
-              &gt;
-          </button>
+          currentIndex < (length - show) && <Button onClick={next} className="right-arrow">&gt;</Button>
         }
       </div>
     </div>

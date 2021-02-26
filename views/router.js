@@ -60,5 +60,6 @@ router.route('/images/:imageId')
   .get(fileUploadController.getImageById)
   .delete(secureRoute, fileUploadController.deleteImage)
 
+
 export default router
 

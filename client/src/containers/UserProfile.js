@@ -32,11 +32,17 @@ const AddFriendButton = ({ isPending, updateIsPending, addFriend }) => {
 
 const UserProfile = ({ match }) => {
   const loggedInUser = getLoggedInUserId()
+  const token = localStorage.getItem('token')
 
   const [fileUploadPath, updateFileUploadPath] = useState('')
+  const [fileIsUploading, updateFileIsUploading] = useState(false)
   const [userProfileData, updateUserProfileData] = useState({})
   const [isEditMode, updateIsEditMode] = useState(false)
   const [isPending, updateIsPending] = useState(false)
+  const [isLoading, updateIsLoading] = useState(true)
+  const [selectedModal, updateSelectedModal] = useState('')
+  const [selectedImage, updateSelectedImage] = useState({})
+  const [showModal, updateShowModal] = useState(false)
   const [userForm, updateUserForm] = useState({
     fullName: {
       label: 'Name',
@@ -47,6 +53,14 @@ const UserProfile = ({ match }) => {
         required: true
       }
     },
+    profilePicture: {
+      label: 'Profile Picture',
+      element: 'file-input',
+      value: '',
+      validation: {
+        required: false
+      }
+    },  
     bio: {
       label: 'Bio',
       element: 'textarea',
@@ -115,10 +129,6 @@ const UserProfile = ({ match }) => {
       }
     }
   })
-
-  const [isLoading, updateIsLoading] = useState(true)
-  const [selectedModal, updateSelectedModal] = useState('')
-  const [showModal, updateShowModal] = useState(false)
 
   const transformData = {
     mapArrayToSelectOptions: (obj, key, val, lab) => {
@@ -229,6 +239,24 @@ const UserProfile = ({ match }) => {
     }
   }
 
+  const formControlsImage = {
+    submit: {
+      ...formControls.submit
+    },
+    uploadImage: {
+      handler: async () => {
+        // const token = localStorage.getItem('token')
+        const i = await uploadImageHandler().then(console.log('I waited for this'))
+        
+        console.log('some time its been')
+        
+
+      },
+      label: 'Upload Image',
+      classes: ['btn btn-light']
+    }
+  }
+
   // Show something while axios is loading
   if (isLoading) {
     return <Container><h1>Loading...</h1></Container>
@@ -266,6 +294,10 @@ const UserProfile = ({ match }) => {
       const updatedForm = { ...userForm }
       updatedForm[name].value = e
       updateUserForm(updatedForm)
+    },
+    handleFileChange(e) {
+      console.log(e.target.files[0])
+      updateFileUploadPath(e.target.files[0])
     }
   }
 
@@ -280,17 +312,6 @@ const UserProfile = ({ match }) => {
 
   // All Content Sections
 
-  function readFileAsync(file) {
-    return new Promise((resolve, reject) => {
-      let reader = new FileReader()
-      reader.onload = (res) => {
-        // resolve(res.target.result);
-      }
-      reader.onerror = reject
-      return reader.readAsArrayBuffer(file)
-    })
-  }
-
   function readAsDataURL(file) {
     return new Promise((resolve, reject) => {
       const fr = new FileReader()
@@ -302,24 +323,56 @@ const UserProfile = ({ match }) => {
     })
   }
 
-  const imageUploadHandler = async (e) => {
-    const file = e.target.files[0]
-
-    readAsDataURL(file)
+  const uploadImageHandler = async () => {
+    if (fileUploadPath.length > 0) {
+      return
+    }
+    const a = readAsDataURL(fileUploadPath)
       .then(async (res) => {
-        console.log(res.toString())
-
+        updateFileIsUploading(true)
         const obj = {
           filePath: res
         }
-
         axios.post('/api/images', obj, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         })
-          .then(res => console.log(res))
+          .then(res => {
+            updateFileIsUploading(false)
+            return res
+          })
       })
+  }
+
+  const getImageDetails = e => {
+    console.log(e.target)
+    let imageParent = e.target
+    while (!imageParent.hasAttribute('id')){
+      imageParent = imageParent.parentElement
+    }
+    const imageId = imageParent.id
+    const imageUrl = imageParent.childNodes[0].src
+    console.log(imageUrl)
+    updateSelectedImage({
+      imageId,
+      imageUrl
+    })
+    updateSelectedModal('image')
+    updateShowModal(true)
+  }
+
+  const deleteImageHandler = id => {
+    axios.delete(`/api/images/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(({ data }) => {
+        console.log(data)
+        updateShowModal(false)
+      })
+      .catch(err => console.log(err))
   }
 
   const printLanguages = () => {
@@ -372,7 +425,6 @@ const UserProfile = ({ match }) => {
           </div>
         </div>
         <h2>{userProfileData.fullName}{isEditMode && <img className="fade-in" src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h2>
-        <h4>{userProfileData.username}</h4>
       </div>
       <div className={'content-block-body'}>
       </div>
@@ -452,37 +504,42 @@ const UserProfile = ({ match }) => {
     </div>
   </div>
 
-  const comments = <div id={'comments'}>
-    <Card className='profileCard'>
-      <h3>Comments</h3>
-      <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
-        {userProfileData.comments.map((e, i) => {
-          return <>
-            <Card style={{ width: '18rem' }} key={i}>
-              <Card.Body>
-                <Card.Title>{e.country.name}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
-                <Card.Text>
-                  {e.text}
-                </Card.Text>
-                <div><small>Likes: {e.likes.length}</small></div>
-                {isEditMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
-              </Card.Body>
-            </Card>
-          </>
-        })}
-      </div>
-    </Card>
-  </div>
+  // const comments = <div id={'comments'}>
+  //   <Card className='profileCard'>
+  //     <h3>Comments</h3>
+  //     <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
+  //       {userProfileData.comments.map((e, i) => {
+  //         return <>
+  //           <Card style={{ width: '18rem' }} key={i}>
+  //             <Card.Body>
+  //               <Card.Title>{e.country.name}</Card.Title>
+  //               <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
+  //               <Card.Text>
+  //                 {e.text}
+  //               </Card.Text>
+  //               <div><small>Likes: {e.likes.length}</small></div>
+  //               {isEditMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
+  //             </Card.Body>
+  //           </Card>
+  //         </>
+  //       })}
+  //     </div>
+  //   </Card>
+  // </div>
 
   const images = <div>
     <Card className='profileCard'>
       <h2>{userProfileData.fullName}'s Images</h2>
-      <FileUpload handleUpload={imageUploadHandler} />
+      {/* <FileUpload handleUpload={imageUploadHandler} /> */}
       <div className={'photo-library-container'}>
         {userProfileData.images.map(image => {
-          return <div key={image._id} className={'img photo-thumb'}>
+          return <div 
+            id={image._id}
+            key={image._id} 
+            className={'img photo-thumb'}>
             <img src={image.url} id={image._id} className={''} />
+            <div className={'edit-image'} onClick={getImageDetails} >edit</div>
+
           </div>
         })}
       </div>
@@ -495,7 +552,13 @@ const UserProfile = ({ match }) => {
 
   switch (selectedModal) {
     case 'about':
-      modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ fullName: userForm.fullName }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
+      modalBody = <Form
+        controls={formControlsImage}
+        onSelectChange={formHandlers.handleSelectChange}
+        config={{ fullName: userForm.fullName, profilePicture: userForm.profilePicture }}
+        onSubmit={formHandlers.handleSubmit}
+        onChange={formHandlers.handleChange}
+        onFileChange={formHandlers.handleFileChange} />
       break
     case 'bio':
       modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ bio: userForm.bio }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
@@ -509,6 +572,14 @@ const UserProfile = ({ match }) => {
     case 'countriesWishList':
       modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesWishList: userForm.countriesWishList }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
       break
+    case 'image':
+      modalBody = <div>
+        <div className={'img photo-thumb'}> 
+          <img id={selectedImage.imageId} src={selectedImage.imageUrl} />
+        </div>
+       
+        <button onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
+      </div>
   }
 
   const modal = <Modal
@@ -543,7 +614,7 @@ const UserProfile = ({ match }) => {
       </Card>
 
 
-      {comments}
+      {/* {comments} */}
 
     </Container>
 

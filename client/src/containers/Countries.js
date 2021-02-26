@@ -26,6 +26,9 @@ const Countries = () => {
   })
   const regions = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
   const currentUser = getLoggedInUserId()
+  const [userVisited, updateUserVisited] = useState([])
+  const [userWishList, updateUserWishList] = useState([])
+
 
   useEffect(() => {
     async function fetchData() {
@@ -37,6 +40,10 @@ const Countries = () => {
     async function fetchUser() {
       const { data } = await axios.get(`/api/users/${currentUser.userId}`)
       updateUserData(data)
+      const visited = data.countriesVisited.map(e => e._id)
+      updateUserVisited(visited)
+      const wishList = data.countriesWishList.map(e => e._id)
+      updateUserWishList(wishList)
     }
     fetchUser()
   }, [])
@@ -104,12 +111,13 @@ const Countries = () => {
     }
   }
 
+
   let searchResults
   if (displayCountries.length > 0) {
     searchResults = <CardDeck>
 
       {displayCountries.map((country, index) => {
-        console.log(country._id, "country")
+        // console.log(country._id, "country")
         return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4} >
           <Card className={'country-card'}>
             <div>
@@ -119,7 +127,18 @@ const Countries = () => {
               <Card.Title className={'cardTitle'}>{country.name.length >= 20
                 ? country.name.slice(0, 15) + '...'
                 : country.name
-              }</Card.Title>
+              }
+              {userWishList.map(e => {
+                if (e === country._id){
+                  return <img src='https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-medium/1f91e-1f3fc.png' alt='on my wishlist'/>
+                }
+              })}
+              {userVisited.map(e => {
+                if (e === country._id){
+                  return <img src='https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-medium/2705.png' alt='have visited'/>
+                }
+              })}
+              </Card.Title>
               <Card.Text className={'cardText'}>{country.nativeName}</Card.Text>
               <div className={'countriesCardLinks'}>
                 <Card.Link href={`/countries/${country._id}`}>View</Card.Link>
