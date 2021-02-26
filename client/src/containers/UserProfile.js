@@ -251,12 +251,7 @@ const UserProfile = ({ match }) => {
 
   // If no user is found from axios, then we don't have an id, so show that the user was not found
   if (!userProfileData._id) {
-<<<<<<< HEAD
-    // add a button to return the user home
-    return <Container><h1>User not found :(</h1></Container>
-=======
     return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
->>>>>>> development
   }
 
   const formHandlers = {
@@ -446,14 +441,12 @@ const UserProfile = ({ match }) => {
         return <div key={i}>
           <Container>
             <a href={`/users/${e._id}`}>
-<<<<<<< HEAD
-              <Row><img src={e.profilePicture} alt={e.fullName} style={{ width: '100%', height: '80%', objectFit: 'fill' }}/></Row>
-=======
-              <Row><img src={e.profilePicture
-                ? e.profilePicture
-                : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt={e.fullName} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
->>>>>>> development
-              <Row className="justifyCenter"><small>{e.fullName}</small></Row>
+              <div className="friend-pictures">
+                <Row><img src={e.profilePicture
+                  ? e.profilePicture
+                  : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt={e.fullName} style={{ borderRadius: '100%', width: '80px', padding: 5 }} /></Row>
+                <Row className="justifyCenter"><small>{e.fullName}</small></Row>
+              </div>
             </a>
           </Container>
         </div>
@@ -527,7 +520,6 @@ const UserProfile = ({ match }) => {
     hideModalHandler={() => updateShowModal(false)} />
 
   return <>
-    <Notifications />
     <NavBar />
     <Container>
       {modal}

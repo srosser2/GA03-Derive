@@ -1,5 +1,4 @@
 import validator from 'validator'
-import Notifications, { notify } from 'react-notify-toast'
 
 const validateField = (value, rulesObj) => {
   let valid = true
@@ -19,13 +18,13 @@ const validateField = (value, rulesObj) => {
         }
         break
       case 'minLength':
-        valid = validator.isLength(value, { min: rulesObj.minLength})
+        valid = validator.isLength(value, { min: rulesObj.minLength })
         if (!valid) {
           validationErrorMessages.push(`The minimum length for this field is ${rulesObj.minLength} characters.`)
         }
         break
       case 'maxLength': 
-        valid = validator.isLength(value, { max: rulesObj.maxLength})
+        valid = validator.isLength(value, { max: rulesObj.maxLength })
         validationErrorMessages.push(`The minimum length for this field is ${rulesObj.maxLength} characters.`)
         break
       default:
