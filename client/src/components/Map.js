@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ReactMapGL from 'react-map-gl'
 
-const Map = ({ latitude, longitude, zoom, width, height}) => {
+const Map = ({ latitude, longitude, zoom, width, height }) => {
   const [viewport, setViewport] = useState({
     latitude,
     longitude,

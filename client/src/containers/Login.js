@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { getLoggedInUserId } from '../lib/auth'
 
-import { Container, Row, Col } from 'react-bootstrap'
 import Form from '../components/Form.js'
 
 import Notifications, { notify } from 'react-notify-toast'
@@ -34,49 +33,6 @@ const Login = ({ history }) => {
       },
       dirty: false
     }
-    // exampleSingleSelect: {
-    //   label: 'Test Select',
-    //   element: 'select',
-    //   value: true,
-    //   isMulti: false,
-    //   options: [
-    //     {
-    //       value: true,
-    //       label: 'Yes'
-    //     },
-    //     {
-    //       value: false,
-    //       label: 'No'
-    //     }
-    //   ]
-    // },
-    // exampleMultiSelect: {
-    //   label: 'Test Select',
-    //   element: 'select',
-    //   isMulti: true,
-    //   value: [{
-    //       value: 'english',
-    //       label: 'English'
-    //     },
-    //     {
-    //       value: 'polish',
-    //       label: 'Polish'
-    //     }],
-    //   options: [
-    //     {
-    //       value: 'english',
-    //       label: 'English'
-    //     },
-    //     {
-    //       value: 'polish',
-    //       label: 'Polish'
-    //     },
-    //     {
-    //       value: 'spanish',
-    //       label: 'Spanish'
-    //     }
-    //   ]
-    // }
   })
 
   const formControls = {
@@ -128,40 +84,6 @@ const Login = ({ history }) => {
     updateLoginForm(updatedForm)
   }
 
-  // LEGACY
-  // const handleSubmit = async () => {
-  //   try {
-  //     const formData = {}
-  //     for (const field in loginForm) {
-  //       formData[field] = loginForm[field].value
-  //       loginForm[field].dirty = true
-  //     }
-  //     const { data } = await axios.post('/api/login', formData).catch(err => console.log(err))
-  //     localStorage.setItem('token', data.token)
-  //     history.push(`/users/${data._id}`)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-
-  // return <Container>
-  //   <Row>
-  //     <Col><h1>Login</h1></Col>
-  //   </Row>
-
-  //   <Row>
-  //     <Col className={'mb-16'}>
-  //       <Form
-  //         config={loginForm}
-  //         controls={formControls}
-  //         onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
-  //         onSelectChange={handleSelectChange} />
-  //     </Col>
-  //     <Col>
-  //     </Col>
-  //   </Row>
-
-  // </Container>
 
   return <>
   <Notifications />
@@ -175,7 +97,7 @@ const Login = ({ history }) => {
         <Form
           config={loginForm}
           controls={formControls}
-          onSubmit={e => handleSubmit(e)} onChange={e => handleChange(e)}
+          onChange={e => handleChange(e)}
           onSelectChange={handleSelectChange} />
       </div>
 

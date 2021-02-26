@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Button, Card, CardDeck, Col, Container, Media } from 'react-bootstrap'
+import { Button, Card, CardDeck, Col, Container } from 'react-bootstrap'
 import { getLoggedInUserId } from '../lib/auth.js'
 import { Link } from 'react-router-dom'
 import NavBar from '../components/Navbar'
 
 const MyFriends = () => {
 
-  const [friends, updateFriends] = useState([])
-
   const currentUserToken = getLoggedInUserId()
   const token = localStorage.getItem('token')
+
+  const [friends, updateFriends] = useState([])
 
   async function fetchData() {
     const { data } = await axios.get('/api/users')
@@ -31,7 +31,7 @@ const MyFriends = () => {
       })
       fetchData()
     } catch (err) {
-      console.log('Line 32', err)
+      console.log(err)
     }
   }
 

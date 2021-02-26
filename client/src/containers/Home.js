@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Container, Table, Jumbotron, Card } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 import { getLoggedInUserId } from '../lib/auth.js'
 

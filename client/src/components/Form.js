@@ -5,7 +5,7 @@ import validateField from '../lib/validateField'
 import { Form } from 'react-bootstrap'
 import Select from 'react-select'
 
-const FormGenerator = ({ config, controls, onSubmit, onChange, onFileChange, onSelectChange, classes }) => {
+const FormGenerator = ({ config, controls, onChange, onFileChange, onSelectChange, classes }) => {
 
   const formFields = Object.keys(config)
 
@@ -80,7 +80,6 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onFileChange, onS
               type='file'
               onChange={e => onFileChange(e)}
               label={field}
-              // custom
             />
           )}
         />
@@ -96,7 +95,6 @@ const FormGenerator = ({ config, controls, onSubmit, onChange, onFileChange, onS
     return <div key={field} className={'form-element-group'}>
       <label>{config[field].label}</label>
       {fieldBody}
-      {/* {!config[field].dirty ? null : <div>{validationErrorMessages.map((err, i) => <p key={i}>{err}</p>)}</div>} */}
       {!config[field].dirty ? null : <Form.Text className={'invalid-field'}>{validationErrorMessages.join(' ')}</Form.Text>}
       {}
     </div>

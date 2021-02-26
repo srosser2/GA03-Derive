@@ -3,7 +3,6 @@ import { Button, Container } from 'react-bootstrap'
 
 const NewFriendButton = ({ data, postFriendRequest, handleShow }) => {
   const [isOn, updateIsOn] = useState(true)
-  console.log(data)
   return <>
     {isOn && <>
     <Container>

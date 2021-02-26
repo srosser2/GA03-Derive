@@ -8,6 +8,10 @@ import Form from '../components/Form.js'
 
 const Countries = () => {
 
+  const currentUser = getLoggedInUserId()
+  const regions = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
+  const [userVisited, updateUserVisited] = useState([])
+  const [userWishList, updateUserWishList] = useState([])
   const [search, updateSearch] = useState('')
   const [userData, updateUserData] = useState({})
   const [countries, updateCountries] = useState([])
@@ -24,11 +28,6 @@ const Countries = () => {
       }
     }
   })
-  const regions = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
-  const currentUser = getLoggedInUserId()
-  const [userVisited, updateUserVisited] = useState([])
-  const [userWishList, updateUserWishList] = useState([])
-
 
   useEffect(() => {
     async function fetchData() {
@@ -117,7 +116,6 @@ const Countries = () => {
     searchResults = <CardDeck>
 
       {displayCountries.map((country, index) => {
-        // console.log(country._id, "country")
         return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4} >
           <Card className={'country-card'}>
             <div>
@@ -129,13 +127,13 @@ const Countries = () => {
                 : country.name
               }
               {userWishList.map(e => {
-                if (e === country._id){
-                  return <img src='https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-medium/1f91e-1f3fc.png' alt='on my wishlist'/>
+                if (e === country._id) {
+                  return <img src='https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-medium/1f91e-1f3fc.png' alt='on my wishlist' />
                 }
               })}
               {userVisited.map(e => {
-                if (e === country._id){
-                  return <img src='https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-medium/2705.png' alt='have visited'/>
+                if (e === country._id) {
+                  return <img src='https://a.slack-edge.com/production-standard-emoji-assets/13.0/apple-medium/2705.png' alt='have visited' />
                 }
               })}
               </Card.Title>
@@ -150,7 +148,6 @@ const Countries = () => {
       })}
     </CardDeck>
   }
-
 
   if (search.length > 0 && displayCountries.length === 0) {
     searchResults = <div>

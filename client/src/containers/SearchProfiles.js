@@ -8,6 +8,10 @@ import NavBar from '../components/Navbar'
 
 const SearchProfiles = () => {
 
+  const currentUserToken = getLoggedInUserId()
+  const token = localStorage.getItem('token')
+
+  const [search, updateSearch] = useState('')
   const [allUsers, updateAllUsers] = useState([])
   const [displayUsers, updateDisplayUsers] = useState([])
   const [searchText, updateSearchText] = useState({
@@ -22,10 +26,6 @@ const SearchProfiles = () => {
       }
     }
   })
-  const [search, updateSearch] = useState('')
-
-  const currentUserToken = getLoggedInUserId()
-  const token = localStorage.getItem('token')
 
   async function fetchData() {
     const { data } = await axios.get('/api/users')

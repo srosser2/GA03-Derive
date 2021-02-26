@@ -4,7 +4,6 @@ import axios from 'axios'
 // Components
 import Form from '../components/Form.js'
 import Modal from '../components/Modal.js'
-import FileUpload from '../components/FileUpload.js'
 import { Container, Card, Button, Row, Col } from 'react-bootstrap'
 import Carousel from '../components/Carousel.js'
 import { getLoggedInUserId } from '../lib/auth'
@@ -60,7 +59,7 @@ const UserProfile = ({ match }) => {
       validation: {
         required: false
       }
-    },  
+    },
     bio: {
       label: 'Bio',
       element: 'textarea',
@@ -173,7 +172,6 @@ const UserProfile = ({ match }) => {
         updateUserProfileData(modifiedData)
         const formKeys = Object.keys(userForm)
         formKeys.forEach(key => userForm[key].value = modifiedData[key])
-        // updateUserForm()
       })
       .catch(err => {
         console.log(err)
@@ -185,7 +183,6 @@ const UserProfile = ({ match }) => {
           return { label: language.name, value: language._id }
         })
         const updatedUserForm = { ...userForm }
-        console.log(languages)
         updatedUserForm.languages.options = languages
         updateUserForm(updatedUserForm)
       })
@@ -200,6 +197,14 @@ const UserProfile = ({ match }) => {
         updateUserForm(updatedUserForm)
       })
   }, [])
+
+  if (isLoading) {
+    return <Container><h1>Loading...</h1></Container>
+  }
+
+  if (!userProfileData._id) {
+    return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
+  }
 
   const formControls = {
     submit: {
@@ -245,21 +250,11 @@ const UserProfile = ({ match }) => {
     },
     uploadImage: {
       handler: async () => {
-        // const token = localStorage.getItem('token')
-        const i = await uploadImageHandler().then(console.log('I waited for this'))
-        
-        console.log('some time its been')
-        
-
+        await uploadImageHandler().then(console.log('I waited for this'))
       },
       label: 'Upload Image',
       classes: ['btn btn-light']
     }
-  }
-
-  // Show something while axios is loading
-  if (isLoading) {
-    return <Container><h1>Loading...</h1></Container>
   }
 
   function checkCurrentFriendState() {
@@ -275,11 +270,6 @@ const UserProfile = ({ match }) => {
         }
       }
     }
-  }
-
-  // If no user is found from axios, then we don't have an id, so show that the user was not found
-  if (!userProfileData._id) {
-    return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
   }
 
   const formHandlers = {
@@ -309,8 +299,6 @@ const UserProfile = ({ match }) => {
     updateSelectedModal(container.id)
     updateShowModal(true)
   }
-
-  // All Content Sections
 
   function readAsDataURL(file) {
     return new Promise((resolve, reject) => {
@@ -348,12 +336,11 @@ const UserProfile = ({ match }) => {
   const getImageDetails = e => {
     console.log(e.target)
     let imageParent = e.target
-    while (!imageParent.hasAttribute('id')){
+    while (!imageParent.hasAttribute('id')) {
       imageParent = imageParent.parentElement
     }
     const imageId = imageParent.id
     const imageUrl = imageParent.childNodes[0].src
-    console.log(imageUrl)
     updateSelectedImage({
       imageId,
       imageUrl
@@ -369,7 +356,6 @@ const UserProfile = ({ match }) => {
       }
     })
       .then(({ data }) => {
-        console.log(data)
         updateShowModal(false)
       })
       .catch(err => console.log(err))
@@ -385,32 +371,16 @@ const UserProfile = ({ match }) => {
     return (data.join(', ') + ' and ' + lastLanguage)
   }
 
-  const printDate = (input) => {
-    const date = new Date(input)
-    return date.toDateString()
-  }
-
-  async function deleteComment(id, country) {
-    const token = localStorage.getItem('token')
-    const { data } = await axios.delete(`/api/countries/${country}/comments/${id}`, { headers: { 'Authorization': `Bearer ${token}` } })
-      .catch(err => console.log(err, data))
-    const updatedUserProfileData = { ...userProfileData }
-    updatedUserProfileData.comments = updatedUserProfileData.comments.filter(e => e._id !== id)
-    updateUserProfileData(userProfileData)
-  }
-
   const addFriend = async () => {
     try {
       const token = localStorage.getItem('token')
       await axios.post(`/api/users/${userProfileData._id}/add`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      console.log('friend added')
     } catch (err) {
       console.log(err)
     }
   }
-
 
   const userInfo = <div id={'about'} className={'content-block'}>
     <Card className='profileCard'>
@@ -504,38 +474,15 @@ const UserProfile = ({ match }) => {
     </div>
   </div>
 
-  // const comments = <div id={'comments'}>
-  //   <Card className='profileCard'>
-  //     <h3>Comments</h3>
-  //     <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', maxHeight: '30%' }}>
-  //       {userProfileData.comments.map((e, i) => {
-  //         return <>
-  //           <Card style={{ width: '18rem' }} key={i}>
-  //             <Card.Body>
-  //               <Card.Title>{e.country.name}</Card.Title>
-  //               <Card.Subtitle className="mb-2 text-muted">{printDate(e.updatedAt)}</Card.Subtitle>
-  //               <Card.Text>
-  //                 {e.text}
-  //               </Card.Text>
-  //               <div><small>Likes: {e.likes.length}</small></div>
-  //               {isEditMode && <Button size="sm" variant="outline-danger" onClick={() => deleteComment(e._id, e.country)}>Delete</Button>}
-  //             </Card.Body>
-  //           </Card>
-  //         </>
-  //       })}
-  //     </div>
-  //   </Card>
-  // </div>
 
   const images = <div>
     <Card className='profileCard'>
       <h2>{userProfileData.fullName}'s Images</h2>
-      {/* <FileUpload handleUpload={imageUploadHandler} /> */}
       <div className={'photo-library-container'}>
         {userProfileData.images.map(image => {
-          return <div 
+          return <div
             id={image._id}
-            key={image._id} 
+            key={image._id}
             className={'img photo-thumb'}>
             <img src={image.url} id={image._id} className={''} />
             <div className={'edit-image'} onClick={getImageDetails} >edit</div>
@@ -545,8 +492,6 @@ const UserProfile = ({ match }) => {
       </div>
     </Card>
   </div>
-
-  // Modal Body Logic
 
   let modalBody
 
@@ -574,10 +519,10 @@ const UserProfile = ({ match }) => {
       break
     case 'image':
       modalBody = <div>
-        <div className={'img photo-thumb'}> 
+        <div className={'img photo-thumb'}>
           <img id={selectedImage.imageId} src={selectedImage.imageUrl} />
         </div>
-       
+
         <button onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
       </div>
   }
@@ -592,7 +537,6 @@ const UserProfile = ({ match }) => {
     <NavBar />
     <Container>
       {modal}
-
       <Container>
         <Row>
           <Col>{userInfo}</Col>
@@ -603,21 +547,14 @@ const UserProfile = ({ match }) => {
           </Col>
         </Row>
       </Container>
-
       {general}
       {bio}
-
       {images}
       <Card className='profileCard'>
         {countriesVisited}
         {countriesWishList}
       </Card>
-
-
-      {/* {comments} */}
-
     </Container>
-
   </>
 
 }

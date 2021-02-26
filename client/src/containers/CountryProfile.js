@@ -41,7 +41,6 @@ const CountryProfile = ({ match, history }) => {
 
   useEffect(() => {
     axios.get(`/api/countries/${countryId}`).then(({ data }) => {
-      console.log(data)
       updateCountryData(data)
       updateCommentData(data.comments)
     })
@@ -72,7 +71,6 @@ const CountryProfile = ({ match, history }) => {
         Authorization: `Bearer ${token}`
       }
     }).then(({ data }) => {
-      console.log(data)
       const updatedCommentData = commentData.filter(comment => comment._id !== data.id)
       updateCommentData(updatedCommentData)
     })
@@ -85,34 +83,13 @@ const CountryProfile = ({ match, history }) => {
     }
     const commentId = commentContainer.getAttribute('id')
     const findComment = commentData.find(comment => comment._id === commentId)
-    // console.log(findComment)
     const updatedEditCommentForm = { ...editCommentForm }
     updatedEditCommentForm.text.value = findComment.text
-    console.log(updatedEditCommentForm)
     updateEditCommentForm(updatedEditCommentForm)
     updateEditCommentId(commentId)
     updateShowModal(true)
   }
 
-  const handleEditCommentSubmit = () => {
-    const comment = {
-      text: editCommentForm.text.value
-    }
-    axios.put(`/api/countries/${countryId}/comments/${editCommentId}`, comment, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).then(({ data }) => {
-      const updatedCommentData = [...commentData]
-      const commentToUpdate = updatedCommentData.find(comment => comment._id === data._id)
-      commentToUpdate.text = data.text
-      console.log(updatedCommentData)
-      updateCommentData(updatedCommentData)
-      updateShowModal(false)
-    })
-  }
-
-  // TODO - Refactor in user profile to use toggle modal
   const closeModal = () => updateShowModal(false)
 
   const toggleCommentForm = () => {
@@ -174,23 +151,6 @@ const CountryProfile = ({ match, history }) => {
     }
   }
 
-  // const handleCommentSubmit = () => {
-  //   const comment = {
-  //     text: commentForm.text.value
-  //   }
-  //   axios.post(`/api/countries/${match.params.id}/comments`, comment, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`
-  //     }
-  //   }).then(({ data }) => {
-  //     const updatedCommentData = ([ ...commentData ])
-  //     updatedCommentData.push(data)
-  //     updateCommentData(updatedCommentData)
-  //     const updatedCommentForm = { ...commentForm }
-  //     commentForm.text.value = ''
-  //     updateCommentForm(updatedCommentForm)
-  //   }).catch(err => console.log(err))
-  // }
 
   const likeCommentHandler = e => {
     const commentId = getCommentId(e)
@@ -220,21 +180,17 @@ const CountryProfile = ({ match, history }) => {
     config={commentForm}
     controls={postCommmentControls}
     onChange={e => handleChange(e, commentForm, updateCommentForm)}
-  // onSubmit={handleCommentSubmit} 
   />
 
   const modalFormBody = <Form
     config={editCommentForm}
     onChange={e => handleChange(e, editCommentForm, updateEditCommentForm)}
-    // onSubmit={handleEditCommentSubmit}
     controls={modalCommentFormControls}
   />
 
   return <>
     <NavBar />
     <Container>
-
-      {/* <Modal newModal={showModal} toggleNewModal={closeModal} body={modalFormBody} /> */}
       <Modal show={showModal} hideModalHandler={closeModal} body={modalFormBody} />
       <Row>
         <Col>
