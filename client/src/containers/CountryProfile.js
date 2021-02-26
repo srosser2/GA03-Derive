@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import NavBar from '../components/Navbar'
 
-import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Container, Row, Col, Button, Card } from 'react-bootstrap'
 import Map from '../components/Map'
 import Comment from '../components/Comment'
 import Form from '../components/Form'
@@ -192,25 +192,29 @@ const CountryProfile = ({ match, history }) => {
     <NavBar />
     <Container>
       <Modal show={showModal} hideModalHandler={closeModal} body={modalFormBody} />
+      <Card className='profileCard'>
+        <Row>
+          <Col>
+            <h1>{countryData.name}</h1>
+            <h2>Native Name: {countryData.nativeName}</h2>
+            <h4>Population: {countryData.population}</h4>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {map}
+          </Col>
+        </Row>
+      </Card>
       <Row>
-        <Col>
-          <h1>{countryData.name}</h1>
-          <h2>Native Name: {countryData.nativeName}</h2>
-          <h4>Population: {countryData.population}</h4>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {map}
-        </Col>
-      </Row>
-      <Row>
-        <Col md={{ span: 8, offset: 2 }}>
-          <h4>Comments ({countryData.comments ? comments.length : null})</h4>
-          <Button onClick={toggleCommentForm} variant="light">Add Comment</Button>
-          {showCommentForm ? commentFormElement : null}
-          {comments}
-        </Col>
+        <Card className='profileCard'>
+          <Col md={{ span: 8, offset: 2 }}>
+            <h4>Comments ({countryData.comments ? comments.length : null})</h4>
+            <Button onClick={toggleCommentForm} variant="light">Add Comment</Button>
+            {showCommentForm ? commentFormElement : null}
+            {comments}
+          </Col>
+        </Card>
       </Row>
     </Container>
   </>

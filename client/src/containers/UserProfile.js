@@ -37,7 +37,6 @@ const UserProfile = ({ match }) => {
   const [fileIsUploading, updateFileIsUploading] = useState(false)
   const [userProfileData, updateUserProfileData] = useState({})
   const [isEditMode, updateIsEditMode] = useState(false)
-  const [isPending, updateIsPending] = useState(false)
   const [isLoading, updateIsLoading] = useState(true)
   const [selectedModal, updateSelectedModal] = useState('')
   const [selectedImage, updateSelectedImage] = useState({})
@@ -160,7 +159,6 @@ const UserProfile = ({ match }) => {
       transformedData.isTravelling = { value: transformedData.isTravelling, label: transformedData.isTravelling ? 'Yes' : 'No' }
       transformedData.isPublic = { value: transformedData.isPublic, label: transformedData.isPublic ? 'Yes' : 'No' }
       return transformedData
-
     }
   }
 
@@ -203,7 +201,7 @@ const UserProfile = ({ match }) => {
   }
 
   if (!userProfileData._id) {
-    return <Container><h1>User not found :(</h1></Container> // add a button to return the user home
+    return <Container><h1>User not found :(</h1></Container>
   }
 
   const formControls = {
@@ -254,21 +252,6 @@ const UserProfile = ({ match }) => {
       },
       label: 'Upload Image',
       classes: ['btn btn-light']
-    }
-  }
-
-  function checkCurrentFriendState() {
-    if (isEditMode) return
-    if (userProfileData.friends !== undefined) {
-      if (userProfileData.friends.map(e => e.friends.includes(userProfileData._id))[0]) {
-        return
-      } else {
-        if (userProfileData.receivedRequests.map(e => e.sentRequests.includes(userProfileData._id))[0]) {
-          return <Button>Request pending...</Button>
-        } else {
-          return <AddFriendButton isPending={isPending} updateIsPending={updateIsPending} addFriend={addFriend} />
-        }
-      }
     }
   }
 
@@ -393,18 +376,7 @@ const UserProfile = ({ match }) => {
     const lastLanguage = data.pop()
     return (data.join(', ') + ' and ' + lastLanguage)
   }
-
-  const addFriend = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      await axios.post(`/api/users/${userProfileData._id}/add`, {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
+  
   const userInfo = <div id={'about'} className={'content-block'}>
     <Card className='profileCard'>
       <div className={'content-block-header'}>
@@ -414,7 +386,7 @@ const UserProfile = ({ match }) => {
             : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg')} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
           <div>
             {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
-            {userProfileData.friends !== undefined && checkCurrentFriendState()}
+
           </div>
         </div>
         <h2>{userProfileData.fullName}{isEditMode && <img className="fade-in" src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h2>
@@ -480,7 +452,10 @@ const UserProfile = ({ match }) => {
 
 
   const friends = <div id={'friends'}>
-    <h3>Friends{isEditMode && <a href="/friends"><img src={penIcon} width='30px' /></a>}</h3>
+    <div className="justifySpaceBetween">
+      <h3>Friends{isEditMode && <a href="/friends"><img src={penIcon} width='30px' /></a>}</h3>
+      <Button href="/friends">See All</Button>
+    </div>
     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
       {userProfileData.friends.slice(0, 8).map((e, i) => {
         return <div key={i}>
