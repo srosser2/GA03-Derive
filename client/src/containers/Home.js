@@ -8,24 +8,17 @@ const Home = () => {
 
   const loggedIn = getLoggedInUserId()
 
-  return <>
-    <Container className="center-me">
-      <div className="home-middle">
-        <h1 className="justify-center">DÉRIVE</h1>
-        <p className="justify-center">Connect, Explore, Travel</p>
-        {!loggedIn && <>
-          <Table borderless={true}>
-            <tr>
-              <td><Link to={{ pathname: '/register' }}><Button variant="primary">Register</Button></Link></td>
-              <td></td>
-              <td><Link to={{ pathname: '/login' }}><Button variant="warning">Login</Button></Link></td>
-            </tr>
-          </Table>
-        </>}
-        {loggedIn && <Link className="justify-center" to={{ pathname: `/users/${loggedIn.userId}` }}><Button variant="warning">Profile</Button></Link>}
-      </div>
-    </Container>
-  </>
+  return <div className="center-me">
+    <div className="home-middle">
+      <h2 className={'homeH1'}>Dérive</h2>
+      <p className={'homeP'}>Connect, Explore, Travel</p>
+      {!loggedIn && <div className={'homeButtonContainer'}>
+        <Link to={{ pathname: '/register' }}><Button Button className={'homeProfileButton'}>Register</Button></Link>
+        <Link to={{ pathname: '/login' }}><Button Button className={'homeProfileButton'}>Login</Button></Link>
+      </div>}
+      {loggedIn && <Link className={'homeProfileButtonContainer'} to={{ pathname: `/users/${loggedIn.userId}` }}><Button className={'homeProfileButton'}>Profile</Button></Link>}
+    </div>
+  </div>
 }
 
 export default Home
