@@ -207,6 +207,12 @@ div {
   flex-wrap: wrap;
 }
 
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .photo-thumb {
   flex-basis: 33%;
   display: flex;
@@ -216,10 +222,9 @@ div {
 .photo-thumb > img {
     object-fit: cover;
     flex: 1 0 auto;
-    width: 50%;
+    width: 97%;
     margin: 30px;
     height: 300px;
-
 }
 
 /** Notifications **/

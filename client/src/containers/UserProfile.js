@@ -481,10 +481,10 @@ const UserProfile = ({ match }) => {
           return <div
             id={image._id}
             key={image._id}
-            className={'img photo-thumb'}>
-            <img src={image.url} id={image._id} className={''} />
-            <div className={'edit-image'} onClick={getImageDetails} >edit</div>
-
+            className={'img photo-thumb photo-container'}>
+            <img src={image.url} id={image._id} className={'image'} />
+          
+            {isEditMode && <div className={'edit-image'} style={{ cursor: 'pointer' }} onClick={getImageDetails} >edit</div>}
           </div>
         })}
       </div>
@@ -495,13 +495,17 @@ const UserProfile = ({ match }) => {
 
   switch (selectedModal) {
     case 'about':
-      modalBody = <Form
-        controls={formControlsImage}
-        onSelectChange={formHandlers.handleSelectChange}
-        config={{ fullName: userForm.fullName, profilePicture: userForm.profilePicture }}
-        onSubmit={formHandlers.handleSubmit}
-        onChange={formHandlers.handleChange}
-        onFileChange={formHandlers.handleFileChange} />
+      modalBody = <div>
+          <Form
+            controls={formControlsImage}
+            onSelectChange={formHandlers.handleSelectChange}
+            config={{ fullName: userForm.fullName, profilePicture: userForm.profilePicture }}
+            onSubmit={formHandlers.handleSubmit}
+            onChange={formHandlers.handleChange}
+            onFileChange={formHandlers.handleFileChange} />
+
+            {fileIsUploading ? <p style={{ margin: '10px 0'}}>Uploading File, please wait.</p> : null}
+        </div>
       break
     case 'bio':
       modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ bio: userForm.bio }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
@@ -523,7 +527,7 @@ const UserProfile = ({ match }) => {
 
         <button className={'btn btn-light'} onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
         <button className={'btn btn-light'} onClick={() => setProfilePictureHandler(selectedImage.imageUrl)}>Set Profile Picture</button>
-      </div>
+     </div>
   }
 
   const modal = <Modal
