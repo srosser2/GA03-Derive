@@ -6,10 +6,13 @@ const validateField = (value, rulesObj) => {
   for (const key in rulesObj) {
     switch (key) {
       case 'required': 
-        valid = value.length > 0
-        if (!valid) {
-          validationErrorMessages.push('This field is required.')
+        if (rulesObj[key] === true) {
+          valid = value.length > 0
+          if (!valid) {
+            validationErrorMessages.push('This field is required.')
+          }
         }
+        
         break
       case 'isEmail': 
         valid = validator.isEmail(value)

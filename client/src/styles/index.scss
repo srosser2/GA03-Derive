@@ -313,7 +313,7 @@ div {
 /* profile page */
 .profileCard {
   padding: 30px;
-  border-radius: 20px;
+  border-radius: 10px;
   margin: 10px;
 }
 
@@ -341,4 +341,24 @@ div {
 
 .friend-pictures {
   margin: 0px 2px;
+}
+
+.tech-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.tech-card {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-basis: 25%;
+  margin: 30px;
+}
+
+.tech-card img {
+
+  height: 80px;
+  overflow: hidden;
 }

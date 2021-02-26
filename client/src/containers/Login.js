@@ -85,7 +85,7 @@ const Login = ({ history }) => {
   }
 
 
-  return <>
+  return <div className={'registration-outer-container'}>
   <Notifications />
   <div className={'registration-container'}>
     <div className={'lhs'}>
@@ -104,7 +104,7 @@ const Login = ({ history }) => {
     </div>
       
   </div>
-  </>
+  </div>
 
 }
 
