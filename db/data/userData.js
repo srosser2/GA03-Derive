@@ -33,7 +33,7 @@ export default [
     receivedRequests: [],
     languages: [],
     _id: '456f9be5b2113853ac6fd89b',
-    profilePicture: 'https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Brown&facialHairType=BeardLight&facialHairColor=Brown&clotheType=ShirtCrewNeck&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Light'
+    profilePicture: 'https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light'
   },
   {
     fullName: 'Stefan Sokolowski',

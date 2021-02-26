@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Button, Container, Row, Col, CardDeck, Card, Dropdown } from 'react-bootstrap'
+import { Container, Row, Col, CardDeck, Card, Dropdown } from 'react-bootstrap'
 import NavBar from '../components/Navbar'
 
 import { getLoggedInUserId } from '../lib/auth'
@@ -115,6 +115,7 @@ const Countries = () => {
   let searchResults
   if (displayCountries.length > 0) {
     searchResults = <CardDeck>
+
       {displayCountries.map((country, index) => {
         // console.log(country._id, "country")
         return <Col key={index} xs={12} sm={6} md={6} lg={4} xl={4} >
@@ -141,7 +142,7 @@ const Countries = () => {
               <Card.Text className={'cardText'}>{country.nativeName}</Card.Text>
               <div className={'countriesCardLinks'}>
                 <Card.Link href={`/countries/${country._id}`}>View</Card.Link>
-                <Card.Link href={`https://en.wikipedia.org/wiki/${country.name}`} target='_blank' >Wiki</Card.Link>
+                <Card.Link href={`https://en.wikipedia.org/wiki/${country.name}`} target='_blank'>Wiki</Card.Link>
               </div>
             </Card.Body>
           </Card>
@@ -149,6 +150,7 @@ const Countries = () => {
       })}
     </CardDeck>
   }
+
 
   if (search.length > 0 && displayCountries.length === 0) {
     searchResults = <div>
@@ -180,8 +182,8 @@ const Countries = () => {
 
       <Row>
         <Col className={'countriesButtonsContainer'}>
-          <Button className={'countriesButton'} onClick={() => filterCountriesWishList()}>My wish list</Button>
-          <Button className={'countriesButton'} onClick={() => filterCountriesVisited()}>Countries visited</Button>
+          <button className={'countriesButton'} onClick={() => filterCountriesWishList()}>My wish list 🤞🏼</button>
+          <button className={'countriesButton'} onClick={() => filterCountriesVisited()}>Countries visited ✅</button>
         </Col>
       </Row>
 

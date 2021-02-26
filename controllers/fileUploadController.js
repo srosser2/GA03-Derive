@@ -23,7 +23,7 @@ const fileUploadController = {
     const body = req.body
     try {
       console.log(req.body)
-      res.send(req.body)
+      // res.send(req.body)
       console.log('Trying to post the file')
       const file = await fileManager.uploadImage(req.body.filePath)
       console.log('File posted: ')
@@ -33,15 +33,22 @@ const fileUploadController = {
       body.user = req.currentUser._id
       const image = await Image.create(body)
       await User.findByIdAndUpdate({ _id: body.user }, { $push: { images: image._id } })
-      res.send(image)
+      res.send(file)
     } catch (err) {
       next(err)
     }
   },
   deleteImage: async (req, res, next) => {
+    console.log(req)
     try {
+      
       const file = await Image.findById(req.params.imageId)
+      
+      // if (!comment.user.equals(currentUser._id)) {
+      //   return res.status(401).send({ message: 'Unauthorized - cant delete someone elses comment' })
+      // }
       const deletedFileCloud = await fileManager.deleteImage(file.public_id)
+      console.log(deletedFileCloud)
       const deletedFile = await Image.findByIdAndDelete(file._id)
       res.send(deletedFile)
     } catch (err) {

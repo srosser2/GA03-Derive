@@ -86,9 +86,6 @@ const SearchProfiles = () => {
 
   let searchResults
 
-
-
-
   if (displayUsers.length > 0) {
 
     searchResults = <CardDeck>
