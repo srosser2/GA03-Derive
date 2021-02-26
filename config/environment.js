@@ -8,5 +8,5 @@ export const dbURI = environment === 'production' ?
   process.env.MONGODB_URI : 
   `mongodb://localhost/travelapp-${environment}`
 
-export const port = 8000
-export const secret = process.env.SECRET
+export const port = process.env.PORT || 8000
+export const secret = process.env.SECRET || 'somethingdifficulttoguess'

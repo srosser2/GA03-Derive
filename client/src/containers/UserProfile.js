@@ -383,7 +383,7 @@ const UserProfile = ({ match }) => {
         <div className="justifySpaceBetween">
           <img src={(userProfileData.profilePicture
             ? userProfileData.profilePicture
-            : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg')} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
+            : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg')} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', height: '150px', padding: 5 }} />
           <div>
             {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
 
@@ -482,9 +482,9 @@ const UserProfile = ({ match }) => {
             id={image._id}
             key={image._id}
             className={'img photo-thumb photo-container'}>
-            <img src={image.url} id={image._id} className={'image'} />
-          
+            <img src={image.url} id={image._id} className={'image'} />  
             {isEditMode && <div className={'edit-image'} style={{ cursor: 'pointer' }} onClick={getImageDetails} >edit</div>}
+
           </div>
         })}
       </div>
