@@ -65,7 +65,6 @@ const Register = ({ history }) => {
       placeholder: 'Tell us a bit about yourself',
       value: '',
       validation: {
-        required: false
       }
     },
     nationality: {
@@ -75,7 +74,7 @@ const Register = ({ history }) => {
       placeholder: 'Your nationality',
       value: '',
       validation: {
-        required: false
+
       }
     },
     languages: {
@@ -86,7 +85,6 @@ const Register = ({ history }) => {
       value: [],
       options: [],
       validation: {
-        required: false
       }
     },
     isPublic: {
@@ -104,7 +102,6 @@ const Register = ({ history }) => {
         }
       ],
       validation: {
-        required: false
       }
     },
     isTravelling: {
@@ -122,7 +119,6 @@ const Register = ({ history }) => {
         }
       ],
       validation: {
-        required: false
       }
     },
     countriesVisited: {
@@ -135,7 +131,6 @@ const Register = ({ history }) => {
 
       ],
       validation: {
-        required: false
       }
     },
     countriesWishList: {
@@ -146,7 +141,6 @@ const Register = ({ history }) => {
       value: [],
       options: [],
       validation: {
-        required: false
       }
     }
   })
@@ -263,7 +257,7 @@ const Register = ({ history }) => {
     />
   </>
 
-  return <>
+  return <div className={'registration-outer-container'}>
     <Notifications />
     <div className={'registration-container'}>
       <div className={'lhs'}>
@@ -290,7 +284,7 @@ const Register = ({ history }) => {
       </div>
 
     </div>
-  </>
+  </div>
 
 }
 export default Register
