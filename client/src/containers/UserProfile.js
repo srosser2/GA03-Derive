@@ -383,7 +383,7 @@ const UserProfile = ({ match }) => {
         <div className="justifySpaceBetween">
           <img src={(userProfileData.profilePicture
             ? userProfileData.profilePicture
-            : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg')} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', padding: 5 }} />
+            : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg')} alt="Profile picture" style={{ borderRadius: '100%', width: '150px', height: '150px', padding: 5 }} />
           <div>
             {userProfileData._id === loggedInUser.userId && <EditButton isEditMode={isEditMode} updateIsEditMode={updateIsEditMode} />}
 
