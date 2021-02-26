@@ -483,7 +483,7 @@ const UserProfile = ({ match }) => {
             key={image._id}
             className={'img photo-thumb'}>
             <img src={image.url} id={image._id} className={''} />
-            <div className={'edit-image'} onClick={getImageDetails} >edit</div>
+            <div className={'edit-image'} onClick={getImageDetails} >{isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</div>
 
           </div>
         })}
