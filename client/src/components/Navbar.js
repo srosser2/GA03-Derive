@@ -71,7 +71,7 @@ const NavBar = ({ history }) => {
         {!loggedIn && <Nav.Link href="/login">Login</Nav.Link>}
         {loggedIn && <a href={`/users/${loggedIn.userId}`} ><img src={user.profilePicture
           ? user.profilePicture
-          : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt="placeholder" style={{ borderRadius: '100%', width: '50px', padding: 5 }} /></a>}
+          : 'https://www.abc.net.au/news/image/8314104-1x1-940x940.jpg'} alt="placeholder" style={{ borderRadius: '100%', width: '50px', height: '50px', padding: 5 }} /></a>}
 
       </Navbar.Collapse>
     </Navbar>

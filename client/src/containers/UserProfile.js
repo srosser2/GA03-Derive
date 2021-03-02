@@ -125,6 +125,15 @@ const UserProfile = ({ match }) => {
       validation: {
         required: false
       }
+    },
+    uploadImage: {
+      label: 'Upload an Image',
+      element: 'file-input',
+      type: 'select',
+      value: '',
+      validation: {
+        required: false
+      }
     }
   })
 
@@ -248,7 +257,7 @@ const UserProfile = ({ match }) => {
     },
     uploadImage: {
       handler: async () => {
-        await uploadImageHandler().then(console.log('I waited for this'))
+        await uploadImageHandler().then(console.log('Image processing'))
       },
       label: 'Upload Image',
       classes: ['btn btn-light']
@@ -473,17 +482,17 @@ const UserProfile = ({ match }) => {
   </div>
 
 
-  const images = <div>
+  const images = <div id={'upload-image'}>
     <Card className='profileCard'>
-      <h2>{userProfileData.fullName}'s Images</h2>
+      <h2>{userProfileData.fullName}'s Images {isEditMode && <img src={penIcon} width='30px' onClick={showEditFieldModalHandler} />}</h2>
       <div className={'photo-library-container'}>
         {userProfileData.images.map(image => {
           return <div
             id={image._id}
             key={image._id}
-            className={'img photo-thumb photo-container'}>
-            <img src={image.url} id={image._id} className={'image'} />  
-            {isEditMode && <img src={penIcon} width='30px'className={'edit-image'} style={{ cursor: 'pointer' }} onClick={getImageDetails} />}
+            className={'img photo-container'}>
+            <img src={image.url} className={'image'} onClick={getImageDetails}/>  
+           
           </div>
         })}
       </div>
@@ -496,9 +505,9 @@ const UserProfile = ({ match }) => {
     case 'about':
       modalBody = <div>
         <Form
-          controls={formControlsImage}
+          controls={formControls}
           onSelectChange={formHandlers.handleSelectChange}
-          config={{ fullName: userForm.fullName, profilePicture: userForm.profilePicture }}
+          config={{ fullName: userForm.fullName }}
           onSubmit={formHandlers.handleSubmit}
           onChange={formHandlers.handleChange}
           onFileChange={formHandlers.handleFileChange} />
@@ -517,14 +526,28 @@ const UserProfile = ({ match }) => {
     case 'countriesWishList':
       modalBody = <Form controls={formControls} onSelectChange={formHandlers.handleSelectChange} config={{ countriesWishList: userForm.countriesWishList }} onSubmit={formHandlers.handleSubmit} onChange={formHandlers.handleChange} />
       break
+    case 'upload-image':
+      modalBody = <div>
+        <Form
+          controls={formControlsImage}
+          onSelectChange={formHandlers.handleSelectChange}
+          config={{ uploadImage: userForm.uploadImage }}
+          onSubmit={formHandlers.handleSubmit}
+          onChange={formHandlers.handleChange}
+          onFileChange={formHandlers.handleFileChange} />
+        {fileIsUploading ? <p style={{ margin: '10px 0'}}>Uploading File, please wait.</p> : null}
+      </div>
+      break
     case 'image':
       modalBody = <div>
-        <div className={'img photo-thumb'}>
-          <img id={selectedImage.imageId} src={selectedImage.imageUrl} />
+        <div className={'img photo-full'}>
+          <img src={selectedImage.imageUrl} />
         </div>
-
-        <button className={'btn btn-light'} onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
-        <button className={'btn btn-light'} onClick={() => setProfilePictureHandler(selectedImage.imageUrl)}>Set Profile Picture</button>
+        { userProfileData._id === loggedInUser.userId ? <div className={'image-controls'}>
+          <button className={'btn btn-light'} onClick={() => deleteImageHandler(selectedImage.imageId)}>Delete</button>
+          <button className={'btn btn-light'} onClick={() => setProfilePictureHandler(selectedImage.imageUrl)}>Set Profile Picture</button>
+        </div> : null}
+        
       </div>
   }
 
@@ -532,6 +555,7 @@ const UserProfile = ({ match }) => {
     title={null}
     body={modalBody}
     show={showModal}
+    size={selectedModal === 'image' ? 'xl' : 'md'}
     hideModalHandler={() => updateShowModal(false)} />
 
   return <>

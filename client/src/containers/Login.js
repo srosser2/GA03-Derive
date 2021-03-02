@@ -7,7 +7,6 @@ import Form from '../components/Form.js'
 import Notifications, { notify } from 'react-notify-toast'
 
 const Login = ({ history }) => {
-  console.log('hello')
   const [loginForm, updateLoginForm] = useState({
     email: {
       label: 'Email',

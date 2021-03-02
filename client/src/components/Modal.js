@@ -1,10 +1,10 @@
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
-function UserProfileModal({ show, hideModalHandler, body, title }) {
+function UserProfileModal({ show, hideModalHandler, body, title, size }) {
 
   return <>
-    <Modal show={show} onHide={hideModalHandler} animation={false}>
+    <Modal show={show} onHide={hideModalHandler} animation={false} size={size ? size : 'md'}>
       <Modal.Header closeButton>
         <Modal.Title>
           {title}

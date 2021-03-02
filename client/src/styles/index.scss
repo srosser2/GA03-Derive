@@ -211,20 +211,33 @@ div {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-basis: 33%;
 }
 
-.photo-thumb {
-  flex-basis: 33%;
+.photo-container > img {
+  height: 300px;
+  object-fit: cover;
+  width: 99%;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+
+.photo-full {
+  // flex-basis: 33%;
   display: flex;
   // flex-direction: column;
 }
 
-.photo-thumb > img {
+.photo-full > img {
     object-fit: cover;
     flex: 1 0 auto;
-    width: 97%;
-    margin: 30px;
-    height: 300px;
+    width: 100%;
+    // margin: 30px;
+    max-height: 70vh;
+}
+
+.image-controls {
+  margin: 20px 0;
 }
 
 /** Notifications **/
