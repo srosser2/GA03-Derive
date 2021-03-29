@@ -89,28 +89,122 @@ Trello - Kanban
 
 </br>
 
-<!-- ### Backend
+### Backend
 
 As a team, we decided to pair(/triple) programme for the backend elements of the project so that we all could gain experience, and also to reduce the amount of time spent on the backend due to the navigators spotting any potential bugs.
 
+The backend is a CRUD API, using MongoDB, Mongoose, Node.js and Express. The end points were created using a MVC (model, view, controller) file structure.
+
+</br>
+
 #### Models
 
-For the models, there were five in total: comment, country, image, language and user.
-.populate() here
+In total there were five models created for this project: comment, country, image, language and user.
 
-#### Views
+The most extensive schema created was the user schema. All data that would be used across the app, including registration information and profile information was referenced here and there were relationships will all other models.
 
-which controllers for which route
+```js
+const userSchema = new mongoose.Schema({
+  fullName: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: function(val){
+        // eslint-disable-next-line no-useless-escape
+        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val)
+      },
+      message: props => `${props.value} is not a valid email address.`
+    } 
+  },
+  password: { 
+    type: String, 
+    required: true, 
+    minlength: 6 
+  },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  bio: { type: String },
+  nationality: { type: String },
+  countriesVisited: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Country' }],
+  countriesWishList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Country' }],
+  isTravelling: { type: Boolean },
+  isPublic: { type: Boolean },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  sentRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  receivedRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  languages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Language' }],
+  profilePicture: { type: String },
+  images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }]
+})
+```
+</br>
 
-#### Controllers
+The mongoose hidden library was used to hide the password and the mongoose validator library was used to validate a user's email address.
 
-GET, POST, PUT, DELETE for all models
+On the user schema, bcyrpt was used to hash the password to increase the user's security.
 
-use post comment as an example
+</br>
 
-#### Middleware
+#### Views & Controllers
 
-SecureRoute and Error Handler -->
+Once the models had been defined, the folllowing controllers were created and their routes.
+
+Comments
+ - GET all comments
+ - POST a new comment
+ - DELETE your comment
+ - UPDATE your comment
+
+Countries
+ - GET all countries
+ - GET a single country
+
+Images
+ - GET all images
+ - GET one image
+ - POST a new image
+ - DELETE your image
+
+Languages
+ - GET all languages
+
+User
+ - POST login
+ - POST register
+ - GET all users
+ - GET one user 
+ - PUT - edit user profile
+ - POST - send friend request
+ - POST - confirm friend request
+
+.populate() is used in a number of the controllers; this is to link the models together, where we have used Mongoose.Schema.ObjectId. As an example, in the below code snippet, by using .populate('comments'), this will now not just return the comment ID, but also the text of the comment. Therefore when we were to display a user's profile, we would then be able to display their comments.
+
+```js
+  async getUserById(req, res, next) {
+    const id = req.params.id
+    try {
+      const user = await User.findById(id)
+        .populate('comments')
+        .populate('friends')
+        .populate('countriesVisited')
+        .populate('countriesWishList')
+        .populate('receivedRequests')
+        .populate('languages')
+        .populate('images')
+      res.status(202).send(user)
+    } catch (err) {
+      next(err)
+    }
+  }
+  ```
+  
+  </br>
+
+  secureRoute was used when making the routes; only those that are logged in and have a valid token can access certain routes. For example, any user can go to the register and log in pages but you have to have a token to visit the explore countries page.
 
 ### Frontend
 
@@ -317,7 +411,6 @@ const filterCountriesWishList = async () => {
 
 If there were no search results, a message would be displayed to ask the user to search again.
 
-</br>
 
 #### Search Profiles:
 
@@ -386,8 +479,6 @@ if (user.friends.includes(currentUserToken.userId)) {
 
 If there were no search results, a message would be displayed to ask the user to search again.
 
-</br>
-
 #### My friends
 
 For the my friends page, the fetchData function below was called in the useEffect on page render. In the function, the data from the get request for all users was filtered to return only those that had the logged in user's ID, in their friend's array (which was stored in the backend).
@@ -421,7 +512,6 @@ const deleteFriend = async (friend) => {
   }
 }
 ```
-</br>
 
 ## Conclusion
 
