@@ -36,6 +36,7 @@ const Countries = () => {
       updateDisplayCountries(data)
     }
     fetchData()
+    
     async function fetchUser() {
       const { data } = await axios.get(`/api/users/${currentUser.userId}`)
       updateUserData(data)
