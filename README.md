@@ -72,7 +72,7 @@ Development tools
 
 Once we had decided on our travel app, as a group we built a wireframe using InVision and created the user journey between pages. Given we had a week to complete the project, we used a Trello board and the MoSCow method to determine which features would be included in our MVP, and which features would be included should we be ahead of schedule.
 
-Once the MoSCow was complete, we used Kanban methodology to create tickets based on the user journey and then the backend requirements to facilitate these.
+Once the MoSCoW was complete, we used Kanban methodology to create tickets based on the user journey and then the backend requirements to facilitate these.
 
 InVision
 ![InVision image](/assets/InVision.png)
@@ -93,15 +93,13 @@ Trello - Kanban
 
 As a team, we decided to pair(/triple) programme for the backend elements of the project so that we all could gain experience, and also to reduce the amount of time spent on the backend due to the navigators spotting any potential bugs.
 
-The backend is a CRUD API, using MongoDB, Mongoose, Node.js and Express. The end points were created using a MVC (model, view, controller) file structure.
-
-</br>
+The backend is a CRUD API, using MongoDB, Mongoose, Node.js and Express. The endpoints were created using a MVC (model, view, controller) file structure.
 
 #### Models
 
 In total there were five models created for this project: comment, country, image, language and user.
 
-The most extensive schema created was the user schema. All data that would be used across the app, including registration information and profile information was referenced here and there were relationships will all other models.
+The most extensive schema created was the user schema. All data that would be used across the app, including registration information and profile information was referenced here and there were relationships with all other models.
 
 ```js
 const userSchema = new mongoose.Schema({
@@ -147,8 +145,6 @@ The mongoose hidden library was used to hide the password and the mongoose valid
 
 On the user schema, bcyrpt was used to hash the password to increase the user's security.
 
-</br>
-
 #### Views & Controllers
 
 Once the models had been defined, the folllowing controllers were created and their routes.
@@ -181,7 +177,7 @@ User
  - POST - send friend request
  - POST - confirm friend request
 
-.populate() is used in a number of the controllers; this is to link the models together, where we have used Mongoose.Schema.ObjectId. As an example, in the below code snippet, by using .populate('comments'), this will now not just return the comment ID, but also the text of the comment. Therefore when we were to display a user's profile, we would then be able to display their comments.
+.populate() is used in a number of the controllers; this is to link the models together, where we have used Mongoose.Schema.ObjectId. As an example, in the below code snippet, by using .populate('comments'), this will now not just return the comment ID, but also the text of the comment. Therefore when we displayed a user's profile, we could also display their comments.
 
 ```js
   async getUserById(req, res, next) {
@@ -204,7 +200,7 @@ User
   
   </br>
 
-  secureRoute was used when making the routes; only those that are logged in and have a valid token can access certain routes. For example, any user can go to the register and log in pages but you have to have a token to visit the explore countries page.
+  secureRoute was used when creating the routes; only those that are logged in and have a valid token can access certain routes. For example, any user can go to the register and log in pages but you have to have a token to visit the explore countries page.
 
 ### Frontend
 
@@ -414,8 +410,6 @@ If there were no search results, a message would be displayed to ask the user to
 
 #### Search Profiles:
 
-</br>
-
 The search profiles/friends page intially shows a search bar, which uses the form component. When the user types in the search bar, this updates the state of searchText. 
 
 For the form controls, the matchingNames variable filtered any users which contained the search result, from the allUsers state (which was determined by a get request on page render).
@@ -526,10 +520,11 @@ const deleteFriend = async (friend) => {
 ### Challenges
 
 - Using Bootstrap for the first time - some elements need to be re-styled e.g. register and login on mobile devices and profile page (flags and friends) on all devices.
+- Using React Hooks on a larger scale project - this was initially a challenge but after some time, it became much easier and I enjoyed using newer techniques.
 
 ### Future development plans
 
-- Automated unit testing & front end testing
+- More automated unit testing & front end testing
 - Pagination for all countries
 - For comments, change state of button between like and dislike, dependent on user action.
 - Change password function
