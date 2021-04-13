@@ -67,7 +67,7 @@ The app uses a Model View Controller (MVC) architecture, so during the planning 
 
 We worked on the back end collaboratively, taking it in turns to 'drive', where the driver would create relevent models based on the wireframes, and link this into the app by building the controller and registering it in the router. We frequently pulled the latest changes from GitHub and tested the API endpoints using Insomnia API client.
 
-####Friend Requests
+#### Friend Requests
 
 One of the complicated functionalities in the back end was handling the sending and confirmation of friend requests. We worked out the various states of a friend request using the whiteboard, and then added new properties to the model, and added relevant methods in the controller to manage friends.
 
@@ -141,7 +141,7 @@ One of the complicated functionalities in the back end was handling the sending 
 
 ```
 
-####Seed User Data
+#### Seed User Data
 
 We initially started out with a handful of users to test with in our seeding data. However, as the app is a Social Network we required a large pool of users to make it interesting, so I decided to improve the seeding data by making a script to create random users. 
 
@@ -150,11 +150,11 @@ I found a popular [avatar generator](https://getavataaars.com/) online that can 
 I created a [script](https://github.com/srosser2/GA03-Derive/blob/main/db/data/dummyUserData.js) with a function to create a given number of users, using Faker to populate various fields. This function is used in the `seed.js` file to create a number of random characters.
 
 
-###Front End Development
+### Front End Development
 
 Once we had built most of the back end, we split out the front end tasks between us in stages, realigning priorities regularly in standups. 
 
-####The Form Component
+#### The Form Component
 
 One of my main contributions to the project was to build a reusable form component. I used React Hook Forms to create the `<Form ../>`, which took a configuration object to set up various fields required for a given form. The configuration object was made up of child objects, which contained information about how to set up the form, for example: 
 
@@ -261,7 +261,7 @@ This component allowed us to create large forms quickly, and manage forms across
 The full form component code can be found [here](https://github.com/srosser2/GA03-Derive/blob/main/client/src/components/Form.js).
 
 
-####File Uploads
+#### File Uploads
 
 Prior to the project, I had no experience in uploading files. Cloudinary had been recommended as an easy way to integrate file storage for images uploads, so I signed up for an account and tested it out. 
 
@@ -285,27 +285,27 @@ Once the above was fixed, the upload process worked as expected. I added some ba
 With file uploads implemented, I amended the profile page by adding a gallery of uploaded images, and the functionality to set a profile picture.
 
 
-###Testing
+### Testing
 
 I added a few integration tests using Chai and Mocha tests early on (such as checking register and login) which made it easy to check the basic functionality still worked when pulling new updates. 
 
 It would have been great to add more testing, however due to the limited time to deliver the project, we focussed on implementing features rather than testing fully.
 
 
-##Known Bugs
+## Known Bugs
 
 * There is no clear indication of when a user's token has expired, which can be confusing when trying to perform secure actions, such as uploading images. 
 
-##Wins
+## Wins
 
 * I felt the team worked together well on this project. It was our first time using git collaboratively, and we didn't run into many major issues.
 * This was the first time I had worked with File Uploads, and now feel confident in working with files and using cloud providers to store the data. I used my knowledge to help other students in the final project.
 
-##Challenges
+## Challenges
 
 * We tried to implement a web scraper to get country information from Wikipedia, but there wasn't enough time to properly implement this feature. 
 
-##Future Improvements
+## Future Improvements
 
 * Adding new models for:
 	* Posts - users can post statuses with text and images
@@ -317,7 +317,7 @@ It would have been great to add more testing, however due to the limited time to
 	* Improved validation
 	* Make it clear if the users token has expired
 
-##Key Learnings
+## Key Learnings
 
 * Using git merge and branches
 * Deploying applications with a MongoDB database
