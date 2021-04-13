@@ -54,7 +54,6 @@ const userController = {
         .populate('receivedRequests')
         .populate('languages')
         .populate('images')
-      //.populate('comments.user')
       res.status(202).send(user)
     } catch (err) {
       next(err)
@@ -81,9 +80,6 @@ const userController = {
         .populate('receivedRequests')
         .populate('languages')
         .populate('images')
-      // userToUpdate.set(body)
-      // userToUpdate.save()
-      // const populatedUser = await User.findById(id).populate('languages')
       res.send(updatedUser)
     } catch (err) {
       next(err)
